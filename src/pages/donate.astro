@@ -18,30 +18,24 @@ import { Icon } from 'astro-icon/components';
         Every dollar raised stays right here in Bastrop County, funding signs, mailers, events, and ground-game operations for verified conservative candidates.
       </p>
       
-      <!-- TODO: Replace placeholder links with actual payment processor links (e.g. WinRed, Stripe Checkout) -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <a href="#payment-placeholder" class="py-4 rounded-xl border-2 border-bcc-gray-200 text-bcc-navy font-bold text-xl hover:border-bcc-red hover:bg-bcc-red hover:text-white transition-all focus:ring-2 focus:ring-bcc-red focus:outline-none">
-          $25
-        </a>
-        <a href="#payment-placeholder" class="py-4 rounded-xl border-2 border-bcc-red bg-bcc-red/5 text-bcc-red font-bold text-xl hover:bg-bcc-red hover:text-white transition-all focus:ring-2 focus:ring-bcc-red focus:outline-none relative">
-          <span class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-bcc-red text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap">Most Common</span>
-          $50
-        </a>
-        <a href="#payment-placeholder" class="py-4 rounded-xl border-2 border-bcc-gray-200 text-bcc-navy font-bold text-xl hover:border-bcc-gold hover:bg-bcc-gold hover:text-bcc-navy transition-all focus:ring-2 focus:ring-bcc-gold focus:outline-none">
-          $100
-        </a>
-        <a href="#payment-placeholder" class="py-4 rounded-xl border-2 border-bcc-gray-200 text-bcc-navy font-bold text-xl hover:border-bcc-navy hover:bg-bcc-navy hover:text-white transition-all focus:ring-2 focus:ring-bcc-navy focus:outline-none">
-          $250
-        </a>
+      <!-- DonorBox Widget -->
+      <div class="mt-8 mb-4 min-h-[500px] flex justify-center">
+        <script src="https://donorbox.org/widget.js" data-paypalExpress="false"></script>
+        <iframe 
+          src="https://donorbox.org/embed/donation-form-155?a=b" 
+          name="donorbox" 
+          frameborder="0" 
+          scrolling="no" 
+          height="900px" 
+          width="100%" 
+          style="max-width: 500px; min-width: 250px; max-height:none!important"
+          title="Donate to Bastrop County Conservatives"
+        ></iframe>
       </div>
-      
-      <Button href="#payment-placeholder" variant="outline" class="w-full md:w-auto border-bcc-gray-300 text-bcc-gray-600">
-        Other Amount
-      </Button>
       
       <div class="mt-8 pt-6 border-t border-bcc-gray-100 flex items-center justify-center gap-2 text-bcc-gray-500 text-sm">
         <Icon name="lucide:lock" class="w-4 h-4" />
-        <span>Secure donation processing</span>
+        <span>Secure donation processing via DonorBox</span>
       </div>
     </div>
   </div>
