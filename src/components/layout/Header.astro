@@ -3,12 +3,12 @@ import { Icon } from 'astro-icon/components';
 import MobileNav from './MobileNav.astro';
 ---
 
-<header class="bg-bcc-navy text-white sticky top-0 z-40 shadow-md">
+<header class="bg-white text-bcc-navy sticky top-0 z-40 shadow-md">
   <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
       <div class="flex-shrink-0">
         <a href="/" class="flex items-center gap-3" aria-label="Bastrop County Conservatives Home">
-          <img src="/Assets/cropped-BCC-Final-Logo-1-w-Transparent-Background.png" alt="" class="h-16 sm:h-20 w-auto py-1" onerror="this.src='/favicon.svg'" />
+          <img src="/Assets/cropped-BCC-Final-Logo-1-w-Transparent-Background.png" alt="" class="h-24 sm:h-28 w-auto py-1" onerror="this.src='/favicon.svg'" />
           <span class="font-serif font-bold text-2xl tracking-wide uppercase hidden sm:block">BCC</span>
         </a>
       </div>
@@ -31,7 +31,7 @@ import MobileNav from './MobileNav.astro';
 
       <!-- Mobile menu button -->
       <div class="lg:hidden flex items-center">
-        <button type="button" id="mobile-menu-btn" class="text-white hover:text-bcc-gold focus:outline-none p-2" aria-controls="mobile-menu" aria-expanded="false">
+        <button type="button" id="mobile-menu-btn" class="text-bcc-navy hover:text-bcc-red focus:outline-none p-2" aria-controls="mobile-menu" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <Icon name="lucide:menu" class="h-8 w-8" />
         </button>
