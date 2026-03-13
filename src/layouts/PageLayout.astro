@@ -8,18 +8,22 @@ export interface Props {
   description?: string;
   heading?: string;
   subheading?: string;
+  image?: string;
 }
 
-const { title, description, heading = title, subheading } = Astro.props;
+const { title, description, heading = title, subheading, image } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
   
-  <header class="relative border-b border-bcc-gray-200 py-12 md:py-20 px-4 bg-cover bg-center" style="background-image: url('/Assets/bastrop_river_bg.png');">
-    <div class="absolute inset-0 bg-white/90 backdrop-blur-[2px] z-0 pointer-events-none"></div>
-    <div class="max-w-7xl mx-auto text-center relative z-10">
-      <SectionHeading title={heading} subtitle={subheading} centered={true} />
+  <header class="relative border-b-none py-28 md:py-36 min-h-[40vh] flex items-end bg-cover bg-center bg-fixed overflow-hidden bg-slate-200" style={`background-image: url('${image || '/images/hero-bg.jpg'}');`}>
+    <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-bcc-navy via-bcc-navy/90 to-bcc-navy/10 z-0"></div>
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10 transform translate-y-4">
+      <h1 class="font-heading uppercase text-5xl md:text-7xl font-bold text-white tracking-widest drop-shadow-xl">{heading}</h1>
+      {subheading && <p class="text-xl md:text-2xl text-white/90 mt-4 max-w-2xl font-serif italic">{subheading}</p>}
     </div>
+    <!-- Skyline Cutout -->
+    <div class="absolute bottom-[-1px] left-0 w-full h-16 md:h-24 bg-repeat-x bg-bottom z-20" style="background-image: url('/Assets/skyline.svg'); background-size: 1500px 100%;"></div>
   </header>
 
   <section class="max-w-4xl mx-auto px-4 py-16 md:py-24 prose prose-lg prose-bcc prose-headings:font-serif prose-headings:text-bcc-navy prose-a:text-bcc-red hover:prose-a:text-bcc-red-dark">
