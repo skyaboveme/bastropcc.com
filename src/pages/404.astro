@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<BaseLayout title="Page Not Found - 404">
+  <section class="min-h-[70vh] flex items-center justify-center py-20 bg-bcc-cream px-4 text-center">
+    <div class="max-w-2xl mx-auto space-y-8">
+      
+      <div class="relative inline-block mb-8">
+        <Icon name="lucide:file-question" class="w-32 h-32 text-bcc-navy mx-auto relative z-10" />
+        <div class="absolute -bottom-4 -right-4 w-16 h-16 bg-bcc-red rounded-full flex items-center justify-center text-white font-bold text-xl z-20 shadow-lg">
+          404
+        </div>
+      </div>
+      
+      <h1 class="font-serif text-5xl md:text-7xl font-bold text-bcc-navy leading-tight">
+        Looks like this page has <span class="text-bcc-red">gone rogue.</span>
+      </h1>
+      
+      <p class="text-xl text-bcc-gray-600 max-w-lg mx-auto">
+        We can't find the page you're looking for. It might have been moved, deleted, or never existed in the first place.
+      </p>
+      
+      <div class="pt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <Button href="/" variant="primary" class="w-full sm:w-auto px-8">Return to Homepage</Button>
+        <Button href="/volunteer" variant="outline" class="w-full sm:w-auto px-8">Get Involved Instead</Button>
+      </div>
+      
+    </div>
+  </section>
+</BaseLayout>

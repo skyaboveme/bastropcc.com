@@ -1,0 +1,108 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+
+// Fetch and sort events
+const events = await getCollection('events');
+const sortedEvents = events.sort((a, b) => new Date(a.data.date).valueOf() - new Date(b.data.date).valueOf());
+
+// Split out past vs upcoming based on today's date
+const today = new Date();
+today.setHours(0,0,0,0);
+
+const upcomingEvents = sortedEvents.filter(e => new Date(e.data.date) >= today);
+const pastEvents = sortedEvents.filter(e => new Date(e.data.date) < today).reverse(); // Newest past events first
+---
+
+<PageLayout 
+  title="Upcoming Events — Bastrop County Conservatives"
+  heading="Events & Gatherings"
+  subheading="Join us at our monthly meetings, candidate forums, and community rallies."
+>
+
+  <div class="mb-16 not-prose">
+    <div class="flex items-center gap-3 mb-8 pb-4 border-b border-bcc-gray-200">
+      <div class="w-12 h-12 bg-bcc-red text-white flex items-center justify-center rounded-xl">
+        <Icon name="lucide:calendar-clock" class="w-6 h-6" />
+      </div>
+      <h2 class="font-serif text-3xl font-bold text-bcc-navy">Upcoming Events</h2>
+    </div>
+
+    {upcomingEvents.length > 0 ? (
+      <div class="space-y-6">
+        {upcomingEvents.map(event => (
+          <div class="bg-white border border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row">
+            <div class="bg-bcc-navy text-white p-6 md:w-48 flex flex-col justify-center items-center text-center shrink-0 border-b md:border-b-0 md:border-r border-bcc-navy-dark">
+              <span class="text-sm font-bold uppercase tracking-wider text-bcc-gold mb-1">{new Date(event.data.date).toLocaleDateString('en-US', { month: 'short' })}</span>
+              <span class="font-serif text-5xl font-bold">{new Date(event.data.date).toLocaleDateString('en-US', { day: 'numeric' })}</span>
+              <span class="text-bcc-gray-300 mt-2">{new Date(event.data.date).toLocaleDateString('en-US', { weekday: 'long' })}</span>
+            </div>
+            
+            <div class="p-6 md:p-8 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="font-serif text-2xl font-bold text-bcc-navy mb-3">{event.data.title}</h3>
+                <div class="space-y-2 mb-4">
+                  {event.data.time && (
+                    <div class="flex items-center gap-2 text-bcc-gray-600">
+                      <Icon name="lucide:clock" class="w-4 h-4 text-bcc-red" /> <span>{event.data.time}</span>
+                    </div>
+                  )}
+                  <div class="flex items-center gap-2 text-bcc-gray-600">
+                    <Icon name="lucide:map-pin" class="w-4 h-4 text-bcc-red" /> <span>{event.data.location}</span>
+                  </div>
+                </div>
+                <p class="text-bcc-gray-700 leading-relaxed mb-6">
+                  {event.data.description}
+                </p>
+              </div>
+              
+              <div>
+                <Button href={event.data.link || "#"} variant="outline">More Information</Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="bg-bcc-cream border border-bcc-gray-200 rounded-xl p-12 text-center max-w-3xl mx-auto shadow-inner">
+        <Icon name="lucide:calendar-search" class="w-16 h-16 text-bcc-gold mx-auto mb-4" />
+        <h3 class="text-2xl font-serif font-bold text-bcc-navy mb-2">No upcoming events right now</h3>
+        <p class="text-bcc-gray-600 mb-6">We are currently planning our next gathering. Subscribe to our newsletter to be notified immediately when registration opens.</p>
+        <Button href="/subscribe" variant="primary">Get Notified</Button>
+      </div>
+    )}
+  </div>
+
+  {pastEvents.length > 0 && (
+    <div class="mt-24 not-prose">
+      <div class="flex items-center gap-3 mb-8 pb-4 border-b border-bcc-gray-200">
+        <div class="w-10 h-10 bg-bcc-gray-200 text-bcc-gray-600 flex items-center justify-center rounded-lg">
+          <Icon name="lucide:history" class="w-5 h-5" />
+        </div>
+        <h2 class="font-serif text-2xl font-bold text-bcc-navy">Past Events</h2>
+      </div>
+      
+      <div class="space-y-4">
+        {pastEvents.map(event => (
+          <div class="bg-white border border-bcc-gray-100 rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:bg-bcc-gray-50">
+            <div>
+              <div class="flex items-center gap-2 text-sm text-bcc-gray-500 mb-1">
+                <Icon name="lucide:calendar" class="w-4 h-4" />
+                <time datetime={event.data.date}>{new Date(event.data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>
+              </div>
+              <h3 class="font-bold text-bcc-navy text-lg">{event.data.title}</h3>
+            </div>
+            {event.data.link && (
+              <a href={event.data.link} class="text-bcc-navy hover:text-bcc-red font-semibold text-sm flex items-center gap-1 shrink-0">
+                View Details <Icon name="lucide:chevron-right" class="w-4 h-4" />
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+</PageLayout>

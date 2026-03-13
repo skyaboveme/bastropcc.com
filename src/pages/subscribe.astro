@@ -1,0 +1,51 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SubscribeForm from '../components/forms/SubscribeForm.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<PageLayout 
+  title="Subscribe — Bastrop County Conservatives"
+  heading="Stay In The Loop"
+  subheading="Sign up to receive critical updates on Bastrop County politics, event invitations, and conservative action alerts."
+>
+
+  <div class="max-w-4xl mx-auto not-prose pb-8">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row shadow-bcc-navy/5 border border-bcc-gray-100">
+      
+      <!-- Left side info -->
+      <div class="bg-bcc-navy text-white p-8 md:p-12 md:w-5/12 flex flex-col justify-center">
+        <h3 class="font-serif text-3xl font-bold mb-6">Why Subscribe?</h3>
+        <ul class="space-y-6">
+          <li class="flex items-start gap-4 text-bcc-gray-200">
+            <Icon name="lucide:mail-warning" class="w-6 h-6 text-bcc-gold shrink-0 mt-1" />
+            <span><strong>Action Alerts:</strong> Get notified instantly when conservative values are under threat in City Council or School Board.</span>
+          </li>
+          <li class="flex items-start gap-4 text-bcc-gray-200">
+            <Icon name="lucide:calendar-check" class="w-6 h-6 text-bcc-gold shrink-0 mt-1" />
+            <span><strong>Event Invites:</strong> Be the first to know about monthly meetings and candidate forums.</span>
+          </li>
+          <li class="flex items-start gap-4 text-bcc-gray-200">
+            <Icon name="lucide:file-text" class="w-6 h-6 text-bcc-gold shrink-0 mt-1" />
+            <span><strong>Voter Guides:</strong> Receive our vetted conservative voter guide before every local election.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right side form -->
+      <div class="p-8 md:p-12 md:w-7/12 bg-white flex flex-col justify-center relative">
+        <!-- Decoration -->
+        <Icon name="lucide:mail" class="absolute top-4 right-4 w-24 h-24 text-bcc-gray-50 -z-10 transform rotate-12" />
+        
+        <h3 class="text-xl font-bold text-bcc-navy mb-6">Join our mailing list</h3>
+        <SubscribeForm id="page-subscribe-form" />
+      </div>
+
+    </div>
+    
+    <div class="mt-8 text-center text-sm text-bcc-gray-500">
+      <a href="/privacy-policy" class="hover:text-bcc-red underline">Read our Privacy Policy</a>
+    </div>
+  </div>
+
+</PageLayout>

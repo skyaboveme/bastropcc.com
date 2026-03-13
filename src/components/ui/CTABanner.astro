@@ -1,0 +1,53 @@
+---
+import Button from './Button.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  primaryButtonText?: string;
+  primaryButtonHref?: string;
+  secondaryButtonText?: string;
+  secondaryButtonHref?: string;
+  background?: 'navy' | 'gold' | 'red';
+}
+
+const {
+  title = 'Join the Fight',
+  description = 'Stand with Bastrop County Conservatives to protect family, faith, and freedom.',
+  primaryButtonText = 'Become a Member',
+  primaryButtonHref = '/membership',
+  secondaryButtonText = 'Volunteer',
+  secondaryButtonHref = '/volunteer',
+  background = 'navy',
+} = Astro.props;
+
+const bgClasses = {
+  navy: 'bg-bcc-navy text-white',
+  gold: 'bg-bcc-gold text-bcc-navy',
+  red: 'bg-bcc-red text-white',
+};
+
+const textSecondaryClass = background === 'gold' ? 'text-bcc-navy/80' : 'text-white/90';
+// In astro conditionals, we have to enforce typescript typing
+const btnPrimaryVariant = background === 'navy' ? 'primary' : (background === 'gold' ? 'primary' : 'secondary');
+const btnSecondaryVariant = background === 'navy' ? 'white-outline' : (background === 'gold' ? 'outline' : 'white-outline');
+---
+
+<section class:list={['py-16 md:py-24', bgClasses[background]]}>
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="font-serif text-3xl md:text-5xl font-bold mb-6">{title}</h2>
+    <p class:list={['text-lg md:text-xl mb-10 max-w-2xl mx-auto', textSecondaryClass]}>
+      {description}
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <Button href={primaryButtonHref} variant={btnPrimaryVariant} class="w-full sm:w-auto">
+        {primaryButtonText}
+      </Button>
+      {secondaryButtonHref && (
+        <Button href={secondaryButtonHref} variant={btnSecondaryVariant} class="w-full sm:w-auto">
+          {secondaryButtonText}
+        </Button>
+      )}
+    </div>
+  </div>
+</section

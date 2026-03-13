@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Generate schema.org BlogPosting
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: entry.data.title,
+  description: entry.data.description,
+  author: {
+    '@type': 'Person',
+    name: entry.data.author
+  },
+  datePublished: entry.data.pubDate.toISOString(),
+  image: entry.data.image ? `https://bastropcc.com${entry.data.image}` : undefined
+});
+---
+
+<PageLayout 
+  title={`${entry.data.title} — Bastrop County Conservatives`}
+  description={entry.data.description}
+  heading={entry.data.title}
+>
+  <!-- Inject Schema.org SEO -->
+  <script type="application/ld+json" set:html={schema} />
+
+  <div class="mb-10 text-center not-prose border-b border-bcc-gray-200 pb-8 mt-4 pt-10 border-t">
+    <div class="flex items-center justify-center gap-6 text-sm font-bold text-bcc-gray-500 uppercase tracking-widest">
+      <span class="flex items-center gap-2"><Icon name="lucide:calendar" class="w-4 h-4 text-bcc-gold"/> {entry.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}</span>
+      <span class="flex items-center gap-2"><Icon name="lucide:user" class="w-4 h-4 text-bcc-gold"/> {entry.data.author}</span>
+    </div>
+    
+    {entry.data.tags && entry.data.tags.length > 0 && (
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
+        {entry.data.tags.map(tag => (
+          <span class="bg-bcc-cream text-bcc-navy px-3 py-1 rounded-full text-xs font-bold uppercase border border-bcc-gray-200 shrink-0">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+
+  {entry.data.image && (
+    <div class="mb-12 not-prose">
+      <img src={entry.data.image} alt={entry.data.title} class="w-full h-auto rounded-xl shadow-lg border border-bcc-gray-100" />
+    </div>
+  )}
+
+  <article class="blog-content">
+    <Content />
+  </article>
+
+  <div class="mt-16 pt-8 border-t border-bcc-gray-200 not-prose flex justify-between items-center">
+    <a href="/blog" class="text-bcc-navy font-bold hover:text-bcc-red transition-colors flex items-center gap-2">
+      <Icon name="lucide:arrow-left" class="w-5 h-5" /> Back to all articles
+    </a>
+    
+    <div class="flex gap-4">
+      <a href={`https://www.facebook.com/sharer/sharer.php?u=https://bastropcc.com/blog/${entry.slug}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-bcc-navy text-white rounded-full flex items-center justify-center hover:bg-bcc-red transition-colors" aria-label="Share on Facebook">
+        <Icon name="lucide:facebook" class="w-5 h-5" />
+      </a>
+      <a href={`https://twitter.com/intent/tweet?url=https://bastropcc.com/blog/${entry.slug}&text=${encodeURIComponent(entry.data.title)}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-bcc-navy text-white rounded-full flex items-center justify-center hover:bg-bcc-red transition-colors" aria-label="Share on X">
+        <Icon name="lucide:twitter" class="w-5 h-5" />
+      </a>
+    </div>
+  </div>
+</PageLayout>

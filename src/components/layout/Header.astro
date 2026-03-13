@@ -1,0 +1,43 @@
+---
+import { Icon } from 'astro-icon/components';
+import MobileNav from './MobileNav.astro';
+---
+
+<header class="bg-bcc-navy text-white sticky top-0 z-40 shadow-md">
+  <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <div class="flex-shrink-0">
+        <a href="/" class="flex items-center gap-3" aria-label="Bastrop County Conservatives Home">
+          <img src="/images/bcc-logo-white.png" alt="" class="h-12 w-auto" onerror="this.src='/favicon.svg'" />
+          <span class="font-serif font-bold text-xl tracking-wide uppercase hidden sm:block">BCC</span>
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:block">
+        <ul class="flex space-x-8 items-center">
+          <li><a href="/about" class="hover:text-bcc-gold transition-colors font-semibold">About</a></li>
+          <li><a href="/membership" class="hover:text-bcc-gold transition-colors font-semibold">Membership</a></li>
+          <li><a href="/events" class="hover:text-bcc-gold transition-colors font-semibold">Events</a></li>
+          <li><a href="/voter-info" class="hover:text-bcc-gold transition-colors font-semibold">Voter Info</a></li>
+          <li><a href="/volunteer" class="hover:text-bcc-gold transition-colors font-semibold">Volunteer</a></li>
+          <li>
+            <a href="/donate" class="bg-bcc-red hover:bg-bcc-red-dark text-white px-5 py-2.5 rounded-lg font-bold transition-colors">
+              Donate
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="lg:hidden flex items-center">
+        <button type="button" id="mobile-menu-btn" class="text-white hover:text-bcc-gold focus:outline-none p-2" aria-controls="mobile-menu" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <Icon name="lucide:menu" class="h-8 w-8" />
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <MobileNav />
+</header>

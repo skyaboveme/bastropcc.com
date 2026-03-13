@@ -1,0 +1,186 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import MembershipTier from '../components/ui/MembershipTier.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<PageLayout 
+  title="Join BCC — Conservative Membership in Bastrop County"
+  heading="Become a Member"
+  subheading="Join the Bastrop County Conservatives and help us identify, support, and elect candidates who share our values."
+>
+  <div class="mb-16 text-center max-w-3xl mx-auto">
+    <p class="text-xl text-bcc-gray-600 mb-6 font-medium">
+      Membership in the Bastrop County Conservatives isn't just a donation—it's a seat at the table. Our members participate directly in our endorsement process, attend exclusive strategy sessions, and form the core of our conservative bulwark in Central Texas.
+    </p>
+    <p class="text-bcc-red font-bold text-lg">
+      Sign up for annual membership today and get one month free!
+    </p>
+  </div>
+
+  <!-- Pricing Tiers -->
+  <div id="tiers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 not-prose mb-24 max-w-7xl mx-auto xl:-mx-24 relative z-10 py-4">
+    <MembershipTier 
+      tierName="Bronze"
+      pricePlaceholder="[INSERT PRICE]"
+      features={[
+        "Official BCC Membership Card",
+        "Voting rights on endorsements",
+        "Monthly newsletter access",
+        "BCC window decal"
+      ]}
+    />
+    <MembershipTier 
+      tierName="Silver"
+      pricePlaceholder="[INSERT PRICE]"
+      features={[
+        "All Bronze benefits",
+        "Discounted tickets to BCC events",
+        "Access to members-only portal",
+        "BCC official lapel pin"
+      ]}
+    />
+    <MembershipTier 
+      tierName="Gold"
+      pricePlaceholder="[INSERT PRICE]"
+      isPopular={true}
+      features={[
+        "All Silver benefits",
+        "Free entry to standard monthly meetings",
+        "Quarterly strategy briefs",
+        "Exclusive VIP reception access at major events"
+      ]}
+    />
+    <MembershipTier 
+      tierName="Platinum"
+      pricePlaceholder="[INSERT PRICE]"
+      features={[
+        "All Gold benefits",
+        "Premium seating at all events",
+        "Annual private dinner with BCC leadership",
+        "Special recognition in annual report"
+      ]}
+    />
+  </div>
+
+  <!-- Testimonials Placeholder -->
+  <div class="bg-bcc-cream -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 mb-24 rounded-xl border border-bcc-gray-200">
+    <SectionHeading title="What Our Members Say" centered={true} class="mb-10" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 not-prose max-w-5xl mx-auto">
+      
+      <!-- TODO: Replace with real testimonials -->
+      <div class="bg-white p-8 rounded-xl shadow-sm relative">
+        <Icon name="lucide:quote" class="absolute top-4 right-4 w-12 h-12 text-bcc-gold/20" />
+        <div class="flex items-center gap-1 mb-4 text-bcc-gold">
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+        </div>
+        <p class="text-bcc-gray-700 italic mb-6 relative z-10">
+          "[Placeholder: I joined BCC because I wanted my voice to actually matter in local elections. The vetting process is incredible, and being a Gold member has connected me with the most dedicated patriots in our county.]"
+        </p>
+        <div class="font-bold text-bcc-navy">- Jane Doe, Bastrop TX</div>
+      </div>
+      
+      <div class="bg-white p-8 rounded-xl shadow-sm relative">
+        <Icon name="lucide:quote" class="absolute top-4 right-4 w-12 h-12 text-bcc-gold/20" />
+        <div class="flex items-center gap-1 mb-4 text-bcc-gold">
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+          <Icon name="lucide:star" class="w-5 h-5 fill-current" />
+        </div>
+        <p class="text-bcc-gray-700 italic mb-6 relative z-10">
+          "[Placeholder: There is no stronger force for conservative values in Bastrop County than the BCC. When you join, you aren't just giving money; you're joining a community that cares deeply about the future of our home.]"
+        </p>
+        <div class="font-bold text-bcc-navy">- John Smith, Elgin TX</div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- FAQ Accordion -->
+  <div class="max-w-3xl mx-auto not-prose">
+    <SectionHeading title="Frequently Asked Questions" centered={true} class="mb-10" />
+    
+    <div class="space-y-4" id="faq-accordion">
+      <div class="border border-bcc-gray-200 rounded-lg bg-white overflow-hidden">
+        <button class="faq-toggle w-full px-6 py-4 text-left flex justify-between items-center bg-white hover:bg-bcc-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-bcc-navy" aria-expanded="false">
+          <span class="font-bold text-bcc-navy text-lg">How are membership dues used?</span>
+          <Icon name="lucide:chevron-down" class="w-5 h-5 text-bcc-navy transition-transform duration-300 pointer-events-none icon-chevron" />
+        </button>
+        <div class="faq-content hidden px-6 py-4 border-t border-bcc-gray-100 text-bcc-gray-700 bg-white">
+          <p>100% of your membership dues directly fund our efforts within Bastrop County. This includes candidate vetting, voter guides, marketing campaigns, and organizational events. Operating as a PAC allows us to put your money directly to work securing conservative victories.</p>
+        </div>
+      </div>
+
+      <div class="border border-bcc-gray-200 rounded-lg bg-white overflow-hidden">
+        <button class="faq-toggle w-full px-6 py-4 text-left flex justify-between items-center bg-white hover:bg-bcc-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-bcc-navy" aria-expanded="false">
+          <span class="font-bold text-bcc-navy text-lg">Can I upgrade my tier later?</span>
+          <Icon name="lucide:chevron-down" class="w-5 h-5 text-bcc-navy transition-transform duration-300 pointer-events-none icon-chevron" />
+        </button>
+        <div class="faq-content hidden px-6 py-4 border-t border-bcc-gray-100 text-bcc-gray-700 bg-white">
+          <p>Yes. You can upgrade your membership tier at any time. Simply log into the member portal or contact us, and the prorated remainder of your current membership will be applied toward the upgraded tier.</p>
+        </div>
+      </div>
+
+      <div class="border border-bcc-gray-200 rounded-lg bg-white overflow-hidden">
+        <button class="faq-toggle w-full px-6 py-4 text-left flex justify-between items-center bg-white hover:bg-bcc-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-bcc-navy" aria-expanded="false">
+          <span class="font-bold text-bcc-navy text-lg">Is my membership tax-deductible?</span>
+          <Icon name="lucide:chevron-down" class="w-5 h-5 text-bcc-navy transition-transform duration-300 pointer-events-none icon-chevron" />
+        </button>
+        <div class="faq-content hidden px-6 py-4 border-t border-bcc-gray-100 text-bcc-gray-700 bg-white">
+          <p>Contributions or gifts to the Bastrop County Conservatives PAC are not deductible as charitable contributions for federal income tax purposes. We operate as a registered Political Action Committee in the state of Texas.</p>
+        </div>
+      </div>
+      
+      <div class="border border-bcc-gray-200 rounded-lg bg-white overflow-hidden">
+        <button class="faq-toggle w-full px-6 py-4 text-left flex justify-between items-center bg-white hover:bg-bcc-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-bcc-navy" aria-expanded="false">
+          <span class="font-bold text-bcc-navy text-lg">Who can join the BCC?</span>
+          <Icon name="lucide:chevron-down" class="w-5 h-5 text-bcc-navy transition-transform duration-300 pointer-events-none icon-chevron" />
+        </button>
+        <div class="faq-content hidden px-6 py-4 border-t border-bcc-gray-100 text-bcc-gray-700 bg-white">
+          <p>Any liberty-minded individual who aligns with our 15 Core Values is welcome to join. You must be a United States citizen or lawfully admitted permanent resident, and be at least 18 years old to contribute to the PAC.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</PageLayout>
+
+<script>
+  // Setup lightweight vanilla JS accordion
+  const toggles = document.querySelectorAll('.faq-toggle');
+  
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      const content = toggle.nextElementSibling;
+      const icon = toggle.querySelector('.icon-chevron');
+      
+      // Close all other accordions
+      toggles.forEach(t => {
+        if(t !== toggle) {
+          t.setAttribute('aria-expanded', 'false');
+          t.nextElementSibling?.classList.add('hidden');
+          t.querySelector('.icon-chevron')?.classList.remove('rotate-180');
+        }
+      });
+      
+      // Toggle current
+      if(isExpanded) {
+        toggle.setAttribute('aria-expanded', 'false');
+        content?.classList.add('hidden');
+        icon?.classList.remove('rotate-180');
+      } else {
+        toggle.setAttribute('aria-expanded', 'true');
+        content?.classList.remove('hidden');
+        icon?.classList.add('rotate-180');
+      }
+    });
+  });
+</script>

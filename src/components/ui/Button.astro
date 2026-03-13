@@ -1,0 +1,41 @@
+---
+export interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'white-outline';
+  class?: string;
+  fullWidth?: boolean;
+}
+
+const { 
+  href, 
+  type = 'button', 
+  variant = 'primary', 
+  class: className = '',
+  fullWidth = false,
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'inline-flex items-center justify-center font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+const sizeClasses = 'px-6 py-3 text-base';
+const widthClasses = fullWidth ? 'w-full' : '';
+
+const variants = {
+  primary: 'bg-bcc-red text-white hover:bg-bcc-red-dark focus:ring-bcc-red',
+  secondary: 'bg-bcc-navy text-white hover:bg-bcc-navy-dark focus:ring-bcc-navy',
+  outline: 'border-2 border-bcc-navy text-bcc-navy hover:bg-bcc-navy hover:text-white focus:ring-bcc-navy',
+  ghost: 'text-bcc-navy underline hover:text-bcc-red focus:ring-bcc-navy bg-transparent px-0 py-0',
+  'white-outline': 'border-2 border-white text-white hover:bg-white hover:text-bcc-navy focus:ring-white',
+};
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element 
+  href={href} 
+  type={href ? undefined : type}
+  class:list={[baseClasses, sizeClasses, variants[variant], widthClasses, className]}
+  {...rest}
+>
+  <slot />
+</Element>

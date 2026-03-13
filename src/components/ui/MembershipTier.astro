@@ -1,0 +1,82 @@
+---
+import Button from './Button.astro';
+
+export interface Props {
+  tierName: string;
+  pricePlaceholder?: string;
+  features: string[];
+  isPopular?: boolean;
+}
+
+const { 
+  tierName, 
+  pricePlaceholder = '[INSERT PRICE]', 
+  features, 
+  isPopular = false 
+} = Astro.props;
+
+// Determine badge/button color by tier
+const lowerTier = tierName.toLowerCase();
+let tierColorClass = 'text-bcc-navy';
+let badgeBg = 'bg-bcc-gray-200 text-bcc-navy border-bcc-gray-300';
+let btnVariant: 'primary' | 'secondary' | 'outline' = 'outline';
+
+if (lowerTier.includes('bronze')) {
+  tierColorClass = 'text-amber-700'; // Bronze
+  badgeBg = 'bg-amber-100 text-amber-800 border-amber-200';
+} else if (lowerTier.includes('silver')) {
+  tierColorClass = 'text-slate-500'; // Silver
+  badgeBg = 'bg-slate-100 text-slate-700 border-slate-300';
+} else if (lowerTier.includes('gold')) {
+  tierColorClass = 'text-bcc-gold'; // Gold
+  badgeBg = 'bg-yellow-50 text-yellow-800 border-yellow-200';
+  if (isPopular) btnVariant = 'primary';
+} else if (lowerTier.includes('platinum')) {
+  tierColorClass = 'text-slate-800'; // Platinum
+  badgeBg = 'bg-slate-200 text-slate-800 border-slate-400';
+  if (isPopular) btnVariant = 'primary';
+}
+
+if(isPopular) {
+  btnVariant = 'primary';
+}
+---
+
+<div class:list={[
+  'bg-white rounded-2xl border p-8 relative flex flex-col',
+  isPopular ? 'border-bcc-gold shadow-lg ring-1 ring-bcc-gold scale-105 z-10' : 'border-bcc-gray-200 shadow-sm relative z-0'
+]}>
+  {isPopular && (
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
+      <span class="bg-bcc-gold text-bcc-navy uppercase tracking-wider text-xs font-bold px-4 py-1 rounded-full shadow-sm">
+        Most Popular
+      </span>
+    </div>
+  )}
+
+  <div class="inline-block mb-4 mt-2">
+    <span class={`text-sm font-bold uppercase tracking-wider border px-3 py-1 rounded-full ${badgeBg}`}>
+      {tierName}
+    </span>
+  </div>
+  
+  <div class="mb-6">
+    <span class="text-4xl font-bold text-bcc-navy">{pricePlaceholder}</span>
+    <span class="text-bcc-gray-600 text-sm">/year</span>
+  </div>
+  
+  <ul class="space-y-4 mb-10 flex-grow">
+    {features.map((feature: string) => (
+      <li class="flex items-start">
+        <svg class="w-5 h-5 text-bcc-red mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span class="text-bcc-gray-700 leading-tight">{feature}</span>
+      </li>
+    ))}
+  </ul>
+  
+  <div class="mt-auto">
+    <Button href="#checkout" variant={btnVariant || 'outline'} fullWidth={true}>
+      Join at {tierName} Level →
+    </Button>
+  </div>
+</div>

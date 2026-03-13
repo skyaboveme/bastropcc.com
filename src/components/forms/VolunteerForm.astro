@@ -1,0 +1,66 @@
+---
+import Button from '../ui/Button.astro';
+
+export interface Props {
+  actionUrl?: string;
+}
+
+const { actionUrl = '/api/volunteer' } = Astro.props;
+
+const volunteerRoles = [
+  "Candidate Sourcing & Selection",
+  "Electoral Support Committee",
+  "Communications Committee",
+  "Membership Committee",
+  "Events Committee"
+];
+---
+
+<form action={actionUrl} method="POST" id="volunteer-form" class="space-y-6 bg-white p-6 md:p-8 rounded-xl shadow-md border border-bcc-gray-100">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <label for="v-fname" class="block text-sm font-semibold text-bcc-navy mb-1">First Name <span class="text-bcc-red">*</span></label>
+      <input type="text" id="v-fname" name="FNAME" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+    </div>
+    <div>
+      <label for="v-lname" class="block text-sm font-semibold text-bcc-navy mb-1">Last Name <span class="text-bcc-red">*</span></label>
+      <input type="text" id="v-lname" name="LNAME" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+    </div>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <label for="v-email" class="block text-sm font-semibold text-bcc-navy mb-1">Email Address <span class="text-bcc-red">*</span></label>
+      <input type="email" id="v-email" name="EMAIL" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+    </div>
+    <div>
+      <label for="v-phone" class="block text-sm font-semibold text-bcc-navy mb-1">Phone Number <span class="text-bcc-red">*</span></label>
+      <input type="tel" id="v-phone" name="PHONE" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-semibold text-bcc-navy mb-3">Areas of Interest <span class="text-bcc-red">*</span></label>
+    <div class="space-y-2">
+      {volunteerRoles.map(role => (
+        <label class="flex items-start cursor-pointer">
+          <input type="checkbox" name="INTERESTS[]" value={role} class="mt-1 h-4 w-4 text-bcc-red border-bcc-gray-300 rounded focus:ring-bcc-red">
+          <span class="ml-2 text-sm text-bcc-gray-700">{role}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+  
+  <div>
+    <label for="v-message" class="block text-sm font-semibold text-bcc-navy mb-1">Additional Information / Message <span class="text-bcc-gray-400 font-normal">(Optional)</span></label>
+    <textarea id="v-message" name="MESSAGE" rows="4" class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50"></textarea>
+  </div>
+  
+  <div class="text-xs text-bcc-gray-600 space-y-2 pt-2 border-t border-bcc-gray-200 mt-4">
+    <p>By providing your telephone number and email, you consent to receive calls and text messages, including prerecorded messages and via automated methods. Message & data rates may apply. Message frequency may vary. Messages may include requests for donations. Reply 'STOP' to opt-out & 'HELP' for help.</p>
+  </div>
+
+  <div class="pt-4">
+    <Button type="submit" variant="primary" fullWidth={true}>Apply to Volunteer →</Button>
+  </div>
+</form>

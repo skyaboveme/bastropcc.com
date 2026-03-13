@@ -1,0 +1,48 @@
+---
+import Button from '../ui/Button.astro';
+
+export interface Props {
+  actionUrl?: string;
+  id?: string;
+  showDisclaimer?: boolean;
+}
+
+const { 
+  actionUrl = '/api/subscribe', 
+  id = 'subscribe-form',
+  showDisclaimer = true 
+} = Astro.props;
+---
+
+<form action={actionUrl} method="POST" id={id} class="space-y-4 max-w-lg w-full bg-white p-6 md:p-8 rounded-xl shadow-md border border-bcc-gray-100">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label for="fname" class="block text-sm font-semibold text-bcc-navy mb-1">First Name <span class="text-bcc-red">*</span></label>
+      <input type="text" id="fname" name="FNAME" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+    </div>
+    <div>
+      <label for="lname" class="block text-sm font-semibold text-bcc-navy mb-1">Last Name <span class="text-bcc-red">*</span></label>
+      <input type="text" id="lname" name="LNAME" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+    </div>
+  </div>
+  
+  <div>
+    <label for="email" class="block text-sm font-semibold text-bcc-navy mb-1">Email Address <span class="text-bcc-red">*</span></label>
+    <input type="email" id="email" name="EMAIL" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+  </div>
+  
+  <div>
+    <label for="phone" class="block text-sm font-semibold text-bcc-navy mb-1">Phone Number <span class="text-bcc-gray-400 font-normal">(Optional)</span></label>
+    <input type="tel" id="phone" name="PHONE" class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+  </div>
+  
+  {showDisclaimer && (
+    <div class="text-xs text-bcc-gray-600 space-y-2 pt-2 border-t border-bcc-gray-200 mt-4">
+      <p>By providing your telephone number and email, you consent to receive calls and text messages, including prerecorded messages and via automated methods. Message & data rates may apply. Message frequency may vary. Messages may include requests for donations. Reply 'STOP' to opt-out & 'HELP' for help.</p>
+    </div>
+  )}
+
+  <div class="pt-4">
+    <Button type="submit" variant="primary" fullWidth={true}>Sign Me Up →</Button>
+  </div>
+</form>

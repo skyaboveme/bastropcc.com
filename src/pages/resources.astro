@@ -1,0 +1,74 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Button from '../components/ui/Button.astro';
+import { Icon } from 'astro-icon/components';
+
+const newsSources = [
+  { name: 'Luke Macias Show', desc: 'Insightful conservative commentary and analysis focused specifically on Texas politics.', url: 'https://lukemacias.com' },
+  { name: 'Agenda Weekly', desc: 'Weekly updates on critical issues affecting faith, family, and freedom from a biblical perspective.', url: 'https://agendaweekly.com' },
+  { name: 'Texas Scorecard', desc: 'Real news for real Texans. Independent journalism exposing the truth in local and state government.', url: 'https://texasscorecard.com' },
+  { name: 'The Epoch Times', desc: 'Truth and tradition. Comprehensive independent news free from the corporate media narrative.', url: 'https://theepochtimes.com' },
+  { name: 'The Texan', desc: 'High-quality, fact-based statewide news for Texans who want the unfiltered truth.', url: 'https://thetexan.news' }
+];
+
+const organizations = [
+  { name: 'Texas Public Policy Foundation', desc: 'Promoting and defending liberty, personal responsibility, and free enterprise in Texas.', url: 'https://www.texaspolicy.com' },
+  { name: 'Texas Republican Party', desc: 'The official organization of the Republican Party of Texas.', url: 'https://texasgop.org' },
+  { name: 'Texas Values', desc: 'Dedicated to preserving and advancing a culture of family values in the state of Texas.', url: 'https://txvalues.org' },
+  { name: 'Texas Conservative Coalition Research Institute', desc: 'Shaping public policy through a conservative framework of limited government and free enterprise.', url: 'https://txccri.org' },
+  { name: 'Grassroots America We The People', desc: 'Uniting, educating, and empowering citizens to hold elected officials accountable.', url: 'https://gawtp.com' }
+];
+---
+
+<PageLayout 
+  title="Conservative News & Organization Resources"
+  heading="Conservative Resources"
+  subheading="Equip yourself with the truth. We recommend these trusted organizations and news outlets."
+>
+
+  <div class="mb-20 not-prose">
+    <SectionHeading title="Trusted News Sources" class="mb-8" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {newsSources.map(src => (
+        <div class="bg-white border text-left rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+          <div class="flex items-center gap-3 border-b pb-4 mb-4">
+            <div class="w-10 h-10 bg-bcc-cream rounded-full flex items-center justify-center text-bcc-navy shrink-0">
+              <Icon name="lucide:newspaper" class="w-5 h-5" />
+            </div>
+            <h3 class="font-serif text-xl font-bold text-bcc-navy">{src.name}</h3>
+          </div>
+          <p class="text-bcc-gray-600 mb-6 flex-grow">{src.desc}</p>
+          <div class="mt-auto">
+            <Button href={src.url} target="_blank" rel="noopener noreferrer" variant="outline" fullWidth={true}>
+              Visit Website <Icon name="lucide:external-link" class="w-4 h-4 ml-2 inline-block" />
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="mb-12 not-prose mt-24 pt-16 border-t border-bcc-gray-200">
+    <SectionHeading title="Aligned Organizations" class="mb-8" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {organizations.map(org => (
+        <div class="bg-white border border-bcc-gray-200 text-left rounded-xl p-6 shadow-sm hover:shadow-md hover:border-bcc-gold transition-all flex flex-col h-full">
+          <div class="flex items-center gap-3 border-b border-bcc-gray-100 pb-4 mb-4">
+            <div class="w-10 h-10 bg-bcc-navy rounded-full flex items-center justify-center text-bcc-gold shrink-0">
+              <Icon name="lucide:shield" class="w-5 h-5" />
+            </div>
+            <h3 class="font-serif text-lg md:text-xl font-bold text-bcc-navy">{org.name}</h3>
+          </div>
+          <p class="text-bcc-gray-600 mb-6 flex-grow text-sm md:text-base">{org.desc}</p>
+          <div class="mt-auto">
+            <Button href={org.url} target="_blank" rel="noopener noreferrer" variant="outline" fullWidth={true}>
+              View Organization <Icon name="lucide:external-link" class="w-4 h-4 ml-2 inline-block" />
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+</PageLayout>

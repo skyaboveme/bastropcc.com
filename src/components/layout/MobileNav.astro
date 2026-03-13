@@ -1,0 +1,34 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div id="mobile-menu" class="lg:hidden hidden bg-bcc-navy border-t border-bcc-navy-dark px-4 pt-2 pb-6 space-y-1 shadow-lg absolute w-full top-20 left-0 z-30" aria-label="Mobile navigation">
+  <div class="flex flex-col space-y-2">
+    <a href="/about" class="block px-3 py-3 rounded-md text-base font-semibold text-white hover:bg-bcc-navy-dark hover:text-bcc-gold transition-colors">About</a>
+    <a href="/membership" class="block px-3 py-3 rounded-md text-base font-semibold text-white hover:bg-bcc-navy-dark hover:text-bcc-gold transition-colors">Membership</a>
+    <a href="/events" class="block px-3 py-3 rounded-md text-base font-semibold text-white hover:bg-bcc-navy-dark hover:text-bcc-gold transition-colors">Events</a>
+    <a href="/voter-info" class="block px-3 py-3 rounded-md text-base font-semibold text-white hover:bg-bcc-navy-dark hover:text-bcc-gold transition-colors">Voter Info</a>
+    <a href="/volunteer" class="block px-3 py-3 rounded-md text-base font-semibold text-white hover:bg-bcc-navy-dark hover:text-bcc-gold transition-colors">Volunteer</a>
+    <a href="/donate" class="block px-3 py-3 mt-4 text-center rounded-lg text-base font-bold text-white bg-bcc-red hover:bg-bcc-red-dark transition-colors">Donate</a>
+  </div>
+</div>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', (!isExpanded).toString());
+      menu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>

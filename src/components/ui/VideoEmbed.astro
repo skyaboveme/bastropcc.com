@@ -1,0 +1,46 @@
+---
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  youtubeId: string;
+  title: string;
+  speaker: string;
+  date: string;
+  location: string;
+}
+
+const { youtubeId, title, speaker, date, location } = Astro.props;
+
+const videoUrl = `https://www.youtube.com/watch?v=${youtubeId}`;
+const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+---
+
+<a href={videoUrl} target="_blank" rel="noopener noreferrer" class="group block bg-white rounded-xl shadow-md overflow-hidden border border-bcc-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+  <div class="relative aspect-video overflow-hidden border-b border-bcc-gray-100">
+    <img src={thumbnailUrl} alt={`Thumbnail for ${title}`} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+    
+    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+      <div class="w-16 h-16 bg-bcc-red text-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+        <Icon name="lucide:play" class="w-8 h-8 ml-1" />
+      </div>
+    </div>
+  </div>
+  
+  <div class="p-6">
+    <h3 class="font-bold text-lg text-bcc-navy mb-3 line-clamp-2 group-hover:text-bcc-red transition-colors">{title}</h3>
+    <div class="space-y-2 text-sm text-bcc-gray-600">
+      <div class="flex items-center gap-2">
+        <Icon name="lucide:user" class="w-4 h-4 text-bcc-gold shrink-0" />
+        <span class="truncate">{speaker}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <Icon name="lucide:calendar" class="w-4 h-4 text-bcc-gold shrink-0" />
+        <time datetime={date}>{new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}</time>
+      </div>
+      <div class="flex items-center gap-2">
+        <Icon name="lucide:map-pin" class="w-4 h-4 text-bcc-gold shrink-0" />
+        <span class="truncate">{location}</span>
+      </div>
+    </div>
+  </div>
+</a>

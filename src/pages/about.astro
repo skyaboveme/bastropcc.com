@@ -1,0 +1,85 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ValueCard from '../components/ui/ValueCard.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<PageLayout 
+  title="About BCC — Conservative Values for Bastrop County"
+  heading="About Bastrop County Conservatives"
+  subheading="Our mission is to identify and support conservative political candidates by leveraging our network of liberty-minded members dedicated to family, faith, and freedom."
+>
+  <div class="mb-16">
+    <p class="lead text-xl md:text-2xl text-bcc-navy font-medium leading-relaxed mb-6">
+      Bastrop County Conservatives is an organization focused on promoting core conservative values in our local government. We believe that there is a time when we must fight for what is right, and that time is now. It's time to let your light shine.
+    </p>
+    
+    <blockquote class="border-l-4 border-bcc-red pl-6 py-4 my-10 text-2xl md:text-3xl font-serif italic text-bcc-navy bg-bcc-gray-50 rounded-r-lg shadow-sm">
+      "There is a time when we must fight for what is right."
+    </blockquote>
+    
+    <p>
+      Our community has maintained its traditional character for over two and a half centuries. However, as rapid growth changes the landscape of Central Texas, the core values that built our home are under pressure. We stand as a coalition of neighbors, business owners, and citizens committed to ensuring that our local schools, city councils, and county government remain true to the principles of liberty and responsibility.
+    </p>
+  </div>
+
+  <h2 id="values" class="font-serif text-3xl font-bold text-bcc-navy mb-8 mt-16 text-center border-b pb-4">Our 15 Core Values</h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 not-prose mb-16">
+    <ValueCard title="America First" description="Prioritizing the interests of American citizens and protecting our national sovereignty." icon="lucide:flag" />
+    <ValueCard title="Family" description="The traditional family is the fundamental building block of a healthy society and culture." icon="lucide:users" />
+    <ValueCard title="Freedom of Religion" description="The unalienable right to worship without government interference." icon="lucide:book-open" />
+    
+    <ValueCard title="Free Market" description="Capitalism and free enterprise are the greatest engines for prosperity ever created." icon="lucide:trending-up" />
+    <ValueCard title="Free Speech" description="Defending the First Amendment and the right to express conservative viewpoints without censorship." icon="lucide:message-square" />
+    <ValueCard title="Grace" description="Extending understanding while standing firm in our convictions." icon="lucide:heart-handshake" />
+    
+    <ValueCard title="Individual Rights" description="The protection of God-given liberties from government overreach." icon="lucide:user-check" />
+    <ValueCard title="Integrity and Honesty" description="Demanding moral fortitude from our elected leaders and ourselves." icon="lucide:shield" />
+    <ValueCard title="Life, Liberty..." description="...and the Pursuit of Happiness. We stand for the unalienable rights bestowed by our Creator." icon="lucide:sun" />
+    
+    <ValueCard title="Male and Female True" description="Acknowledging the biological reality and distinct, complementary nature of men and women." icon="lucide:venetian-mask" />
+    <ValueCard title="Morality" description="Upholding traditional moral standards in public life." icon="lucide:scale" />
+    <ValueCard title="Preserving Dignity" description="Protecting the dignity of human life from conception to natural death." icon="lucide:baby" />
+    
+    <ValueCard title="Respect" description="Fostering a culture of mutual respect in our community." icon="lucide:handshake" />
+    <ValueCard title="Servant Leadership" description="Electing leaders who serve the people, not themselves or special interests." icon="lucide:award" />
+    <ValueCard title="Small Government" description="Limiting government size, scope, and taxation to maximize individual freedom." icon="lucide:minimize-2" />
+  </div>
+
+  <div class="my-16 border-t border-bcc-gray-200 pt-16">
+    <h2 class="font-serif text-3xl font-bold text-bcc-navy mb-6">Use of Funds</h2>
+    <p>
+      As a Political Action Committee, 100% of our funds are dedicated to advancing conservative causes in Bastrop County. Your donations and membership dues power:
+    </p>
+    <ul class="space-y-2 mt-4">
+      <li><strong>Direct Support:</strong> Endorsements and financial backing for verified conservative candidates in local races.</li>
+      <li><strong>Voter Education:</strong> Publishing and distributing voter guides reaching thousands of Bastrop County residents.</li>
+      <li><strong>Strategic Marketing:</strong> Direct mail, signs, and digital campaigns to counter progressive influence in our community.</li>
+      <li><strong>Community Mobilization:</strong> Monthly events to organize the conservative grassroots and build a cohesive voting block.</li>
+    </ul>
+
+    <h2 class="font-serif text-3xl font-bold text-bcc-navy mb-6 mt-16">Our Process</h2>
+    <p>
+      We rigorously vet candidates running for City Council, School Board, County Commissioner, and other local offices. Our Candidate Evaluation Committee reviews voting records, interviews candidates, and ensures they align strictly with our 15 Core Values before any endorsement is issued. An endorsement from BCC means the candidate has been exhaustively vetted by your neighbors.
+    </p>
+
+    <h2 class="font-serif text-3xl font-bold text-bcc-navy mb-6 mt-16">Results</h2>
+    <div class="bg-gradient-to-br from-bcc-navy to-bcc-navy-dark text-white rounded-xl p-8 md:p-12 my-8 text-center shadow-lg border border-bcc-navy relative overflow-hidden">
+      <!-- Decorative background element -->
+      <div class="absolute top-0 right-0 -mt-10 -mr-10 text-white/5">
+        <Icon name="lucide:star" class="w-64 h-64" />
+      </div>
+      
+      <div class="relative z-10">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-bcc-gold text-bcc-navy rounded-full mb-6 shadow-md">
+          <Icon name="lucide:trophy" class="w-10 h-10" />
+        </div>
+        <h3 class="text-3xl font-serif font-bold mb-4">Winning Local Races</h3>
+        <p class="text-bcc-cream text-xl max-w-2xl mx-auto">
+          Successfully securing critical City Council & School Board wins across Bastrop County, returning governance to the people.
+        </p>
+      </div>
+    </div>
+  </div>
+</PageLayout>

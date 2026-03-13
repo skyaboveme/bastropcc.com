@@ -1,0 +1,199 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ValueCard from '../components/ui/ValueCard.astro';
+import VideoEmbed from '../components/ui/VideoEmbed.astro';
+import SubscribeForm from '../components/forms/SubscribeForm.astro';
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+
+// Fetch collections
+const events = await getCollection('events');
+const upcomingEvents = events.sort((a, b) => new Date(a.data.date).valueOf() - new Date(b.data.date).valueOf()).slice(0, 3);
+
+const videos = await getCollection('videos');
+const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()).slice(0, 3);
+---
+
+<BaseLayout>
+  <!-- Hero Section -->
+  <section class="relative bg-bcc-navy text-white min-h-[85vh] flex items-center pt-20 overflow-hidden">
+    <div class="absolute inset-0 bg-black/60 z-10"></div>
+    <img src="/images/hero-bg.jpg" alt="Bastrop Texas Background" class="absolute inset-0 w-full h-full object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'><rect width=\'1\' height=\'1\' fill=\'%231E3A5F\'/></svg>'" />
+    
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
+      <div class="max-w-3xl space-y-8">
+        <h1 class="font-serif text-5xl md:text-7xl font-bold leading-tight">
+          Take Action, <span class="text-bcc-gold">Today.</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-bcc-gray-100 font-medium max-w-2xl leading-relaxed">
+          Bastrop County Conservatives upholds the family values, faith, and traditions that have defined our community for over 250 years.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+          <Button href="/volunteer" variant="primary">Get Involved →</Button>
+          <Button href="#subscribe" variant="white-outline">Sign Up for Updates</Button>
+        </div>
+      </div>
+      
+      <div class="mt-20 pt-8 border-t border-white/20 flex flex-wrap gap-x-12 gap-y-4 text-sm font-bold uppercase tracking-wider text-bcc-gold">
+        <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5"/> 250+ Years of Tradition</span>
+        <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5"/> Conservative Candidates Endorsed</span>
+        <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5"/> Bastrop County Strong</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Strip -->
+  <section class="bg-bcc-navy-dark text-white py-16 border-b-4 border-bcc-red">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+      <p class="text-xl md:text-3xl font-serif leading-loose font-medium">
+        "Our mission is to identify and support conservative political candidates by leveraging our network of liberty-minded members dedicated to family, faith, and freedom."
+      </p>
+    </div>
+  </section>
+
+  <!-- Core Values Preview -->
+  <section class="py-20 md:py-32 bg-bcc-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading 
+        title="Our Core Values" 
+        subtitle="Principles that guide our actions and endorsements in Bastrop County."
+        centered={true}
+      />
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <ValueCard 
+          title="America First" 
+          description="We believe in prioritizing the interests of American citizens and protecting our national sovereignty." 
+          icon="lucide:flag" 
+        />
+        <ValueCard 
+          title="Family" 
+          description="The traditional family is the fundamental building block of a healthy society and culture." 
+          icon="lucide:users" 
+        />
+        <ValueCard 
+          title="Free Speech" 
+          description="We defend the First Amendment and the right to express conservative viewpoints without censorship." 
+          icon="lucide:message-square" 
+        />
+        <ValueCard 
+          title="Life, Liberty, Pursuit of Happiness" 
+          description="We stand for the unalienable rights bestowed by our Creator upon every individual." 
+          icon="lucide:heart" 
+        />
+      </div>
+      
+      <div class="mt-12 text-center">
+        <Button href="/about#values" variant="outline">View All 15 Core Values →</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Events -->
+  <section class="py-20 md:py-32 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-bcc-gray-200 pb-6">
+        <SectionHeading title="Upcoming Events" class="mb-0" />
+        <a href="/events" class="text-bcc-red font-bold hover:text-bcc-red-dark mt-4 md:mt-0 inline-flex items-center gap-2 group">
+          View Full Calendar 
+          <span class="transform group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+      </div>
+      
+      {upcomingEvents.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {upcomingEvents.map(event => (
+            <div class="bg-white border text-center rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div class="text-bcc-red font-bold mb-2">
+                <time datetime={event.data.date}>{new Date(event.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'})}</time>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-bcc-navy mb-3">{event.data.title}</h3>
+              <p class="text-bcc-gray-600 mb-4">{event.data.time && `${event.data.time} •`} {event.data.location}</p>
+              <Button href={event.data.link || "/events"} variant="outline" fullWidth={true}>Event Details</Button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="bg-bcc-gray-50 border border-bcc-gray-200 rounded-xl p-12 text-center max-w-3xl mx-auto">
+          <Icon name="lucide:calendar-x" class="w-16 h-16 text-bcc-gray-400 mx-auto mb-4" />
+          <h3 class="text-2xl font-serif font-bold text-bcc-navy mb-2">No upcoming events</h3>
+          <p class="text-bcc-gray-600 mb-6">We're planning our next gathering. Check back soon or subscribe to receive updates.</p>
+          <Button href="#subscribe" variant="primary">Subscribe for Updates</Button>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Recent Meeting Videos -->
+  <section class="py-20 md:py-32 bg-bcc-cream border-t border-bcc-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading 
+        title="Recent Meetings" 
+        subtitle="Watch full presentations from our latest Bastrop County gatherings."
+      />
+      
+      <div class="flex overflow-x-auto pb-8 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-3 gap-6 snap-x snap-mandatory" style="-webkit-overflow-scrolling: touch;">
+        {recentVideos.map(video => (
+          <div class="min-w-[85vw] md:min-w-0 snap-center md:snap-align-none">
+            <VideoEmbed 
+              youtubeId={video.data.youtubeId}
+              title={video.data.title || `BCC Meeting with ${video.data.speaker}`}
+              speaker={video.data.speaker}
+              date={video.data.date}
+              location={video.data.location}
+            />
+          </div>
+        ))}
+      </div>
+      
+      <div class="mt-8 text-center md:text-left">
+        <Button href="https://www.youtube.com/bastropcountyconservatives" target="_blank" rel="noopener noreferrer" variant="secondary">
+          View All Videos on YouTube →
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Membership CTA Band -->
+  <section class="bg-bcc-gold py-16 text-bcc-navy">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="max-w-2xl text-center md:text-left">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">Have a Seat at the Table</h2>
+        <p class="text-lg text-bcc-navy/80 font-medium">
+          Membership gives you a direct voice in our endorsement process and full access to our strategy sessions.
+        </p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4 shrink-0 w-full md:w-auto mt-4 md:mt-0">
+        <Button href="/membership#tiers" variant="primary">Join as a Member</Button>
+        <Button href="/membership" variant="outline" class="border-bcc-navy text-bcc-navy hover:bg-bcc-navy hover:text-white">Learn About Membership</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subscribe Section -->
+  <section id="subscribe" class="py-20 md:py-32 bg-white scroll-mt-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 mx-auto lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <h2 class="font-serif text-3xl md:text-5xl font-bold text-bcc-navy mb-6">Stay Informed. <br/><span class="text-bcc-red">Stay Engaged.</span></h2>
+          <p class="text-lg text-bcc-gray-600 mb-8 max-w-lg">
+            Join our mailing list to receive critical updates on local issues, upcoming events, and candidate information straight to your inbox.
+          </p>
+          <div class="bg-bcc-cream p-6 rounded-xl border-l-4 border-bcc-gold inline-block">
+            <h4 class="font-bold text-bcc-navy mb-2 flex items-center gap-2">
+              <Icon name="lucide:shield-check" class="w-5 h-5 text-bcc-gold" />
+              We respect your privacy
+            </h4>
+            <p class="text-sm text-bcc-gray-600">Your information is secure. We never sell or share our member list.</p>
+          </div>
+        </div>
+        
+        <div class="bg-white lg:shadow-xl lg:rounded-2xl lg:p-8 border border-transparent lg:border-bcc-gray-100 flex justify-center">
+          <SubscribeForm />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,105 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Button from '../components/ui/Button.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<PageLayout 
+  title="Contact Bastrop County Conservatives"
+  heading="Get in Touch"
+  subheading="We'd love to hear from you. Reach out with questions, concerns, or to express interest in a candidate endorsement."
+>
+
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 not-prose max-w-6xl mx-auto items-start mb-16">
+    
+    <!-- Contact Info -->
+    <div class="lg:col-span-2 space-y-8 bg-white p-8 rounded-xl shadow-sm border border-bcc-gray-100">
+      <div>
+        <h3 class="font-serif text-2xl font-bold text-bcc-navy mb-6">Connect With Us</h3>
+        <p class="text-bcc-gray-600 mb-8">
+          The Bastrop County Conservatives are a volunteer-run organization. We strive to respond to all inquiries within 48 hours.
+        </p>
+      </div>
+      
+      <div class="space-y-6">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 bg-bcc-cream text-bcc-navy rounded-full flex items-center justify-center shrink-0 mt-1">
+            <Icon name="lucide:mail" class="w-5 h-5" />
+          </div>
+          <div>
+            <h4 class="font-bold text-bcc-navy mb-1">Email</h4>
+            <a href="mailto:info@bastropcc.com" class="text-bcc-red hover:underline">info@bastropcc.com</a>
+          </div>
+        </div>
+        
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 bg-bcc-cream text-bcc-navy rounded-full flex items-center justify-center shrink-0 mt-1">
+            <Icon name="lucide:share-2" class="w-5 h-5" />
+          </div>
+          <div>
+            <h4 class="font-bold text-bcc-navy mb-2">Social Media</h4>
+            <div class="flex gap-3 text-bcc-gray-600">
+              <a href="https://www.facebook.com/BastropCountyConservatives" target="_blank" rel="noopener noreferrer" class="hover:text-bcc-red transition-colors" aria-label="Facebook">
+                <Icon name="lucide:facebook" class="w-6 h-6" />
+              </a>
+              <a href="https://www.instagram.com/bastropcountyconservatives/" target="_blank" rel="noopener noreferrer" class="hover:text-bcc-red transition-colors" aria-label="Instagram">
+                <Icon name="lucide:instagram" class="w-6 h-6" />
+              </a>
+              <a href="https://www.youtube.com/bastropcountyconservatives" target="_blank" rel="noopener noreferrer" class="hover:text-bcc-red transition-colors" aria-label="YouTube">
+                <Icon name="lucide:youtube" class="w-6 h-6" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="lg:col-span-3">
+      <div class="bg-white p-6 md:p-8 rounded-xl shadow-md border border-bcc-gray-200 lg:relative lg:-mt-12 lg:z-10">
+        <h3 class="font-serif text-2xl font-bold text-bcc-navy mb-6">Send a Message</h3>
+        
+        <form action="/api/contact" method="POST" id="contact-form" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block text-sm font-semibold text-bcc-navy mb-1">Full Name <span class="text-bcc-red">*</span></label>
+              <input type="text" id="name" name="NAME" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+            </div>
+            <div>
+               <label for="phone" class="block text-sm font-semibold text-bcc-navy mb-1">Phone Number</label>
+               <input type="tel" id="phone" name="PHONE" class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+            </div>
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-semibold text-bcc-navy mb-1">Email Address <span class="text-bcc-red">*</span></label>
+            <input type="email" id="email" name="EMAIL" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+          </div>
+
+          <div>
+            <label for="subject" class="block text-sm font-semibold text-bcc-navy mb-1">Subject <span class="text-bcc-red">*</span></label>
+            <select id="subject" name="SUBJECT" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+              <option value="" disabled selected>Select a topic...</option>
+              <option value="General Inquiry">General Inquiry</option>
+              <option value="Membership Question">Membership Question</option>
+              <option value="Event Information">Event Information</option>
+              <option value="Media Inquiry">Media Inquiry</option>
+              <option value="Candidate Endorsement">Candidate Endorsement Process</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="message" class="block text-sm font-semibold text-bcc-navy mb-1">Message <span class="text-bcc-red">*</span></label>
+            <textarea id="message" name="MESSAGE" rows="5" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50"></textarea>
+          </div>
+          
+          <div class="pt-2">
+            <Button type="submit" variant="primary" fullWidth={false} class="w-full sm:w-auto px-8">Send Message</Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</PageLayout>

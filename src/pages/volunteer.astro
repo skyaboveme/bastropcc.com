@@ -1,0 +1,84 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import VolunteerForm from '../components/forms/VolunteerForm.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<PageLayout 
+  title="Volunteer with Bastrop County Conservatives"
+  heading="Volunteer"
+  subheading="Take action today. We need dedicated patriots to help secure Bastrop County's conservative future."
+>
+  
+  <div class="mb-16">
+    <blockquote class="border-l-4 border-bcc-navy pl-6 py-4 my-10 text-2xl md:text-3xl font-serif italic text-bcc-red bg-bcc-cream rounded-r-lg shadow-sm text-center">
+      "The only thing necessary for the triumph of evil is for good men to do nothing."
+    </blockquote>
+    
+    <div class="mt-8 text-lg text-bcc-gray-700">
+      <p class="mb-4">
+        We are building a grassroots army of liberty-minded citizens. Whether you have two hours a month or twenty hours a week, there is a place for you in the Bastrop County Conservatives. From directly supporting endorsed candidates to organizing events and reviewing policy, your skills are needed now more than ever.
+      </p>
+      <p>
+        Review the volunteer roles below and fill out our application. We will contact you shortly to get you plugged into the fight to preserve our 250+ years of tradition.
+      </p>
+    </div>
+  </div>
+
+  <SectionHeading title="Volunteer Roles" class="mb-10 text-center" />
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 not-prose mb-20 max-w-6xl mx-auto xl:-mx-12">
+    
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-bcc-gray-200">
+      <div class="bg-bcc-cream w-12 h-12 rounded-full flex items-center justify-center mb-4">
+        <Icon name="lucide:search" class="w-6 h-6 text-bcc-navy" />
+      </div>
+      <h3 class="font-serif text-xl font-bold text-bcc-navy mb-2">Candidate Sourcing & Selection</h3>
+      <p class="text-sm text-bcc-gray-600">Identify, recruit, and vet strong conservative leaders for local offices. Conduct interviews, review voting records, and present recommendations to membership.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-bcc-gray-200">
+      <div class="bg-bcc-cream w-12 h-12 rounded-full flex items-center justify-center mb-4">
+        <Icon name="lucide:vote" class="w-6 h-6 text-bcc-navy" />
+      </div>
+      <h3 class="font-serif text-xl font-bold text-bcc-navy mb-2">Electoral Support Committee</h3>
+      <p class="text-sm text-bcc-gray-600">The ground game. Block walking, phone banking, yard sign distribution, and poll greeting for our endorsed candidates. Direct action that wins campaigns.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-bcc-gray-200">
+      <div class="bg-bcc-cream w-12 h-12 rounded-full flex items-center justify-center mb-4">
+        <Icon name="lucide:megaphone" class="w-6 h-6 text-bcc-navy" />
+      </div>
+      <h3 class="font-serif text-xl font-bold text-bcc-navy mb-2">Communications Committee</h3>
+      <p class="text-sm text-bcc-gray-600">Write newsletters, draft press releases, manage social media, and help shape the public narrative of the BCC. Skills in writing, graphic design, and video are a plus.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-bcc-gray-200">
+      <div class="bg-bcc-cream w-12 h-12 rounded-full flex items-center justify-center mb-4">
+        <Icon name="lucide:user-plus" class="w-6 h-6 text-bcc-navy" />
+      </div>
+      <h3 class="font-serif text-xl font-bold text-bcc-navy mb-2">Membership Committee</h3>
+      <p class="text-sm text-bcc-gray-600">Grow the base. Handle member onboarding, outreach, renewals, and ensure our membership reflects the broad conservative community in Bastrop County.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-bcc-gray-200">
+      <div class="bg-bcc-cream w-12 h-12 rounded-full flex items-center justify-center mb-4">
+        <Icon name="lucide:calendar-days" class="w-6 h-6 text-bcc-navy" />
+      </div>
+      <h3 class="font-serif text-xl font-bold text-bcc-navy mb-2">Events Committee</h3>
+      <p class="text-sm text-bcc-gray-600">Plan, coordinate, and execute our monthly meetings, VIP receptions, candidate forums, and special rallies. Logistics and hospitality-minded volunteers needed.</p>
+    </div>
+
+  </div>
+
+  <div class="border-t border-bcc-gray-200 pt-16 mt-16">
+    <div class="max-w-2xl mx-auto not-prose">
+      <SectionHeading title="Ready to Serve?" subtitle="Complete the application below and select the committees you are interested in joining." centered={true} />
+      <div class="mt-8">
+        <VolunteerForm />
+      </div>
+    </div>
+  </div>
+
+</PageLayout>

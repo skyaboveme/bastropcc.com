@@ -1,0 +1,63 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<PageLayout 
+  title="Conservative Insights Blog — Bastrop County Conservatives"
+  heading="Conservative Insights"
+  subheading="News, analysis, and opinion from Bastrop County Conservatives."
+>
+
+  {sortedPosts.length > 0 ? (
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 not-prose">
+      {sortedPosts.map(post => (
+        <article class="bg-white border flex flex-col h-full border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          {post.data.image ? (
+            <img src={post.data.image} alt={post.data.title} class="w-full h-48 object-cover border-b border-bcc-gray-100" />
+          ) : (
+            <div class="w-full h-48 bg-bcc-navy flex items-center justify-center text-bcc-gold border-b border-bcc-gray-100 shrink-0">
+              <Icon name="lucide:newspaper" class="w-16 h-16 opacity-50" />
+            </div>
+          )}
+          
+          <div class="p-6 flex flex-col flex-grow">
+            <div class="flex items-center justify-between text-xs text-bcc-gray-500 font-bold uppercase tracking-wider mb-3">
+              <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}
+              </time>
+              <span>{post.data.author}</span>
+            </div>
+            
+            <h2 class="font-serif text-2xl font-bold text-bcc-navy mb-3 line-clamp-3 hover:text-bcc-red transition-colors">
+              <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+            </h2>
+            
+            <p class="text-bcc-gray-600 mb-6 line-clamp-3 flex-grow">
+              {post.data.description}
+            </p>
+            
+            <div class="mt-auto">
+              <a href={`/blog/${post.slug}`} class="text-bcc-red font-bold hover:text-bcc-red-dark transition-colors inline-flex items-center gap-1 group">
+                Read Full Article <Icon name="lucide:arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <div class="bg-bcc-cream border border-bcc-gray-200 rounded-xl p-12 text-center max-w-3xl mx-auto shadow-inner not-prose mb-8">
+      <Icon name="lucide:pen-tool" class="w-16 h-16 text-bcc-gray-400 mx-auto mb-4" />
+      <h3 class="text-2xl font-serif font-bold text-bcc-navy mb-2">No posts available yet</h3>
+      <p class="text-bcc-gray-600 mb-6">Our editorial team is busy preparing our inaugural updates. Check back soon for news and analysis on Bastrop County politics.</p>
+      <Button href="/subscribe" variant="primary">Get Notified When We Publish</Button>
+    </div>
+  )}
+
+</PageLayout>
