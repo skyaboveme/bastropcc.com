@@ -7,9 +7,12 @@ import MobileNav from './MobileNav.astro';
   <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between py-4 sm:py-6">
       <div class="flex-shrink-0">
-        <a href="/" class="flex items-center gap-3" aria-label="Bastrop County Conservatives Home">
-          <img src="/Assets/cropped-BCC-Final-Logo-1-w-Transparent-Background.png" alt="" class="h-24 sm:h-28 w-auto py-1" onerror="this.src='/favicon.svg'" />
-          <span class="font-serif font-bold text-2xl tracking-wide uppercase hidden sm:block">BCC</span>
+        <a href="/" class="flex items-center gap-4" aria-label="Bastrop County Conservatives Home">
+          <img src="/Assets/cropped-BCC-Final-Logo-1-w-Transparent-Background.png" alt="" class="h-20 sm:h-24 w-auto py-1" onerror="this.src='/favicon.svg'" />
+          <div class="hidden sm:flex flex-col justify-center translate-y-1">
+            <span class="font-serif font-bold sm:text-2xl lg:text-3xl tracking-wide uppercase text-bcc-navy leading-none">Bastrop County</span>
+            <span class="font-serif font-bold sm:text-2xl lg:text-3xl tracking-wide uppercase text-bcc-red leading-none">Conservatives</span>
+          </div>
         </a>
       </div>
       
