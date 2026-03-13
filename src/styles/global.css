@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -12,7 +13,7 @@
     line-height: 1.6;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif text-bcc-navy font-bold leading-tight;
+    @apply font-heading uppercase tracking-wide text-bcc-navy font-bold leading-tight;
   }
   a {
     @apply transition-colors duration-200;

@@ -10,12 +10,12 @@ export interface Props {
 const { title, description, icon = 'lucide:star' } = Astro.props;
 ---
 
-<div class="bg-white p-8 rounded-xl shadow-sm border-l-4 border-bcc-red hover:shadow-md transition-shadow h-full">
-  <div class="bg-bcc-cream w-14 h-14 rounded-full flex items-center justify-center mb-6">
-    <Icon name={icon} class="w-7 h-7 text-bcc-navy" />
+<div class="bg-white p-8 rounded shadow-md border-l-8 border-bcc-navy hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full group flex flex-col">
+  <div class="w-16 h-16 rounded border-2 border-bcc-gray-200 flex items-center justify-center mb-6 group-hover:bg-bcc-navy transition-colors duration-300">
+    <Icon name={icon} class="w-8 h-8 text-bcc-navy group-hover:text-white transition-colors duration-300" />
   </div>
-  <h3 class="font-serif text-xl font-bold text-bcc-navy mb-3">{title}</h3>
-  <p class="text-bcc-gray-600">
+  <h3 class="font-heading uppercase text-2xl tracking-wide font-bold text-bcc-navy mb-4">{title}</h3>
+  <p class="text-bcc-gray-700 leading-relaxed font-medium">
     {description}
   </p>
 </div>

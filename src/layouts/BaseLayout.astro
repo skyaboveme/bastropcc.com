@@ -44,5 +44,29 @@ const { title, description, image, article } = Astro.props;
         <span class="text-[10px] font-bold uppercase tracking-wide">Volunteer</span>
       </a>
     </div>
+
+    <script>
+      // Scroll Reveal Animation Logic
+      document.addEventListener('DOMContentLoaded', () => {
+        const observerOptions = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate-fade-in-up');
+              entry.target.classList.remove('opacity-0');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        const scrollElements = document.querySelectorAll('.scroll-reveal');
+        scrollElements.forEach(el => observer.observe(el));
+      });
+    </script>
   </body>
 </html>

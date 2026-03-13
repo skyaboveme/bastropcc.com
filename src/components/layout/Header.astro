@@ -10,34 +10,41 @@ import MobileNav from './MobileNav.astro';
         <a href="/" class="flex items-center gap-4 group" aria-label="Bastrop County Conservatives Home">
           <img src="/Assets/cropped-BCC-Final-Logo-1-w-Transparent-Background.png" alt="" class="h-20 sm:h-24 w-auto py-1 drop-shadow-md transition-transform group-hover:scale-105 duration-300" onerror="this.src='/favicon.svg'" />
           <div class="hidden sm:flex flex-col justify-center translate-y-0.5 drop-shadow-sm">
-            <span class="font-serif font-bold sm:text-lg lg:text-2xl tracking-wide uppercase text-bcc-navy leading-none">Bastrop County</span>
-            <span class="font-serif font-bold sm:text-lg lg:text-2xl tracking-[0.09em] uppercase text-bcc-red leading-none">Conservatives</span>
+            <span class="font-heading font-bold sm:text-lg lg:text-2xl tracking-wide uppercase text-bcc-navy leading-none">Bastrop County</span>
+            <span class="font-heading font-bold sm:text-lg lg:text-2xl tracking-[0.09em] uppercase text-bcc-red leading-none">Conservatives</span>
           </div>
         </a>
       </div>
       
-      <!-- Desktop Navigation -->
-      <div class="hidden lg:block">
-        <ul class="flex space-x-8 items-center">
-          <li><a href="/about" class="hover:text-bcc-gold transition-colors font-semibold">About</a></li>
-          <li><a href="/membership" class="hover:text-bcc-gold transition-colors font-semibold">Membership</a></li>
-          <li><a href="/events" class="hover:text-bcc-gold transition-colors font-semibold">Events</a></li>
-          <li><a href="/voter-info" class="hover:text-bcc-gold transition-colors font-semibold">Voter Info</a></li>
-          <li><a href="/volunteer" class="hover:text-bcc-gold transition-colors font-semibold">Volunteer</a></li>
-          <li>
-            <a href="/donate" class="bg-bcc-red hover:bg-bcc-red-dark text-white px-5 py-2.5 rounded-lg font-bold transition-colors">
-              Donate
-            </a>
-          </li>
+      <!-- Center Desktop Navigation -->
+      <div class="hidden lg:flex flex-1 justify-center">
+        <ul class="flex space-x-6 items-center">
+          <li><a href="/about" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">About</a></li>
+          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+          <li><a href="/membership" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Membership</a></li>
+          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+          <li><a href="/events" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Events</a></li>
+          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+          <li><a href="/voter-info" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Voter Info</a></li>
+          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+          <li><a href="/volunteer" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Volunteer</a></li>
         </ul>
       </div>
 
-      <!-- Mobile menu button -->
-      <div class="lg:hidden flex items-center">
-        <button type="button" id="mobile-menu-btn" class="text-bcc-navy hover:text-bcc-red focus:outline-none p-2" aria-controls="mobile-menu" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
-          <Icon name="lucide:menu" class="h-8 w-8" />
-        </button>
+      <!-- Right CTAs & Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <div class="hidden lg:block">
+          <a href="/donate" class="font-heading uppercase tracking-wide bg-bcc-red hover:bg-bcc-red-dark text-white text-lg px-6 py-2 rounded shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 duration-300 font-bold">
+            Donate
+          </a>
+        </div>
+        <!-- Mobile menu button -->
+        <div class="lg:hidden flex items-center">
+          <button type="button" id="mobile-menu-btn" class="text-bcc-navy hover:text-bcc-red focus:outline-none p-2" aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <Icon name="lucide:menu" class="h-8 w-8" />
+          </button>
+        </div>
       </div>
     </div>
   </nav>

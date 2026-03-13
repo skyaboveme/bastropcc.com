@@ -11,7 +11,7 @@ const { title, subtitle, centered = false, class: className = '' } = Astro.props
 
 <div class:list={['mb-12', centered ? 'text-center' : '', className]}>
   <h2 class:list={[
-    'font-serif text-3xl md:text-5xl font-bold text-bcc-navy mb-4',
+    'font-heading uppercase text-3xl md:text-5xl font-bold tracking-wide text-bcc-navy mb-4',
     centered ? 'mx-auto' : ''
   ]}>
     {title}
