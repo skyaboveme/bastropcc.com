@@ -3,51 +3,69 @@ import { Icon } from 'astro-icon/components';
 import MobileNav from './MobileNav.astro';
 ---
 
-<header class="bg-gradient-to-b from-white to-slate-100 border-b border-bcc-gray-200 text-bcc-navy sticky top-0 z-40 shadow-md">
-  <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between py-4 sm:py-6">
-      <div class="flex-shrink-0">
-        <a href="/" class="flex items-center gap-4 group" aria-label="Bastrop County Conservatives Home">
-          <img src="/Assets/cropped-BCC-Final-Logo-1-w-Transparent-Background.png" alt="" class="h-20 sm:h-24 w-auto py-1 drop-shadow-md transition-transform group-hover:scale-105 duration-300" onerror="this.src='/favicon.svg'" />
-          <div class="hidden sm:flex flex-col justify-center translate-y-0.5 drop-shadow-sm">
-            <span class="font-heading font-bold sm:text-lg lg:text-2xl tracking-wide uppercase text-bcc-navy leading-none">Bastrop County</span>
-            <span class="font-heading font-bold sm:text-lg lg:text-2xl tracking-[0.09em] uppercase text-bcc-red leading-none">Conservatives</span>
-          </div>
+<header class="bg-white sticky top-0 z-40 shadow-sm flex flex-col w-full">
+  
+  <!-- Top Utility Bar (Desktop Only) -->
+  <div class="hidden lg:block w-full bg-slate-50 border-b border-bcc-gray-200 h-10 lg:h-12 relative z-10">
+    <div class="max-w-7xl mx-auto pl-4 pr-0 sm:pl-6 lg:pl-8 h-full flex justify-end">
+      <div class="flex h-full relative group">
+        <!-- Angled graphic cut element on left side of top bar (simulated with CSS shapes) can be added here if needed, but simple block is fine for now -->
+        
+        <a href="/volunteer" class="bg-bcc-navy hover:bg-bcc-navy-light text-white flex items-center px-6 xl:px-10 font-heading uppercase text-sm font-bold tracking-widest transition-colors shadow-sm">
+          Get Involved
+        </a>
+        <a href="/donate" class="bg-bcc-red hover:bg-[#b01616] text-white flex items-center px-6 xl:px-10 font-heading uppercase text-sm font-bold tracking-widest transition-colors shadow-sm">
+          Donate
         </a>
       </div>
-      
-      <!-- Center Desktop Navigation -->
-      <div class="hidden lg:flex flex-1 justify-center">
-        <ul class="flex space-x-6 items-center">
-          <li><a href="/about" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">About</a></li>
-          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
-          <li><a href="/membership" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Membership</a></li>
-          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
-          <li><a href="/events" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Events</a></li>
-          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
-          <li><a href="/voter-info" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Voter Info</a></li>
-          <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
-          <li><a href="/volunteer" class="font-heading uppercase text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Volunteer</a></li>
-        </ul>
-      </div>
+    </div>
+  </div>
 
-      <!-- Right CTAs & Mobile Toggle -->
-      <div class="flex items-center gap-4">
-        <div class="hidden lg:block">
-          <a href="/donate" class="font-heading uppercase tracking-wide bg-bcc-red hover:bg-bcc-red-dark text-white text-lg px-6 py-2 rounded shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 duration-300 font-bold">
-            Donate
+  <!-- Main Navigation Bar -->
+  <div class="w-full relative border-b border-bcc-gray-200 bg-white">
+    <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative">
+      <div class="flex items-center justify-between py-2 sm:py-3 lg:py-0 relative lg:min-h-[5.5rem]">
+        
+        <!-- Logo (Absolute position on desktop to overlap both bars upwards) -->
+        <div class="flex-shrink-0 lg:absolute lg:top-[-2.5rem] lg:left-2 xl:left-4 z-20">
+          <a href="/" class="flex items-center gap-3 xl:gap-4 group bg-white/50 backdrop-blur-none lg:bg-transparent lg:p-0 rounded-lg" aria-label="Bastrop County Conservatives Home">
+            <img src="/Assets/cropped-BCC-Final-Logo-1-w-Transparent-Background.png" alt="" class="h-16 sm:h-20 lg:h-24 xl:h-[7.5rem] w-auto drop-shadow-md transition-transform group-hover:scale-105 duration-300" onerror="this.src='/favicon.svg'" />
+            <div class="hidden sm:flex flex-col justify-center drop-shadow-sm whitespace-nowrap lg:pt-10">
+              <span class="font-heading font-bold sm:text-lg lg:text-xl tracking-wide uppercase text-bcc-navy leading-none">Bastrop County</span>
+              <span class="font-heading font-bold sm:text-lg lg:text-xl tracking-[0.09em] uppercase text-bcc-red leading-none">Conservatives</span>
+            </div>
           </a>
         </div>
-        <!-- Mobile menu button -->
-        <div class="lg:hidden flex items-center">
+
+        <!-- Center/Right Desktop Navigation -->
+        <div class="hidden lg:flex flex-1 justify-end ml-auto">
+          <ul class="flex space-x-4 xl:space-x-6 items-center">
+            <li><a href="/" class="font-heading uppercase text-base xl:text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Home</a></li>
+            <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+            <li><a href="/about" class="font-heading uppercase text-base xl:text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">About</a></li>
+            <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+            <li><a href="/membership" class="font-heading uppercase text-base xl:text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Membership</a></li>
+            <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+            <li><a href="/events" class="font-heading uppercase text-base xl:text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Events</a></li>
+            <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
+            <li><a href="/voter-info" class="font-heading uppercase text-base xl:text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Voter Info</a></li>
+          </ul>
+        </div>
+        
+        <!-- Mobile/Tablet Right CTAs and Menu Button -->
+        <div class="lg:hidden flex items-center justify-end gap-3 ml-auto">
+          <a href="/donate" class="font-heading uppercase tracking-wide bg-bcc-red hover:bg-bcc-red-dark text-white text-sm px-4 py-2 rounded shadow-sm hover:shadow-md transition-all duration-300 font-bold">
+            Donate
+          </a>
           <button type="button" id="mobile-menu-btn" class="text-bcc-navy hover:text-bcc-red focus:outline-none p-2" aria-controls="mobile-menu" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
-            <Icon name="lucide:menu" class="h-8 w-8" />
+            <Icon name="lucide:menu" class="h-6 w-6 sm:h-8 sm:w-8" />
           </button>
         </div>
+
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 
   <MobileNav />
 </header>
