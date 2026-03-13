@@ -15,8 +15,9 @@ const { title, description, heading = title, subheading } = Astro.props;
 
 <BaseLayout title={title} description={description}>
   
-  <header class="bg-bcc-cream border-b border-bcc-gray-200 py-12 md:py-20 px-4">
-    <div class="max-w-7xl mx-auto text-center">
+  <header class="relative border-b border-bcc-gray-200 py-12 md:py-20 px-4 bg-cover bg-center" style="background-image: url('/Assets/bastrop_river_bg.png');">
+    <div class="absolute inset-0 bg-white/90 backdrop-blur-[2px] z-0 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto text-center relative z-10">
       <SectionHeading title={heading} subtitle={subheading} centered={true} />
     </div>
   </header>
