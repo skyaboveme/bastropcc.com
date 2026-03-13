@@ -23,43 +23,40 @@ import { Icon } from 'astro-icon/components';
   <div id="tiers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 not-prose mb-24 max-w-7xl mx-auto xl:-mx-24 relative z-10 py-4">
     <MembershipTier 
       tierName="Bronze"
-      pricePlaceholder="[INSERT PRICE]"
+      pricePlaceholder="$10"
+      pricingSubtitle="/mo or $110/yr"
       features={[
-        "Official BCC Membership Card",
-        "Voting rights on endorsements",
-        "Monthly newsletter access",
-        "BCC window decal"
+        "Invitation to the annual Christmas party",
+        "Early access to special events (like Rhinestones on the River)",
+        "Access to members-only events like fish fries and shooting events"
       ]}
     />
     <MembershipTier 
       tierName="Silver"
-      pricePlaceholder="[INSERT PRICE]"
+      pricePlaceholder="$15"
+      pricingSubtitle="/mo or $165/yr"
       features={[
         "All Bronze benefits",
-        "Discounted tickets to BCC events",
-        "Access to members-only portal",
-        "BCC official lapel pin"
+        "One BCC T-shirt with the official logo"
       ]}
     />
     <MembershipTier 
       tierName="Gold"
-      pricePlaceholder="[INSERT PRICE]"
+      pricePlaceholder="$20"
+      pricingSubtitle="/mo or $220/yr"
       isPopular={true}
       features={[
         "All Silver benefits",
-        "Free entry to standard monthly meetings",
-        "Quarterly strategy briefs",
-        "Exclusive VIP reception access at major events"
+        'Choice of two BCC T-shirts, a BCC logoed "polo" shirt, or an Oxford shirt'
       ]}
     />
     <MembershipTier 
       tierName="Platinum"
-      pricePlaceholder="[INSERT PRICE]"
+      pricePlaceholder="$40"
+      pricingSubtitle="/mo or $440/yr"
       features={[
         "All Gold benefits",
-        "Premium seating at all events",
-        "Annual private dinner with BCC leadership",
-        "Special recognition in annual report"
+        "One ticket to the annual fundraiser, Rhinestones on the River"
       ]}
     />
   </div>

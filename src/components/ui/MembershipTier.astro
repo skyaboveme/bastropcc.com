@@ -4,6 +4,7 @@ import Button from './Button.astro';
 export interface Props {
   tierName: string;
   pricePlaceholder?: string;
+  pricingSubtitle?: string;
   features: string[];
   isPopular?: boolean;
 }
@@ -11,6 +12,7 @@ export interface Props {
 const { 
   tierName, 
   pricePlaceholder = '[INSERT PRICE]', 
+  pricingSubtitle = '/year',
   features, 
   isPopular = false 
 } = Astro.props;
@@ -60,9 +62,9 @@ if(isPopular) {
     </span>
   </div>
   
-  <div class="mb-6">
+  <div class="mb-6 flex flex-col sm:flex-row sm:items-baseline gap-1">
     <span class="text-4xl font-bold text-bcc-navy">{pricePlaceholder}</span>
-    <span class="text-bcc-gray-600 text-sm">/year</span>
+    <span class="text-bcc-gray-600 text-sm font-medium">{pricingSubtitle}</span>
   </div>
   
   <ul class="space-y-4 mb-10 flex-grow">
