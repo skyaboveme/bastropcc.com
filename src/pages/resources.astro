@@ -5,19 +5,19 @@ import Button from '../components/ui/Button.astro';
 import { Icon } from 'astro-icon/components';
 
 const newsSources = [
-  { name: 'Luke Macias Show', desc: 'Insightful conservative commentary and analysis focused specifically on Texas politics.', url: 'https://lukemacias.com' },
-  { name: 'Agenda Weekly', desc: 'Weekly updates on critical issues affecting faith, family, and freedom from a biblical perspective.', url: 'https://agendaweekly.com' },
-  { name: 'Texas Scorecard', desc: 'Real news for real Texans. Independent journalism exposing the truth in local and state government.', url: 'https://texasscorecard.com' },
-  { name: 'The Epoch Times', desc: 'Truth and tradition. Comprehensive independent news free from the corporate media narrative.', url: 'https://theepochtimes.com' },
-  { name: 'The Texan', desc: 'High-quality, fact-based statewide news for Texans who want the unfiltered truth.', url: 'https://thetexan.news' }
+  { name: 'Luke Macias Show', desc: 'Insightful conservative commentary and analysis focused specifically on Texas politics.', url: 'https://lukemacias.com', image: '/Assets/texas_news_1.png' },
+  { name: 'Agenda Weekly', desc: 'Weekly updates on critical issues affecting faith, family, and freedom from a biblical perspective.', url: 'https://agendaweekly.com', image: '/Assets/texas_news_2.png' },
+  { name: 'Texas Scorecard', desc: 'Real news for real Texans. Independent journalism exposing the truth in local and state government.', url: 'https://texasscorecard.com', image: '/Assets/texas_news_1.png' },
+  { name: 'The Epoch Times', desc: 'Truth and tradition. Comprehensive independent news free from the corporate media narrative.', url: 'https://theepochtimes.com', image: '/Assets/texas_news_2.png' },
+  { name: 'The Texan', desc: 'High-quality, fact-based statewide news for Texans who want the unfiltered truth.', url: 'https://thetexan.news', image: '/Assets/texas_news_1.png' }
 ];
 
 const organizations = [
-  { name: 'Texas Public Policy Foundation', desc: 'Promoting and defending liberty, personal responsibility, and free enterprise in Texas.', url: 'https://www.texaspolicy.com' },
-  { name: 'Texas Republican Party', desc: 'The official organization of the Republican Party of Texas.', url: 'https://texasgop.org' },
-  { name: 'Texas Values', desc: 'Dedicated to preserving and advancing a culture of family values in the state of Texas.', url: 'https://txvalues.org' },
-  { name: 'Texas Conservative Coalition Research Institute', desc: 'Shaping public policy through a conservative framework of limited government and free enterprise.', url: 'https://txccri.org' },
-  { name: 'Grassroots America We The People', desc: 'Uniting, educating, and empowering citizens to hold elected officials accountable.', url: 'https://gawtp.com' }
+  { name: 'Texas Public Policy Foundation', desc: 'Promoting and defending liberty, personal responsibility, and free enterprise in Texas.', url: 'https://www.texaspolicy.com', image: '/Assets/texas_org_1.png' },
+  { name: 'Texas Republican Party', desc: 'The official organization of the Republican Party of Texas.', url: 'https://texasgop.org', image: '/Assets/texas_org_2.png' },
+  { name: 'Texas Values', desc: 'Dedicated to preserving and advancing a culture of family values in the state of Texas.', url: 'https://txvalues.org', image: '/Assets/texas_org_1.png' },
+  { name: 'Texas Conservative Coalition Research Institute', desc: 'Shaping public policy through a conservative framework of limited government and free enterprise.', url: 'https://txccri.org', image: '/Assets/texas_org_2.png' },
+  { name: 'Grassroots America We The People', desc: 'Uniting, educating, and empowering citizens to hold elected officials accountable.', url: 'https://gawtp.com', image: '/Assets/texas_org_1.png' }
 ];
 ---
 
@@ -29,44 +29,44 @@ const organizations = [
 
   <div class="mb-20 not-prose">
     <SectionHeading title="Trusted News Sources" class="mb-8" />
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {newsSources.map(src => (
-        <div class="bg-white border text-left rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
-          <div class="flex items-center gap-3 border-b pb-4 mb-4">
-            <div class="w-10 h-10 bg-bcc-cream rounded-full flex items-center justify-center text-bcc-navy shrink-0">
-              <Icon name="lucide:newspaper" class="w-5 h-5" />
+        <a href={src.url} target="_blank" rel="noopener noreferrer" class="group bg-white border border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-bcc-red">
+          <div class="w-full h-48 bg-slate-200 overflow-hidden relative">
+            <img src={src.image} alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
+              <Icon name="lucide:newspaper" class="w-5 h-5 drop-shadow-md" />
+              <Icon name="lucide:external-link" class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" />
             </div>
-            <h3 class="font-serif text-xl font-bold text-bcc-navy">{src.name}</h3>
           </div>
-          <p class="text-bcc-gray-600 mb-6 flex-grow">{src.desc}</p>
-          <div class="mt-auto">
-            <Button href={src.url} target="_blank" rel="noopener noreferrer" variant="outline" fullWidth={true}>
-              Visit Website <Icon name="lucide:external-link" class="w-4 h-4 ml-2 inline-block" />
-            </Button>
+          <div class="p-6 flex flex-col flex-grow">
+            <h3 class="font-serif text-xl font-bold text-bcc-navy mb-3 group-hover:text-bcc-red transition-colors">{src.name}</h3>
+            <p class="text-bcc-gray-600 flex-grow text-sm leading-relaxed">{src.desc}</p>
           </div>
-        </div>
+        </a>
       ))}
     </div>
   </div>
 
   <div class="mb-12 not-prose mt-24 pt-16 border-t border-bcc-gray-200">
     <SectionHeading title="Aligned Organizations" class="mb-8" />
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {organizations.map(org => (
-        <div class="bg-white border border-bcc-gray-200 text-left rounded-xl p-6 shadow-sm hover:shadow-md hover:border-bcc-gold transition-all flex flex-col h-full">
-          <div class="flex items-center gap-3 border-b border-bcc-gray-100 pb-4 mb-4">
-            <div class="w-10 h-10 bg-bcc-navy rounded-full flex items-center justify-center text-bcc-gold shrink-0">
-              <Icon name="lucide:shield" class="w-5 h-5" />
+         <a href={org.url} target="_blank" rel="noopener noreferrer" class="group bg-white border border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-bcc-red">
+          <div class="w-full h-48 bg-slate-200 overflow-hidden relative">
+            <img src={org.image} alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
+              <Icon name="lucide:shield" class="w-5 h-5 drop-shadow-md" />
+              <Icon name="lucide:external-link" class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" />
             </div>
-            <h3 class="font-serif text-lg md:text-xl font-bold text-bcc-navy">{org.name}</h3>
           </div>
-          <p class="text-bcc-gray-600 mb-6 flex-grow text-sm md:text-base">{org.desc}</p>
-          <div class="mt-auto">
-            <Button href={org.url} target="_blank" rel="noopener noreferrer" variant="outline" fullWidth={true}>
-              View Organization <Icon name="lucide:external-link" class="w-4 h-4 ml-2 inline-block" />
-            </Button>
+          <div class="p-6 flex flex-col flex-grow">
+             <h3 class="font-serif text-xl font-bold text-bcc-navy mb-3 group-hover:text-bcc-red transition-colors">{org.name}</h3>
+            <p class="text-bcc-gray-600 flex-grow text-sm leading-relaxed">{org.desc}</p>
           </div>
-        </div>
+        </a>
       ))}
     </div>
   </div>
