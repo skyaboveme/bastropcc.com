@@ -7,7 +7,16 @@ import { Icon } from 'astro-icon/components';
     <a href="/about" class="block px-3 py-3 rounded-md text-base font-semibold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors">About</a>
     <a href="/membership" class="block px-3 py-3 rounded-md text-base font-semibold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors">Membership</a>
     <a href="/events" class="block px-3 py-3 rounded-md text-base font-semibold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors">Events</a>
-    <a href="/resources" class="block px-3 py-3 rounded-md text-base font-semibold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors">Resources</a>
+    <div class="space-y-1">
+      <button id="mobile-resources-btn" class="w-full flex justify-between items-center px-3 py-3 rounded-md text-base font-semibold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors focus:outline-none" aria-expanded="false" aria-controls="mobile-resources-menu">
+        <span>Resources</span>
+        <Icon name="lucide:chevron-down" class="w-5 h-5 transition-transform duration-300" id="mobile-resources-icon" />
+      </button>
+      <div id="mobile-resources-menu" class="hidden flex-col bg-bcc-gray-50 rounded-md py-1 space-y-1">
+        <a href="/resources" class="block pl-6 pr-3 py-2 text-sm font-medium text-bcc-navy hover:text-bcc-red transition-colors">All Resources</a>
+        <a href="/blog" class="block pl-6 pr-3 py-2 text-sm font-medium text-bcc-navy hover:text-bcc-red transition-colors">Blog</a>
+      </div>
+    </div>
     <a href="/voter-info" class="block px-3 py-3 rounded-md text-base font-semibold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors">Voter Info</a>
     <a href="/volunteer" class="block px-3 py-3 rounded-md text-base font-semibold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors">Get Involved</a>
     <a href="/donate" class="block px-3 py-3 mt-4 text-center rounded-lg text-base font-bold text-white bg-bcc-red hover:bg-bcc-red-dark transition-colors">Donate</a>
@@ -29,6 +38,24 @@ import { Icon } from 'astro-icon/components';
       if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
         menu.classList.add('hidden');
         btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  const resourcesBtn = document.getElementById('mobile-resources-btn');
+  const resourcesMenu = document.getElementById('mobile-resources-menu');
+  const resourcesIcon = document.getElementById('mobile-resources-icon');
+
+  if (resourcesBtn && resourcesMenu && resourcesIcon) {
+    resourcesBtn.addEventListener('click', () => {
+      const isExpanded = resourcesBtn.getAttribute('aria-expanded') === 'true';
+      resourcesBtn.setAttribute('aria-expanded', (!isExpanded).toString());
+      resourcesMenu.classList.toggle('hidden');
+      resourcesMenu.classList.toggle('flex');
+      if (isExpanded) {
+        resourcesIcon.classList.remove('rotate-180');
+      } else {
+        resourcesIcon.classList.add('rotate-180');
       }
     });
   }
