@@ -1,0 +1,124 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { Icon } from 'astro-icon/components';
+
+interface Org {
+  name: string;
+  url?: string;
+}
+
+interface CountyGroup {
+  county: string;
+  orgs: Org[];
+}
+
+const conservativeOrgs: CountyGroup[] = [
+  {
+    county: "Bastrop",
+    orgs: [
+      { name: "BCRP - Bastrop County Republican Party", url: "https://www.bastropctygop.com/" },
+      { name: "BCC - Bastrop County Conservatives", url: "https://bastropcc.com/" },
+      { name: "BCYR – Bastrop County Young Republicans" },
+    ]
+  },
+  {
+    county: "Burleson",
+    orgs: [
+      { name: "Burleson County Republican Party", url: "https://republicanpartyofburlesoncounty.com/" },
+    ]
+  },
+  {
+    county: "Caldwell",
+    orgs: [
+      { name: "Caldwell County Republican Party", url: "https://caldwell.nc.gop/" },
+    ]
+  },
+  {
+    county: "Lee",
+    orgs: [
+      { name: "Lee County Republican Party", url: "https://www.leegop.org/" },
+      { name: "Lee county conservatives", url: "https://www.facebook.com/groups/leecoconservatives/" },
+    ]
+  },
+  {
+    county: "Milam",
+    orgs: [
+      { name: "Milam County Constitutional Conservatives", url: "https://www.facebook.com/groups/588221409064577/" },
+      { name: "Milam County Republican Party", url: "https://www.facebook.com/groups/225657766678/" },
+      { name: "Republican Women of Milam County", url: "https://www.facebook.com/milamcountyRW/" },
+    ]
+  },
+  {
+    county: "Gonzales",
+    orgs: [
+      { name: "Gonzales County Republican Party", url: "https://www.facebook.com/GonzalesGOP/" },
+    ]
+  },
+  {
+    county: "Fayette",
+    orgs: [
+      { name: "Fayette County Republican Party", url: "https://www.fcrptx.org/" },
+    ]
+  },
+  {
+    county: "Hays", // Fixed Hayes to Hays based on standard Texas county spelling
+    orgs: [
+      { name: "Hays County Republican Party", url: "https://hayscountygop.org/" },
+    ]
+  },
+  {
+    county: "Travis",
+    orgs: [
+      { name: "Travis County Republican Party", url: "https://traviscountygop.org/" },
+      { name: "We The People Lake Travis", url: "https://wethepeoplelaketravis.com/" },
+    ]
+  },
+  {
+    county: "Williamson",
+    orgs: [
+      { name: "Williamson County Republican Party", url: "https://wilcogop.org/" },
+      { name: "Capital Area Conservative Republican Club", url: "https://www.capitalareaconservativerepublicans.com/" },
+    ]
+  },
+  {
+    county: "Austin",
+    orgs: [
+      { name: "Austin County, Texas Republican Party", url: "https://www.facebook.com/groups/AustinCountyGOP/" },
+    ]
+  }
+];
+---
+
+<PageLayout 
+  title="Conservative Organizations by County"
+  heading="Conservative Orgs"
+  subheading="Connect with conservative organizations and Republican parties across our neighboring counties."
+>
+
+  <div class="mb-20 not-prose">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      {conservativeOrgs.map(group => (
+        <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+          <h3 class="font-serif text-2xl font-bold text-bcc-red mb-4 border-b border-bcc-gray-200 pb-2">{group.county} County</h3>
+          <ul class="space-y-4">
+            {group.orgs.map(org => (
+              <li class="flex items-start gap-3">
+                <Icon name="lucide:shield-check" class="w-5 h-5 text-bcc-navy shrink-0 mt-0.5" />
+                {org.url ? (
+                  <a href={org.url} target="_blank" rel="noopener noreferrer" class="text-bcc-navy hover:text-bcc-red font-medium transition-colors flex items-center gap-1.5 group">
+                    {org.name}
+                    <Icon name="lucide:external-link" class="w-3.5 h-3.5 opacity-50 group-hover:opacity-100 transition-opacity" />
+                  </a>
+                ) : (
+                  <span class="text-bcc-gray-700 font-medium">{org.name}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+
+</PageLayout>
