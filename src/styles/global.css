@@ -19,3 +19,137 @@
     @apply transition-colors duration-200;
   }
 }
+
+/* ── Blog Article Typography ── */
+.blog-content {
+  @apply text-bcc-gray-900 leading-relaxed;
+  font-size: 1.125rem;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.blog-content p {
+  margin-bottom: 1.75rem;
+  line-height: 1.85;
+}
+
+.blog-content h2 {
+  @apply font-heading text-bcc-navy font-bold uppercase tracking-wide;
+  font-size: 1.625rem;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e2db;
+}
+
+.blog-content h3 {
+  @apply font-heading text-bcc-navy font-bold uppercase tracking-wide;
+  font-size: 1.3rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.blog-content h4 {
+  @apply font-heading text-bcc-navy font-bold uppercase;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin-bottom: 1.75rem;
+  padding-left: 1.5rem;
+}
+
+.blog-content ul {
+  list-style-type: disc;
+}
+
+.blog-content ol {
+  list-style-type: decimal;
+}
+
+.blog-content li {
+  margin-bottom: 0.75rem;
+  line-height: 1.75;
+  padding-left: 0.25rem;
+}
+
+.blog-content li::marker {
+  color: #b91c1c;
+}
+
+.blog-content strong {
+  @apply font-bold text-bcc-navy;
+}
+
+.blog-content em {
+  font-style: italic;
+}
+
+.blog-content a {
+  @apply text-bcc-red font-semibold;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-content a:hover {
+  @apply text-bcc-red-dark;
+}
+
+.blog-content blockquote {
+  @apply border-l-4 border-bcc-gold bg-bcc-cream;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-style: italic;
+}
+
+.blog-content blockquote p {
+  margin-bottom: 0;
+}
+
+.blog-content hr {
+  @apply border-bcc-gray-200;
+  margin: 2.5rem 0;
+  border-top-width: 2px;
+}
+
+.blog-content code {
+  @apply bg-bcc-cream text-bcc-navy;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+.blog-content pre {
+  @apply bg-bcc-navy text-white rounded-lg;
+  padding: 1.25rem;
+  margin: 1.75rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.blog-content pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+.blog-content img {
+  @apply rounded-lg shadow-md;
+  margin: 2rem auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.blog-content > *:first-child {
+  margin-top: 0;
+}
+
+.blog-content > *:last-child {
+  margin-bottom: 0;
+}
