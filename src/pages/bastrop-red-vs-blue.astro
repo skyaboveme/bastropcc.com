@@ -412,13 +412,110 @@ const downBallotRaces = [
 
       <!-- Add placeholders for other Growth subtabs as needed, keep it concise -->
       <div id="growth-demographics" data-pane-group="growth" class="hidden">
-         <div class="text-gray-700 p-6 bg-white border rounded">Demographics content loaded securely. (View Original Source for details)</div>
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">BASTROP COUNTY DEMOGRAPHICS</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {[
+            { label: "White (non-Hispanic)", pct: 45.7, color: "bg-gray-600" },
+            { label: "Hispanic / Latino", pct: 44.0, color: "bg-orange-500" },
+            { label: "Black / African American", pct: 5.7, color: "bg-blue-500" },
+            { label: "Other / Multiracial", pct: 4.6, color: "bg-gray-400" },
+          ].map(d => (
+            <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+              <div class="flex justify-between mb-3">
+                <span class="text-gray-800 font-bold">{d.label}</span>
+                <span class="font-mono font-bold text-lg">{d.pct}%</span>
+              </div>
+              <div class="bg-gray-100 rounded h-2 overflow-hidden">
+                <div class={`${d.color} h-full rounded`} style={`width: ${d.pct}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {[
+            { label: "Median HH Income", val: "$82,730", sub: "Up from ~$72K in 2019", color: "text-green-600" },
+            { label: "Median Age", val: "37.5 yrs", sub: "Down from 38.4 — getting younger", color: "text-yellow-600" },
+            { label: "Bachelor's Degree+", val: "25.5%", sub: "Up as tech workers arrive", color: "text-blue-600" },
+            { label: "Registered Voters", val: "62,294", sub: "As of March 2026 primary", color: "text-orange-500" },
+            { label: "2026 Primary Turnout", val: "~30%", sub: "18,606 ballots cast Mar 3", color: "text-purple-600" },
+            { label: "Population Density", val: "Growing", sub: "128 → ~138/sq mi", color: "text-gray-500" },
+          ].map(s => (
+            <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <div class="text-gray-500 font-mono text-xs tracking-wider mb-1">{s.label}</div>
+              <div class={`${s.color} font-bold text-xl`}>{s.val}</div>
+              <div class="text-gray-400 text-xs mt-1">{s.sub}</div>
+            </div>
+          ))}
+        </div>
       </div>
+
       <div id="growth-electoral" data-pane-group="growth" class="hidden">
-         <div class="text-gray-700 p-6 bg-white border rounded">Electoral risk breakdown loaded securely. (View Original Source for details)</div>
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">ELECTORAL RISK ASSESSMENT — GROWTH IMPACT ON BASTROP POLITICS</div>
+        <div class="flex flex-col gap-4 mb-8">
+          {[
+            { risk: "HIGH", color: "border-red-500 bg-red-50", badge: "text-red-600 bg-red-100 border-red-300", title: "Austin Overflow — Political Spillover", text: "~38% of in-migrants from Travis County. Travis County votes 70%+ Democrat. These are not MAGA transplants — they're Austin residents priced out seeking rural living while keeping Austin politics." },
+            { risk: "MEDIUM", color: "border-yellow-500 bg-yellow-50", badge: "text-yellow-700 bg-yellow-100 border-yellow-300", title: "Tech Worker Influx", text: "Tesla, SpaceX, and The Boring Company are driving high-income tech workers into Bastrop. This cohort skews socially liberal but economically libertarian — persuadable on property tax, but not guaranteed Republican." },
+            { risk: "MEDIUM", color: "border-yellow-500 bg-yellow-50", badge: "text-yellow-700 bg-yellow-100 border-yellow-300", title: "Declining Median Age", text: "Median age dropped from 38.4 to 37.5 in five years. Younger populations lean more Democratic nationally. The county's historic 2-to-1 Republican lean could compress to 55-45 territory within 2 election cycles." },
+            { risk: "LOW", color: "border-green-500 bg-green-50", badge: "text-green-700 bg-green-100 border-green-300", title: "Registered Voter Base Still Holds (2026)", text: "62,294 registered voters as of March 2026. Only ~30% turned out in the primary. Republican infrastructure dominates existing rolls. New arrivals must still register and mobilize — lagged effect protects GOP through 2026." },
+          ].map(r => (
+            <div class={`border-2 ${r.color} rounded-xl p-5`}>
+              <div class="flex gap-3 items-center mb-3">
+                <span class={`${r.badge} border font-mono text-xs font-bold tracking-wider px-2 py-0.5 rounded`}>{r.risk} RISK</span>
+                <span class="text-gray-900 font-bold text-sm">{r.title}</span>
+              </div>
+              <div class="text-gray-700 text-sm leading-relaxed">{r.text}</div>
+            </div>
+          ))}
+        </div>
+        <div class="bg-green-50 border-2 border-green-500 rounded-xl p-5">
+          <div class="text-green-700 font-mono text-xs font-bold tracking-wider mb-2">STRATEGIC RECOMMENDATION</div>
+          <div class="text-green-900 text-sm leading-relaxed"><strong>2026 is still safe for Klaus.</strong> Existing GOP voter rolls dominate and new arrivals haven't fully mobilized. The real exposure window is <strong>2028–2030</strong>. The time to build infrastructure for new voter outreach — especially moderate tech workers and value-driven transplants — is now.</div>
+        </div>
       </div>
+
       <div id="growth-employers" data-pane-group="growth" class="hidden">
-         <div class="text-gray-700 p-6 bg-white border rounded">Employers data loaded securely. (View Original Source for details)</div>
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">KEY EMPLOYERS DRIVING IN-MIGRATION</div>
+        <div class="flex flex-col gap-4 mb-8">
+          {[
+            { name: "Tesla Gigafactory", type: "EV / Manufacturing", workers: "20,000+", note: "Largest employer draw — workers settling in Bastrop" },
+            { name: "SpaceX", type: "Aerospace", workers: "~2,500", note: "Engineers choosing Bastrop over Austin" },
+            { name: "The Boring Company", type: "Infrastructure Tech", workers: "1,000+", note: "HQ is in Bastrop County — direct local employer" },
+            { name: "Austin Metro Commuters", type: "Remote / Hybrid", workers: "Est. 15,000+", note: "Hwy 71/290 corridor — Austin income, Bastrop address" },
+          ].map(e => (
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+              <div>
+                <div class="text-gray-900 font-bold text-base">{e.name}</div>
+                <div class="text-yellow-600 text-xs mt-1">{e.type}</div>
+              </div>
+              <div>
+                <div class="text-gray-500 font-mono text-xs tracking-wider">WORKERS</div>
+                <div class="text-green-600 font-bold text-base">{e.workers}</div>
+              </div>
+              <div class="text-gray-600 text-sm leading-relaxed">{e.note}</div>
+            </div>
+          ))}
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div class="text-yellow-600 font-mono text-xs font-bold tracking-wider mb-4">PROFILE OF THE TYPICAL BASTROP NEWCOMER</div>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
+            {[
+              { icon: "💼", label: "Occupation", val: "Tech / Engineering / Remote Knowledge Worker" },
+              { icon: "📍", label: "Came From", val: "Austin (Travis County) or California via Austin" },
+              { icon: "🏠", label: "Reason", val: "Affordability + acreage — Austin income, rural cost" },
+              { icon: "🎓", label: "Education", val: "Bachelor's degree or higher (25.5% and rising)" },
+              { icon: "💰", label: "Income", val: "Median HH: $82,730 — above Texas average" },
+              { icon: "🗳", label: "Likely Lean", val: "Center to center-left on social issues; tax-sensitive" },
+            ].map(p => (
+              <div class="flex gap-3 items-start">
+                <span class="text-xl shrink-0">{p.icon}</span>
+                <div>
+                  <div class="text-gray-500 font-mono text-xs tracking-wider">{p.label}</div>
+                  <div class="text-gray-800 text-sm mt-1 leading-snug">{p.val}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -504,39 +601,701 @@ const downBallotRaces = [
       
       <!-- Keep other sub-panes stubbed cleanly to prevent giant HTML output right now -->
       <div id="partisan-primary2026" data-pane-group="partisan" class="hidden">
-         <div class="text-gray-700 p-6 bg-white border rounded">2026 Primary participation content loaded securely. (View Original Source for details)</div>
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-2">MARCH 3, 2026 PRIMARY — BASTROP COUNTY PARTICIPATION</div>
+        <div class="text-gray-500 text-sm mb-6">18,606 total ballots cast — ~30% of 62,294 registered voters. First post-growth-wave primary in a non-presidential cycle.</div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+          <div class="text-gray-900 font-bold mb-3">HD-17 Primary: 16,777 Total Ballots — GOP vs Dem</div>
+          <div class="flex h-11 rounded-lg overflow-hidden mb-3">
+            <div class="bg-red-600 flex items-center justify-center text-white font-bold text-sm" style="width: 55.5%">GOP 9,310</div>
+            <div class="bg-blue-600 flex items-center justify-center text-white font-bold text-sm" style="width: 44.5%">Dem 7,467</div>
+          </div>
+          <div class="flex gap-6 text-sm">
+            <span class="text-bcc-red font-mono font-bold">55.5% GOP</span>
+            <span class="text-blue-600 font-mono font-bold">44.5% Dem</span>
+            <span class="text-gray-500">— in a county Trump won 58.6% in 2024</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+            <div class="text-bcc-red font-mono text-xs font-bold tracking-wider mb-4">COUNTY JUDGE — GOP PRIMARY (8,778 votes)</div>
+            {[{ name: "Gregory Klaus (Incumbent)", pct: 63.8 }, { name: "Donald Loucks", pct: 35.09 }].map(c => (
+              <div class="mb-4">
+                <div class="flex justify-between mb-1"><span class="text-gray-800 text-sm">{c.name}</span><span class="text-bcc-red font-mono font-bold">{c.pct}%</span></div>
+                <div class="bg-gray-100 rounded h-2 overflow-hidden"><div class="bg-bcc-red h-full rounded" style={`width: ${c.pct}%`}></div></div>
+              </div>
+            ))}
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-2">
+              <div class="text-blue-600 font-bold text-sm">Dem: Dock Jackson — Unopposed</div>
+              <div class="text-gray-500 text-xs mt-1">Skips primary — full focus on November general</div>
+            </div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+            <div class="text-blue-600 font-mono text-xs font-bold tracking-wider mb-4">TX HD-17 — DEM PRIMARY (7,467 votes)</div>
+            {[{ name: "Dr. Mary Klenz", pct: 62.22 }, { name: "Frank Gomez III", pct: 23.42 }, { name: "Robert Salter", pct: 14.36 }].map(c => (
+              <div class="mb-4">
+                <div class="flex justify-between mb-1"><span class="text-gray-800 text-sm">{c.name}</span><span class="text-blue-600 font-mono font-bold">{c.pct}%</span></div>
+                <div class="bg-gray-100 rounded h-2 overflow-hidden"><div class="bg-blue-500 h-full rounded" style={`width: ${c.pct}%`}></div></div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="bg-yellow-50 border-2 border-yellow-500 rounded-xl p-5">
+          <div class="text-yellow-700 font-mono text-xs font-bold tracking-wider mb-2">⚠ KEY INSIGHT: 44.5% DEM PRIMARY SHARE</div>
+          <div class="text-yellow-900 text-sm leading-relaxed">In a county Trump won 58.6%, Democrats turned out 44.5% of competitive primary voters. This reflects a structurally growing Democratic base fueled by Austin in-migration. Klaus and Gerdes are still safe for 2026, but this primary gap is the clearest leading indicator of where Bastrop is heading.</div>
+        </div>
       </div>
+
       <div id="partisan-localraces" data-pane-group="partisan" class="hidden">
-         <div class="text-gray-700 p-6 bg-white border rounded">Local Races tracking content loaded securely. (View Original Source for details)</div>
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">BASTROP COUNTY LOCAL RACES — 2022 TO 2024</div>
+        <div class="flex flex-col gap-4">
+          {[
+            { year: "2022", race: "County Judge", r: "Gregory Klaus", d: "Dock Jackson", rPct: "~57%", dPct: "~43%" },
+            { year: "2022", race: "Governor", r: "Greg Abbott", d: "Beto O'Rourke", rPct: "~61%", dPct: "~38%" },
+            { year: "2024", race: "President", r: "Donald Trump", d: "Kamala Harris", rPct: "58.6%", dPct: "40.1%" },
+            { year: "2024", race: "TX HD-17", r: "Stan Gerdes", d: "Desiree Venable", rPct: "69.5%", dPct: "30.5%" },
+          ].map(race => (
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+              <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex justify-between items-center">
+                <div class="flex gap-3 items-center">
+                  <span class="text-yellow-600 font-mono font-bold text-xs">{race.year}</span>
+                  <span class="text-gray-900 font-bold">{race.race}</span>
+                </div>
+                <span class="text-xs font-mono font-bold tracking-wider text-bcc-red bg-red-50 border border-red-200 px-2 py-0.5 rounded">R WIN</span>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="p-4 border-r border-gray-100">
+                  <div class="text-bcc-red font-mono text-xs tracking-wider mb-2">REPUBLICAN</div>
+                  <div class="text-gray-900 font-bold">{race.r}</div>
+                  <div class="text-bcc-red font-mono font-bold text-2xl mt-2">{race.rPct}</div>
+                  <div class="bg-gray-100 rounded h-1.5 mt-3 overflow-hidden"><div class="bg-bcc-red h-full rounded" style={`width: ${race.rPct.replace(/[^0-9.]/g, '')}%`}></div></div>
+                </div>
+                <div class="p-4">
+                  <div class="text-blue-600 font-mono text-xs tracking-wider mb-2">DEMOCRAT</div>
+                  <div class="text-gray-900 font-bold">{race.d}</div>
+                  <div class="text-blue-600 font-mono font-bold text-2xl mt-2">{race.dPct}</div>
+                  <div class="bg-gray-100 rounded h-1.5 mt-3 overflow-hidden"><div class="bg-blue-500 h-full rounded" style={`width: ${race.dPct.replace(/[^0-9.]/g, '')}%`}></div></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="text-gray-400 font-mono text-xs mt-4">Sources: BastropVotes.org, KVUE, Community Impact, Bastrop County GOP.</div>
       </div>
+
       <div id="partisan-trajectory" data-pane-group="partisan" class="hidden">
-         <div class="text-gray-700 p-6 bg-white border rounded">Trajectory content loaded securely. (View Original Source for details)</div>
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">REPUBLICAN MARGIN OF VICTORY — PRESIDENTIAL ELECTIONS</div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+          <div class="text-gray-500 text-xs mb-4">R margin over D in points (e.g. 58.6 - 40.1 = 18.5)</div>
+          <div class="flex items-end gap-3" style="height: 120px">
+            {[
+              { year: "2000", margin: 18.2 },
+              { year: "2004", margin: 14.9 },
+              { year: "2008", margin: 8.2 },
+              { year: "2012", margin: 17.0 },
+              { year: "2016", margin: 20.4 },
+              { year: "2020", margin: 13.8 },
+              { year: "2024", margin: 18.5 },
+            ].map(t => (
+              <div class="flex-1 flex flex-col items-center gap-1">
+                <div class="text-bcc-red font-mono text-xs font-bold">+{t.margin}</div>
+                <div class="w-full bg-bcc-red rounded-t" style={`height: ${(t.margin / 22) * 86}px; opacity: ${t.margin < 12 ? 0.6 : 1}`}></div>
+                <div class="text-gray-500 font-mono text-xs">{t.year}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="flex flex-col gap-4">
+          {[
+            { icon: "📌", color: "text-yellow-600", title: "2008 — Closest Race in Modern History", text: "Obama 45.3% vs McCain 53.5% — only an 8.2-point margin. The county held Republican, but by the slimmest recent margin." },
+            { icon: "📈", color: "text-blue-600", title: "2020 — Biden's High-Water Mark at 42.2%", text: "Best Democratic showing since 2004. Biden improved 4.8 points over Clinton's 37.4% in 2016 — tracking with the first major wave of Austin transplants." },
+            { icon: "🔄", color: "text-bcc-red", title: "2024 — Republican Rebound to 58.6%", text: "Harris won only 40.1%, retreating 2.1 points from Biden. Likely driven by a rightward shift among Latino voters — partially offsetting liberal Austin in-migration." },
+            { icon: "⚠️", color: "text-yellow-600", title: "2026 Primary Warning: 44.5% Dem Primary Share", text: "In a county Trump won 58.6%, Democrats turned out 44.5% of primary voters. Base energy is building. The 2028–2030 window is when structural Democratic gains become a real threat." },
+            { icon: "🎯", color: "text-green-600", title: "2026 Forecast: Republican Hold", text: "Klaus and Gerdes are both favored in November 2026. Expect margins in the +12 to +16 range — down from +18.5 in 2024. The question is not whether Rs win Bastrop in 2026, but whether they hold it through 2030." },
+          ].map(item => (
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+              <div class="flex gap-3 mb-2 items-center">
+                <span class="text-lg">{item.icon}</span>
+                <span class={`${item.color} font-bold text-sm`}>{item.title}</span>
+              </div>
+              <div class="text-gray-700 text-sm leading-relaxed">{item.text}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
     </div>
 
     <!-- PANE 4: VOTER DATA -->
     <div id="pane-voter-data" data-pane-group="main" class="hidden">
-       <div class="text-gray-700 p-8 bg-white border border-bcc-gray-200 rounded-xl text-center shadow">
-         <h3 class="text-xl font-bold text-bcc-navy mb-2">Voter Rolls & Election Analysis</h3>
-         <p>Extensive data tables summarizing primary and general election shifts available upon request.</p>
-       </div>
+      <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
+        <div class="text-green-700 font-mono text-xs font-bold tracking-wider mb-1">⚠ TEXAS VOTER DATA NOTE</div>
+        <div class="text-green-900 text-sm leading-relaxed">Texas does not have party voter registration — voters do not declare R or D. Primary ballot choice is the only official party proxy. Figures marked <strong>"Est."</strong> use statewide R/D ratios; figures marked <strong>"CONFIRMED"</strong> are from official Bastrop County results.</div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-8">
+        {["rolls|📋 VOTER ROLLS & TURNOUT", "primary|🔴🔵 PRIMARY PARTICIPATION", "general|🗳 GENERAL ELECTION", "early|🕐 EARLY VS ELECTION DAY"].map((spec, idx) => {
+          const [id, label] = spec.split("|");
+          return (
+            <button data-tab-group="voter" data-tab-target={`voter-${id}`} class={`px-3 py-1.5 font-bold text-xs font-mono tracking-wider rounded border transition-colors ${idx === 0 ? 'bg-bcc-navy text-white border-bcc-navy' : 'bg-white text-gray-600 border-gray-200 hover:border-bcc-navy hover:text-bcc-navy'}`}>{label}</button>
+          );
+        })}
+      </div>
+
+      <div id="voter-rolls" data-pane-group="voter" class="block">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">BASTROP COUNTY REGISTERED VOTERS & TURNOUT — OFFICIAL SOS DATA</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[
+            { val: "62,294", label: "Registered voters (Mar 2026)", color: "text-green-600" },
+            { val: "+38%", label: "Voter roll growth since 2016", color: "text-yellow-600" },
+            { val: "65%", label: "2024 general turnout", color: "text-blue-600" },
+            { val: "30%", label: "2026 primary turnout", color: "text-orange-500" },
+          ].map(s => (
+            <div class="bg-white border border-gray-200 rounded-lg p-4 text-center shadow-sm">
+              <div class={`${s.color} font-bold text-2xl leading-none`}>{s.val}</div>
+              <div class="text-gray-500 text-xs mt-2">{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+          <div class="text-gray-500 text-xs mb-4">Registered voters vs turnout by election cycle</div>
+          <div class="flex flex-col gap-5">
+            {[
+              { year: "2016", reg: 45137, voted: 28424, pct: 62.97, type: "Presidential" },
+              { year: "2018", reg: 46416, voted: 27662, pct: 60.0, type: "Midterm (Gov)" },
+              { year: "2020", reg: 52096, voted: 36612, pct: 70.28, type: "Presidential" },
+              { year: "2022", reg: 55779, voted: 29232, pct: 52.41, type: "Midterm (Gov)" },
+              { year: "2024", reg: 61423, voted: 39956, pct: 65.04, type: "Presidential" },
+              { year: "2026*", reg: 62294, voted: 18606, pct: 29.87, type: "Primary Only" },
+            ].map(r => (
+              <div class="grid grid-cols-[52px_1fr_60px_90px] gap-3 items-center">
+                <div class="text-yellow-600 font-mono text-xs font-bold">{r.year}</div>
+                <div>
+                  <div class="bg-gray-100 rounded h-5 overflow-hidden relative">
+                    <div class="absolute left-0 top-0 h-full bg-gray-200 rounded" style={`width: ${(r.reg / 70000) * 100}%`}></div>
+                    <div class={`absolute left-0 top-0 h-full rounded ${r.type === 'Presidential' ? 'bg-blue-200' : 'bg-orange-200'}`} style={`width: ${(r.voted / 70000) * 100}%`}></div>
+                  </div>
+                  <div class="flex gap-2 mt-1">
+                    <span class="text-gray-400 text-xs">{r.reg.toLocaleString()} reg</span>
+                    <span class="text-gray-400 text-xs">→</span>
+                    <span class={`text-xs ${r.type === 'Presidential' ? 'text-blue-500' : 'text-orange-500'}`}>{r.voted.toLocaleString()} voted</span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class={`font-mono font-bold text-base ${r.pct >= 65 ? 'text-green-600' : r.pct >= 55 ? 'text-yellow-600' : 'text-orange-500'}`}>{r.pct.toFixed(1)}%</div>
+                </div>
+                <div class="text-right text-gray-500 text-xs italic">{r.type}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+            <div class="text-green-600 font-mono text-xs font-bold tracking-wider mb-2">VOTER ROLL GROWTH</div>
+            <div class="text-gray-700 text-sm leading-relaxed">Bastrop County added <strong>17,157 registered voters</strong> between 2016 and 2024 — a 38% increase. New voters added since 2016 roughly equal the entire county voter rolls from the early 1990s.</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+            <div class="text-yellow-600 font-mono text-xs font-bold tracking-wider mb-2">TURNOUT PATTERN</div>
+            <div class="text-gray-700 text-sm leading-relaxed">Presidential years drive massive turnout spikes — 70.28% in 2020 was the highest in 3 decades. Midterms drop 10–20 points. The 2026 primary's 30% is above the statewide ~22% norm.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="voter-primary" data-pane-group="voter" class="hidden">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-2">R VS D PRIMARY BALLOT PARTICIPATION — BASTROP COUNTY</div>
+        <div class="text-gray-500 text-sm mb-6">Primary ballot choice = Texas's only official party proxy. 2026 data confirmed; prior years estimated.</div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+          <div class="flex flex-col gap-5">
+            {[
+              { year: "2016", rBallots: 6800, dBallots: 3400, total: 10200, rPct: 66.7, dPct: 33.3, confirmed: false },
+              { year: "2018", rBallots: 6200, dBallots: 3900, total: 10100, rPct: 61.4, dPct: 38.6, confirmed: false },
+              { year: "2020", rBallots: 7100, dBallots: 2200, total: 9300, rPct: 76.3, dPct: 23.7, confirmed: false },
+              { year: "2022", rBallots: 6750, dBallots: 3700, total: 10450, rPct: 64.6, dPct: 35.4, confirmed: false },
+              { year: "2024", rBallots: 9800, dBallots: 4200, total: 14000, rPct: 70.0, dPct: 30.0, confirmed: false },
+              { year: "2026", rBallots: 9310, dBallots: 7467, total: 16777, rPct: 55.5, dPct: 44.5, confirmed: true },
+            ].map(p => (
+              <div>
+                <div class="flex justify-between mb-2">
+                  <div class="flex gap-3 items-center">
+                    <span class="text-yellow-600 font-mono text-xs font-bold w-10">{p.year}</span>
+                    <span class={`font-mono text-xs tracking-wider ${p.confirmed ? 'text-green-600' : 'text-gray-400'}`}>{p.confirmed ? 'CONFIRMED' : 'ESTIMATED'}</span>
+                  </div>
+                  <div class="flex gap-4">
+                    <span class="text-bcc-red font-mono text-xs font-bold">R {p.rPct.toFixed(1)}%</span>
+                    <span class="text-blue-600 font-mono text-xs font-bold">D {p.dPct.toFixed(1)}%</span>
+                  </div>
+                </div>
+                <div class="flex h-7 rounded overflow-hidden">
+                  <div class="bg-red-600 flex items-center justify-center text-white text-xs font-bold" style={`width: ${(p.rBallots / p.total) * 100}%`}>{p.rBallots.toLocaleString()}</div>
+                  <div class="bg-blue-600 flex items-center justify-center text-white text-xs font-bold" style={`width: ${(p.dBallots / p.total) * 100}%`}>{p.dBallots.toLocaleString()}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="bg-green-50 border-2 border-green-500 rounded-xl p-5">
+          <div class="text-green-700 font-mono text-xs font-bold tracking-wider mb-2">THE KEY TREND: DEM PRIMARY SHARE GROWING</div>
+          <div class="text-green-900 text-sm leading-relaxed"><strong>The Dem primary share jumped from ~33% to 44.5% in a single cycle.</strong> That is an 11-point swing. Whether this is a lasting structural shift or a 2026 enthusiasm spike will be visible in 2028 primary numbers. It is the single most important data point for understanding Bastrop County's trajectory.</div>
+        </div>
+      </div>
+
+      <div id="voter-general" data-pane-group="voter" class="hidden">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">GENERAL ELECTION R VS D VOTE TOTALS — BASTROP COUNTY</div>
+        <div class="flex flex-col gap-4 mb-6">
+          {[
+            { year: "2016", race: "President", rVotes: 16314, dVotes: 10555, total: 28250, rPct: 57.8, dPct: 37.4 },
+            { year: "2018", race: "Governor", rVotes: 17100, dVotes: 10200, total: 27662, rPct: 61.8, dPct: 36.9 },
+            { year: "2020", race: "President", rVotes: 19900, dVotes: 15000, total: 36612, rPct: 56.0, dPct: 42.2 },
+            { year: "2022", race: "Governor", rVotes: 17900, dVotes: 10800, total: 29232, rPct: 61.3, dPct: 36.9 },
+            { year: "2024", race: "President", rVotes: 23276, dVotes: 15941, total: 39956, rPct: 58.6, dPct: 40.1 },
+          ].map(g => (
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+              <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+                <div class="flex gap-3 items-center">
+                  <span class="text-yellow-600 font-mono font-bold text-sm">{g.year}</span>
+                  <span class="text-gray-600 text-sm">{g.race}</span>
+                </div>
+                <div class="flex gap-6">
+                  <div class="text-right"><div class="text-bcc-red font-bold text-xl">{g.rPct}%</div><div class="text-gray-400 text-xs">{g.rVotes.toLocaleString()} R</div></div>
+                  <div class="text-center"><div class="text-bcc-red font-mono font-bold text-sm">R +{(g.rPct - g.dPct).toFixed(1)}</div><div class="text-gray-400 text-xs">{g.total.toLocaleString()} total</div></div>
+                  <div class="text-left"><div class="text-blue-600 font-bold text-xl">{g.dPct}%</div><div class="text-gray-400 text-xs">{g.dVotes.toLocaleString()} D</div></div>
+                </div>
+              </div>
+              <div class="flex h-5 rounded overflow-hidden">
+                <div class="bg-red-600" style={`width: ${(g.rVotes / g.total) * 100}%`}></div>
+                <div class="bg-black" style="width:1%"></div>
+                <div class="bg-blue-600" style={`width: ${(g.dVotes / g.total) * 100}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="bg-yellow-50 border border-yellow-300 rounded-xl p-5">
+          <div class="text-yellow-700 font-mono text-xs font-bold tracking-wider mb-2">KEY FINDING: DEMOCRATS ADDED MORE RAW VOTES 2016→2024</div>
+          <div class="text-yellow-900 text-sm leading-relaxed">Between 2016 and 2024, Republicans added ~<strong class="text-bcc-red">6,962 net votes</strong>. Democrats added ~<strong class="text-blue-600">5,386 net votes</strong>. Both grew, but Democrats grew at a faster <em>rate</em> (+51% vs +43%). Republicans hold the margin but the gap is compressing.</div>
+        </div>
+      </div>
+
+      <div id="voter-early" data-pane-group="voter" class="hidden">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-2">EARLY VOTING vs ELECTION DAY — BASTROP COUNTY</div>
+        <div class="text-gray-500 text-sm mb-6">Official SOS data. Early voting = in-person early + mail ballots.</div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+          <div class="flex flex-col gap-5">
+            {[
+              { year: "2016", total: 28424, early: 21188, evPct: 74.5, day: 7236, dayPct: 25.5 },
+              { year: "2018", total: 27662, early: 18634, evPct: 67.4, day: 9028, dayPct: 32.6 },
+              { year: "2020", total: 36612, early: 31298, evPct: 85.5, day: 5314, dayPct: 14.5 },
+              { year: "2022", total: 29232, early: 19944, evPct: 68.2, day: 9288, dayPct: 31.8 },
+            ].map(e => (
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-yellow-600 font-mono text-sm font-bold">{e.year}</span>
+                  <div class="flex gap-6">
+                    <span class="text-teal-600 font-mono text-xs">Early: {e.early.toLocaleString()} ({e.evPct}%)</span>
+                    <span class="text-orange-500 font-mono text-xs">Day-of: {e.day.toLocaleString()} ({e.dayPct}%)</span>
+                  </div>
+                </div>
+                <div class="flex h-7 rounded overflow-hidden">
+                  <div class="bg-teal-600 flex items-center pl-3 text-white text-xs font-bold" style={`width: ${e.evPct}%`}>Early</div>
+                  <div class="bg-orange-400 flex items-center pl-3 text-white text-xs" style={`width: ${e.dayPct}%`}>Day</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div class="text-green-600 font-mono text-xs font-bold tracking-wider mb-3">WHAT THIS MEANS FOR CAMPAIGNS</div>
+          <div class="flex flex-col gap-4">
+            {[
+              { icon: "📈", title: "2020 Covid spike reshaped expectations", text: "85.5% of Bastrop voters cast ballots before Election Day — a historic high that set new voter habits." },
+              { icon: "🔵", title: "Early vote leans Democratic", text: "Nationally and in Texas, early voters skew more Democratic. Republican campaigns should prioritize Election Day GOTV." },
+              { icon: "⚡", title: "Election Day = GOP's structural advantage", text: "Bastrop's Election Day voter pool is historically Republican-dominant. Protecting this turnout is critical." },
+              { icon: "📅", title: "2026 early vote window: Oct 20–Oct 30", text: "Republican campaigns should plan two waves of voter contact during early voting and a final Election Day push." },
+            ].map(item => (
+              <div class="flex gap-3 pb-4 border-b border-gray-100 last:border-0">
+                <span class="text-xl shrink-0">{item.icon}</span>
+                <div>
+                  <div class="text-gray-900 font-bold text-sm mb-1">{item.title}</div>
+                  <div class="text-gray-600 text-sm leading-relaxed">{item.text}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- PANE 5: SOCIAL MEDIA -->
     <div id="pane-social" data-pane-group="main" class="hidden">
-       <div class="text-gray-700 p-8 bg-white border border-bcc-gray-200 rounded-xl text-center shadow">
-         <h3 class="text-xl font-bold text-bcc-navy mb-2">Social Media Intelligence</h3>
-         <p>Comparing organic presence across Facebook, X, and Instagram.</p>
-       </div>
+      <div class="flex flex-wrap gap-2 mb-8">
+        {["overview|📊 OVERVIEW", "facebook|👥 FACEBOOK", "twitter|🐦 X / TWITTER", "other|📸 OTHER CHANNELS"].map((spec, idx) => {
+          const [id, label] = spec.split("|");
+          return (
+            <button data-tab-group="social" data-tab-target={`social-${id}`} class={`px-3 py-1.5 font-bold text-xs font-mono tracking-wider rounded border transition-colors ${idx === 0 ? 'bg-bcc-navy text-white border-bcc-navy' : 'bg-white text-gray-600 border-gray-200 hover:border-bcc-navy hover:text-bcc-navy'}`}>{label}</button>
+          );
+        })}
+      </div>
+
+      <div id="social-overview" data-pane-group="social" class="block">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">BASTROP COUNTY POLITICAL PARTIES — SOCIAL MEDIA SCORECARD</div>
+        <div class="bg-white border-2 border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+          <div class="text-yellow-600 font-mono text-xs font-bold tracking-wider mb-4">FACEBOOK — THE DEFINING GAP</div>
+          <div class="grid grid-cols-[1fr_auto_1fr] gap-0 items-center mb-6">
+            <div class="text-center">
+              <div class="text-gray-500 font-mono text-xs mb-2">🔴 BCRP — @BCRPBastropTX</div>
+              <div class="text-bcc-red font-bold text-4xl leading-none">1,600</div>
+              <div class="text-gray-500 text-xs mt-1">page likes</div>
+              <div class="text-orange-500 font-bold text-lg mt-3">98</div>
+              <div class="text-gray-500 text-xs">talking about this</div>
+            </div>
+            <div class="px-6 text-gray-400 font-mono font-bold text-sm">VS</div>
+            <div class="text-center">
+              <div class="text-gray-500 font-mono text-xs mb-2">🔵 BCDP — @BastropDems</div>
+              <div class="text-blue-600 font-bold text-4xl leading-none">3,386</div>
+              <div class="text-gray-500 text-xs mt-1">page likes</div>
+              <div class="text-blue-500 font-bold text-lg mt-3">1,136</div>
+              <div class="text-gray-500 text-xs">talking about this</div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-3">
+            {[
+              { label: "Page Likes / Followers", gopPct: 47.2, gopVal: "1,600", demVal: "3,386" },
+              { label: "Talking About This", gopPct: 8.6, gopVal: "98", demVal: "1,136" },
+            ].map(r => (
+              <div>
+                <div class="text-gray-500 text-xs mb-2">{r.label}</div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="flex items-center gap-2">
+                    <div class="flex-1 bg-gray-100 rounded h-2.5 overflow-hidden"><div class="bg-bcc-red h-full rounded" style={`width: ${r.gopPct}%`}></div></div>
+                    <span class="text-bcc-red font-mono text-xs font-bold w-12 text-right">{r.gopVal}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="flex-1 bg-gray-100 rounded h-2.5 overflow-hidden"><div class="bg-blue-500 h-full rounded" style="width: 100%"></div></div>
+                    <span class="text-blue-600 font-mono text-xs font-bold w-12 text-right">{r.demVal}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+          {[
+            { platform: "Facebook Likes", gop: "1,600", dem: "3,386", winner: "D", mult: "2.1x" },
+            { platform: "Talking About This", gop: "98", dem: "1,136", winner: "D", mult: "11.6x" },
+            { platform: "X / Twitter", gop: "Active", dem: "Low", winner: "R" },
+            { platform: "Instagram", gop: "None", dem: "461 flw", winner: "D" },
+            { platform: "LinkedIn", gop: "Minimal", dem: "Active", winner: "D" },
+            { platform: "Check-ins", gop: "45", dem: "N/A", winner: "R" },
+          ].map(r => (
+            <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <div class="text-gray-500 font-mono text-xs tracking-wider mb-2">{r.platform.toUpperCase()}</div>
+              <div class="flex justify-between mb-1">
+                <span class="text-bcc-red font-bold text-sm">{r.gop}</span>
+                <span class="text-blue-600 font-bold text-sm">{r.dem}</span>
+              </div>
+              <div class="flex justify-between text-xs text-gray-400">
+                <span>🔴 BCRP</span><span>🔵 BCDP</span>
+              </div>
+              {r.mult && (<div class="mt-2 text-center bg-blue-50 border border-blue-200 rounded px-2 py-0.5"><span class="text-blue-600 font-mono text-xs font-bold">BCDP leads by {r.mult}</span></div>)}
+            </div>
+          ))}
+        </div>
+        <div class="bg-orange-50 border-2 border-orange-400 rounded-xl p-5">
+          <div class="text-orange-700 font-mono text-xs font-bold tracking-wider mb-2">⚡ SOCIAL MEDIA BOTTOM LINE</div>
+          <div class="text-orange-900 text-sm leading-relaxed mb-3"><strong>The Dem engagement lead on Facebook is alarming.</strong> Democrats have 2.1x more page likes (3,386 vs 1,600) but 11.6x more "talking about this" (1,136 vs 98). An 11.6x gap on engagement means Democrat content is spreading through feeds at a rate the BCRP cannot match.</div>
+          <div class="text-orange-900 text-sm leading-relaxed mb-3"><strong>Republicans hold X/Twitter.</strong> BCRP's @BastropCtyGOP posts actively. BCDP's @Bastrop_Dems is largely dormant.</div>
+          <div class="text-orange-900 text-sm leading-relaxed"><strong>Democrats have Instagram. Republicans have nothing.</strong> BCDP runs @bastropdems with 461 followers and 78 posts. BCRP has no Instagram presence.</div>
+        </div>
+      </div>
+
+      <div id="social-facebook" data-pane-group="social" class="hidden">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">FACEBOOK HEAD-TO-HEAD</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="border-2 border-bcc-red rounded-xl bg-white p-5 shadow-sm">
+            <div class="text-bcc-red font-mono text-xs font-bold tracking-wider mb-3">🔴 BASTROP COUNTY REPUBLICAN PARTY</div>
+            <a href="https://facebook.com/BCRPBastropTX" target="_blank" rel="noreferrer" class="text-gray-400 font-mono text-xs block mb-4">facebook.com/BCRPBastropTX ↗</a>
+            {[
+              { label: "Page Likes", val: "1,600" },
+              { label: "Talking About This", val: "98" },
+              { label: "Engagement Rate", val: "6.1%" },
+            ].map(f => (<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-gray-500 text-sm">{f.label}</span><span class="text-bcc-red font-bold text-sm">{f.val}</span></div>))}
+            <div class="mt-4 text-gray-500 font-mono text-xs tracking-wider mb-2">POST THEMES</div>
+            {["Election announcements & results", "Monthly meeting notices", "Fundraiser promotion", "Candidate endorsements"].map(t => (<div class="flex gap-2 mb-1"><span class="text-bcc-red shrink-0">▸</span><span class="text-gray-600 text-xs">{t}</span></div>))}
+          </div>
+          <div class="border-2 border-blue-500 rounded-xl bg-white p-5 shadow-sm">
+            <div class="text-blue-600 font-mono text-xs font-bold tracking-wider mb-3">🔵 BASTROP COUNTY DEMOCRATIC PARTY</div>
+            <a href="https://facebook.com/BastropDems" target="_blank" rel="noreferrer" class="text-gray-400 font-mono text-xs block mb-4">facebook.com/BastropDems ↗</a>
+            {[
+              { label: "Page Likes", val: "3,386" },
+              { label: "Talking About This", val: "1,136" },
+              { label: "Engagement Rate", val: "33.5%" },
+            ].map(f => (<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-gray-500 text-sm">{f.label}</span><span class="text-blue-600 font-bold text-sm">{f.val}</span></div>))}
+            <div class="mt-4 text-gray-500 font-mono text-xs tracking-wider mb-2">POST THEMES</div>
+            {["Rally announcements & coverage (170+)", "Candidate spotlights & voter info", "Volunteer recruitment & organizing", "Weekly political cartoons"].map(t => (<div class="flex gap-2 mb-1"><span class="text-blue-500 shrink-0">▸</span><span class="text-gray-600 text-xs">{t}</span></div>))}
+          </div>
+        </div>
+        <div class="bg-blue-50 border-2 border-blue-400 rounded-xl p-5">
+          <div class="text-blue-700 font-mono text-xs font-bold tracking-wider mb-2">⚠ WHAT 33.5% ENGAGEMENT MEANS</div>
+          <div class="text-blue-900 text-sm leading-relaxed">A 33.5% engagement rate is extremely high — most political pages run 1–5%. This means 1 in 3 BCDP followers is actively interacting weekly. That organic reach drives the Democratic Party's message into feeds across Bastrop County at scale.</div>
+        </div>
+      </div>
+
+      <div id="social-twitter" data-pane-group="social" class="hidden">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">X / TWITTER HEAD-TO-HEAD</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="border-2 border-bcc-red rounded-xl bg-white p-5 shadow-sm">
+            <div class="text-bcc-red font-mono text-xs font-bold tracking-wider mb-3">🔴 BCRP — @BastropCtyGOP</div>
+            {[{ label: "Activity Level", val: "ACTIVE", color: "text-green-600" }, { label: "Content", val: "Event notices, election info" }, { label: "Frequency", val: "Regular — event-driven" }].map(f => (<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-gray-500 text-sm">{f.label}</span><span class={`${f.color || 'text-gray-800'} font-bold text-sm`}>{f.val}</span></div>))}
+          </div>
+          <div class="border-2 border-blue-500 rounded-xl bg-white p-5 shadow-sm">
+            <div class="text-blue-600 font-mono text-xs font-bold tracking-wider mb-3">🔵 BCDP — @Bastrop_Dems</div>
+            {[{ label: "Activity Level", val: "LOW", color: "text-red-500" }, { label: "Content", val: "Minimal recent posting" }, { label: "Frequency", val: "Infrequent — dormant stretches" }].map(f => (<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-gray-500 text-sm">{f.label}</span><span class={`${f.color || 'text-gray-800'} font-bold text-sm`}>{f.val}</span></div>))}
+          </div>
+        </div>
+        <div class="bg-green-50 border-2 border-green-500 rounded-xl p-5">
+          <div class="text-green-700 font-mono text-xs font-bold tracking-wider mb-2">X / TWITTER ASSESSMENT</div>
+          <div class="text-green-900 text-sm leading-relaxed"><strong>X is the one platform where Republicans clearly lead.</strong> BCRP posts regularly. BCDP is largely inactive. However, X's local audience is smaller than Facebook's, making this advantage strategically secondary.</div>
+        </div>
+      </div>
+
+      <div id="social-other" data-pane-group="social" class="hidden">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">OTHER SOCIAL CHANNELS</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="bg-white border-2 border-purple-400 rounded-xl p-5 shadow-sm">
+            <div class="text-purple-600 font-mono text-xs font-bold tracking-wider mb-4">📸 INSTAGRAM</div>
+            <div class="mb-4">
+              <div class="text-blue-600 font-mono text-xs font-bold mb-2">🔵 BCDP — @bastropdems</div>
+              {[{ label: "Followers", val: "461" }, { label: "Posts", val: "78" }].map(f => (<div class="flex justify-between py-1.5 border-b border-gray-100"><span class="text-gray-500 text-sm">{f.label}</span><span class="text-blue-600 font-bold text-sm">{f.val}</span></div>))}
+            </div>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+              <div class="text-bcc-red font-bold text-sm">🔴 BCRP — No presence found</div>
+              <div class="text-gray-500 text-xs mt-1">Uncontested platform for BCDP.</div>
+            </div>
+          </div>
+          <div class="bg-white border-2 border-blue-400 rounded-xl p-5 shadow-sm">
+            <div class="text-blue-600 font-mono text-xs font-bold tracking-wider mb-4">💼 LINKEDIN</div>
+            <div class="mb-4">
+              <div class="text-blue-600 font-mono text-xs font-bold mb-2">🔵 BCDP — Active</div>
+              {[{ label: "Status", val: "Active" }, { label: "Content", val: "Posts, updates, candidate news" }].map(f => (<div class="flex justify-between py-1.5 border-b border-gray-100"><span class="text-gray-500 text-sm">{f.label}</span><span class="text-blue-600 font-bold text-sm">{f.val}</span></div>))}
+            </div>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+              <div class="text-bcc-red font-bold text-sm">🔴 BCRP — Minimal / not found</div>
+              <div class="text-gray-500 text-xs mt-1">Democrats hold this channel by default.</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-orange-50 border-2 border-orange-400 rounded-xl p-5">
+          <div class="text-orange-700 font-mono text-xs font-bold tracking-wider mb-3">CHANNEL GAP ANALYSIS</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { title: "Immediate: Facebook Paid Ads", urgency: "CRITICAL", color: "text-red-600 bg-red-50 border-red-200", text: "The BCDP's 33.5% organic FB engagement is winning. The counter is paid Facebook/Instagram advertising." },
+              { title: "Short-Term: GOP Instagram Launch", urgency: "HIGH", color: "text-yellow-700 bg-yellow-50 border-yellow-200", text: "BCRP has zero Instagram. BCDP has 78 posts. Instagram is where 30s–40s Austin transplants live." },
+              { title: "Maintain: X / Twitter Edge", urgency: "HOLD", color: "text-green-700 bg-green-50 border-green-200", text: "BCRP already owns X in Bastrop. Maintain regular posting cadence." },
+              { title: "Monitor: LinkedIn Opportunity", urgency: "WATCH", color: "text-blue-600 bg-blue-50 border-blue-200", text: "LinkedIn's audience is the professional class — Tesla, SpaceX, Boring Co. workers. BCDP has a presence; BCRP does not." },
+            ].map(item => (
+              <div class="bg-white border border-gray-200 rounded-lg p-4">
+                <div class="flex gap-2 items-center mb-2">
+                  <span class={`${item.color} border font-mono text-xs font-bold tracking-wider px-2 py-0.5 rounded`}>{item.urgency}</span>
+                  <span class="text-gray-900 font-bold text-sm">{item.title}</span>
+                </div>
+                <div class="text-gray-600 text-sm leading-relaxed">{item.text}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- PANE 6: LOCAL INTEL -->
     <div id="pane-intel" data-pane-group="main" class="hidden">
-       <div class="text-gray-700 p-8 bg-white border border-bcc-gray-200 rounded-xl text-center shadow">
-         <h3 class="text-xl font-bold text-bcc-navy mb-2">Leadership & Local Infrastructure</h3>
-         <p>Comprehensive overview of opposing infrastructure.</p>
-       </div>
+      <div class="flex flex-wrap gap-2 mb-8">
+        {["gop|🔴 BCRP LEADERSHIP", "dems|🔵 OPPOSITION INTEL", "compare|⚡ SIDE-BY-SIDE"].map((spec, idx) => {
+          const [id, label] = spec.split("|");
+          return (
+            <button data-tab-group="intel" data-tab-target={`intel-${id}`} class={`flex-1 px-3 py-2 font-bold text-xs font-mono tracking-wider rounded border transition-colors ${idx === 0 ? 'bg-bcc-navy text-white border-bcc-navy' : 'bg-white text-gray-600 border-gray-200 hover:border-bcc-navy hover:text-bcc-navy'}`}>{label}</button>
+          );
+        })}
+      </div>
+
+      <div id="intel-gop" data-pane-group="intel" class="block">
+        <div class="border-2 border-bcc-red rounded-xl bg-white p-6 shadow-sm mb-6">
+          <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+            <div>
+              <div class="flex items-center gap-3 mb-2">
+                <span class="bg-red-50 text-bcc-red border border-red-200 font-mono text-xs font-bold tracking-wider px-2 py-0.5 rounded">ALLY INTELLIGENCE</span>
+                <a href="https://www.bastropctygop.com/leadership-team/" target="_blank" rel="noreferrer" class="text-gray-400 text-xs font-mono">bastropctygop.com ↗</a>
+              </div>
+              <div class="text-gray-900 font-bold text-xl">Bastrop County Republican Party</div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-white border border-gray-200 rounded-lg p-3 text-center"><div class="text-bcc-red font-bold text-lg">6</div><div class="text-gray-500 text-xs">Leadership roles</div></div>
+              <div class="bg-white border border-gray-200 rounded-lg p-3 text-center"><div class="text-bcc-red font-bold text-lg">1,600+</div><div class="text-gray-500 text-xs">FB followers</div></div>
+            </div>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">The BCRP leadership team supports party operations and the Executive Committee. The party maintains an office at 443 Highway 71 West, runs monthly informational meetings, and organizes annual fundraisers including the Golf Classic and Boots & Barbecue.</p>
+        </div>
+
+        <div class="text-bcc-red font-mono text-xs font-bold tracking-widest mb-4">BCRP LEADERSHIP TEAM</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {[
+            { role: "County Chair", name: "Justin Bezner", phone: "(512) 825-2707", note: "Top decision-maker, sets strategic direction.", highlight: true },
+            { role: "Vice Chair", name: "James Page", note: "Supports Chair, fills in for Chair duties." },
+            { role: "Treasurer", name: "Reed Lewis", note: "Manages BCRP finances, PAC filings, fundraiser proceeds." },
+          ].map(p => (
+            <div class={`bg-white border-2 ${p.highlight ? 'border-bcc-red' : 'border-gray-200'} rounded-xl p-5 shadow-sm`}>
+              <div class="text-bcc-red font-mono text-xs font-bold tracking-wider mb-2">{p.role.toUpperCase()}</div>
+              <div class="text-gray-900 font-bold text-base mb-1">{p.name}</div>
+              {p.phone && <div class="text-orange-500 font-mono text-xs mb-2">{p.phone}</div>}
+              <div class="text-gray-500 text-xs leading-relaxed">{p.note}</div>
+              {p.highlight && <div class="mt-3 inline-block bg-red-50 text-bcc-red border border-red-200 font-mono text-xs font-bold px-2 py-0.5 rounded">PRIMARY CONTACT</div>}
+            </div>
+          ))}
+        </div>
+
+        <div class="text-bcc-red font-mono text-xs font-bold tracking-widest mb-4">BCRP OPERATIONAL INFRASTRUCTURE</div>
+        <div class="flex flex-col gap-2 mb-8">
+          {[
+            { label: "Physical Office", val: "443 Hwy 71 West, Bastrop TX", note: "Tue/Wed/Fri/Sat 10-2 · Thu 2-6" },
+            { label: "Phone", val: "(512) 409-1415", note: "Office hours only" },
+            { label: "Website", val: "bastropctygop.com", note: "WordPress — active, weekly posts" },
+            { label: "Facebook", val: "@BCRPBastropTX", note: "1,600+ followers · 98 talking" },
+            { label: "Twitter/X", val: "@BastropCtyGOP", note: "Active posting" },
+            { label: "Fundraisers", val: "Golf Classic + Boots & BBQ", note: "Golf: Apr 10 at ColoVista" },
+          ].map(d => (
+            <div class="bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm grid grid-cols-[140px_180px_1fr] gap-3 items-center">
+              <div class="text-gray-500 font-mono text-xs tracking-wider">{d.label}</div>
+              <div class="text-orange-500 font-bold text-sm">{d.val}</div>
+              <div class="text-gray-500 text-xs">{d.note}</div>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-bcc-red font-mono text-xs font-bold tracking-widest mb-4">RECENT BCRP ACTIVITY</div>
+        <div class="flex flex-col gap-2">
+          {[
+            { date: "Mar 2026", event: "2026 Primary Election Support", note: "Pre-election communications, VDR training" },
+            { date: "Jan 2026", event: "Informational Mtg: Ketrich Steger", note: "Separation of Church and State" },
+            { date: "Jan 2026", event: "Young Republicans: Stan Gerdes", note: "Monthly meeting speaker" },
+            { date: "Nov 2025", event: "Informational Mtg: Sid Miller", note: "Future of Texas Agriculture" },
+            { date: "Apr 2026", event: "4th Annual Golf Classic", note: "April 10 at ColoVista Golf Club" },
+          ].map(r => (
+            <div class="bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm grid grid-cols-[80px_1fr_1fr] gap-3 items-center">
+              <div class="text-bcc-red font-mono text-xs font-bold">{r.date}</div>
+              <div class="text-gray-900 font-bold text-sm">{r.event}</div>
+              <div class="text-gray-500 text-xs">{r.note}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div id="intel-dems" data-pane-group="intel" class="hidden">
+        <div class="border-2 border-blue-500 rounded-xl bg-white p-6 shadow-sm mb-6">
+          <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+            <div>
+              <div class="flex items-center gap-3 mb-2">
+                <span class="bg-red-50 text-red-600 border border-red-200 font-mono text-xs font-bold tracking-wider px-2 py-0.5 rounded">OPPOSITION INTEL</span>
+                <a href="https://bastropdemocrats.org" target="_blank" rel="noreferrer" class="text-gray-400 text-xs font-mono">bastropdemocrats.org ↗</a>
+              </div>
+              <div class="text-gray-900 font-bold text-xl">Bastrop County Democratic Party</div>
+            </div>
+            <div class="flex gap-3">
+              <div class="bg-white border border-gray-200 rounded-lg p-3 text-center"><div class="text-red-500 font-bold text-lg">5+</div><div class="text-gray-500 text-xs">Rallies since Apr 2025</div></div>
+              <div class="bg-white border border-gray-200 rounded-lg p-3 text-center"><div class="text-red-500 font-bold text-lg">170+</div><div class="text-gray-500 text-xs">Peak rally attendance</div></div>
+            </div>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">Active and well-maintained site with multiple March 2026 posts. Full organizing stack: ActBlue, MailChimp, volunteer onboarding, local group network, and scholarship programs. Signals a party actively mobilizing, not just maintaining a presence.</p>
+        </div>
+
+        <div class="text-blue-600 font-mono text-xs font-bold tracking-widest mb-4">DEMOCRATIC ORGANIZING ACTIVITY — 2025–2026</div>
+        <div class="flex flex-col gap-2 mb-6">
+          {[
+            { date: "Apr 19, 2025", event: "Hands Off! Bridge Rally", attendance: "170+", coverage: "Elgin Courier" },
+            { date: "Jun 2025", event: "Bridge Rally (2nd event)", attendance: "100+", coverage: "Internal" },
+            { date: "Jul 2025", event: "Good Trouble on the Bridge", attendance: "Unknown", coverage: "BCDP blog" },
+            { date: "Oct 2025", event: "No Kings! Rally", attendance: "Hundreds", coverage: "BCDP blog" },
+            { date: "Mar 21, 2026", event: "Democratic Party Convention", attendance: "TBD", coverage: "Smithville" },
+          ].map(r => (
+            <div class="bg-white border border-gray-200 rounded-xl px-5 py-3 shadow-sm grid grid-cols-[120px_1fr_80px_100px] gap-3 items-center">
+              <div class="text-blue-600 font-mono text-xs font-bold">{r.date}</div>
+              <div class="text-gray-900 font-bold text-sm">{r.event}</div>
+              <div><div class="text-gray-400 font-mono text-xs">ATT.</div><div class={`font-bold text-sm ${r.attendance !== "Unknown" && r.attendance !== "TBD" ? 'text-red-500' : 'text-gray-400'}`}>{r.attendance}</div></div>
+              <div class="text-gray-400 text-xs">{r.coverage}</div>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-blue-600 font-mono text-xs font-bold tracking-widest mb-4">INFRASTRUCTURE AUDIT</div>
+        <div class="flex flex-col gap-2 mb-6">
+          {[
+            { label: "Fundraising", val: "ActBlue", note: "Recurring small-dollar pipeline" },
+            { label: "Email List", val: "MailChimp", note: "Active newsletter + list-building" },
+            { label: "Social Media", val: "FB + X + LinkedIn", note: "3,386 FB followers, 1,136 talking" },
+            { label: "Volunteers", val: "Dedicated page", note: "Structured onboarding" },
+            { label: "Local Groups", val: "Multiple listed", note: "Precinct-level organizing" },
+            { label: "Scholarship", val: "Active program", note: "Long-term community goodwill" },
+          ].map(d => (
+            <div class="bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm grid grid-cols-[120px_120px_1fr] gap-3 items-center">
+              <div class="text-gray-500 font-mono text-xs tracking-wider">{d.label}</div>
+              <div class="text-blue-600 font-bold text-sm">{d.val}</div>
+              <div class="text-gray-500 text-xs">{d.note}</div>
+            </div>
+          ))}
+        </div>
+
+        <div class="bg-red-50 border-2 border-red-400 rounded-xl p-5">
+          <div class="text-red-600 font-mono text-xs font-bold tracking-wider mb-3">THREAT ASSESSMENT</div>
+          <div class="flex flex-col gap-3">
+            {[
+              { level: "HIGH", color: "text-red-600 bg-red-100 border-red-300", title: "Rally Cadence Is Accelerating", text: "Five major events in 12 months, including one that drew 170+ and earned Elgin Courier coverage." },
+              { level: "HIGH", color: "text-red-600 bg-red-100 border-red-300", title: "Full Organizing Stack in Place", text: "ActBlue + MailChimp + volunteer onboarding + precinct chairs = a party that can turn out voters." },
+              { level: "MEDIUM", color: "text-yellow-700 bg-yellow-100 border-yellow-300", title: "Scholarship = Long-Term Brand Building", text: "Providing scholarships across all 6 Bastrop County high schools builds name recognition regardless of party." },
+              { level: "LOW", color: "text-green-700 bg-green-100 border-green-300", title: "Website Tech Stack Is Dated", text: "WordPress with Customizr Pro — no A/B testing, paid traffic, or modern CRM integration." },
+            ].map(t => (
+              <div class="bg-white border border-gray-200 rounded-lg p-4">
+                <div class="flex gap-3 items-center mb-2">
+                  <span class={`${t.color} border font-mono text-xs font-bold tracking-wider px-2 py-0.5 rounded`}>{t.level}</span>
+                  <span class="text-gray-900 font-bold text-sm">{t.title}</span>
+                </div>
+                <div class="text-gray-600 text-sm leading-relaxed">{t.text}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div id="intel-compare" data-pane-group="intel" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="border-2 border-red-200 rounded-xl bg-white p-5 shadow-sm">
+            <div class="text-bcc-red font-mono text-xs font-bold tracking-wider mb-4">🔴 BCRP — BASTROPCTYGOP.COM</div>
+            {[
+              { label: "Type", val: "Official GOP party website" },
+              { label: "County Chair", val: "Justin Bezner" },
+              { label: "Office", val: "443 Hwy 71 West, Bastrop" },
+              { label: "Phone", val: "(512) 409-1415" },
+              { label: "Facebook", val: "1,600+ followers" },
+              { label: "Key Events", val: "Golf Classic, Boots & BBQ, monthly mtgs" },
+            ].map(r => (<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-gray-500 text-xs">{r.label}</span><span class="text-gray-900 text-xs font-medium text-right max-w-[55%]">{r.val}</span></div>))}
+          </div>
+          <div class="border-2 border-blue-200 rounded-xl bg-white p-5 shadow-sm">
+            <div class="text-blue-600 font-mono text-xs font-bold tracking-wider mb-4">🔵 BCDP — BASTROPDEMOCRATS.ORG</div>
+            {[
+              { label: "Type", val: "Official party website" },
+              { label: "Key Activity", val: "5+ rallies since Apr 2025" },
+              { label: "Peak Turnout", val: "170+ (bridge rally)" },
+              { label: "Fundraising", val: "ActBlue (recurring)" },
+              { label: "Email List", val: "MailChimp — active" },
+              { label: "Threat Level", val: "HIGH — organized, funded, active" },
+            ].map(r => (<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-gray-500 text-xs">{r.label}</span><span class="text-gray-900 text-xs font-medium text-right max-w-[55%]">{r.val}</span></div>))}
+          </div>
+        </div>
+
+        <div class="bg-orange-50 border-2 border-orange-400 rounded-xl p-6">
+          <div class="text-orange-700 font-mono text-xs font-bold tracking-wider mb-4">OVERALL INTELLIGENCE READ</div>
+          <div class="flex flex-col gap-4">
+            <div class="text-gray-700 text-sm leading-relaxed"><strong class="text-gray-900">The BCRP holds the structural advantage — but barely.</strong> Physical office, monthly meetings, two annual fundraisers, 1,600+ Facebook followers, and a leadership team in place. Justin Bezner as Chair is the key relationship.</div>
+            <div class="text-gray-700 text-sm leading-relaxed"><strong class="text-gray-900">The BCDP is closing faster than Republicans are growing.</strong> Five public rallies with 170+ peak attendance, ActBlue fundraising, MailChimp email list, volunteer pipeline, and a 2026 convention. The 44.5% Dem primary share confirms the organizing is working.</div>
+            <div class="text-gray-700 text-sm leading-relaxed"><strong class="text-gray-900">The BCRP's digital infrastructure is weaker.</strong> Both parties run dated WordPress sites, but BCDP's blog is updated more frequently and rally activity generates earned media. A modern paid digital operation can more than compensate.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
