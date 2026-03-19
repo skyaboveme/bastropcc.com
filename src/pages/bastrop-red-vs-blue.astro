@@ -64,6 +64,37 @@ const subTabsData = [
   { id: "social", label: "SOCIAL MEDIA" },
   { id: "intel", label: "LOCAL INTEL" }
 ];
+
+const downBallotRaces = [
+  {
+    office: "Bastrop County District Clerk",
+    election: "Republican Primary (March 3, 2026)",
+    status: "R Primary",
+    candidates: [
+      { name: "Tamara Batot", party: "R" },
+      { name: "Holly Cox", party: "R" },
+      { name: "Sarah Loucks", party: "R" },
+      { name: "Ward Northcutt", party: "R" }
+    ]
+  },
+  {
+    office: "City of Bastrop Mayor",
+    election: "General Election (May 2, 2026)",
+    status: "Non-Partisan",
+    candidates: [
+      { name: "Ishmael Harris", party: "Incumbent" },
+      { name: "Joseph Stanfield", party: "Challenger" }
+    ]
+  },
+  {
+    office: "City of Bastrop Council, Pos. 3",
+    election: "General Election (May 2, 2026)",
+    status: "Non-Partisan",
+    candidates: [
+      { name: "Kevin Plunkett", party: "Unopposed" }
+    ]
+  }
+];
 ---
 
 <PageLayout 
@@ -244,7 +275,7 @@ const subTabsData = [
         </div>
       </div>
 
-      <div class="bg-bcc-gray-50 border border-bcc-gray-200 rounded-xl p-6">
+      <div class="bg-bcc-gray-50 border border-bcc-gray-200 rounded-xl p-6 mb-8">
         <div class="text-center mb-4">
           <span class="text-bcc-red font-bold text-lg">Gregory Klaus</span>
           <span class="text-gray-500 font-mono text-sm font-bold tracking-widest mx-4">VS — NOV 3</span>
@@ -253,6 +284,30 @@ const subTabsData = [
         <p class="text-gray-600 text-sm leading-relaxed text-center max-w-2xl mx-auto">
           Klaus beat Jackson in November 2022. Bastrop is growing fast — ~3,100 net domestic in-migrants per year, primarily from Travis County (Austin). The GOP structural advantage holds for 2026, but the demographic trend favors Democrats long-term.
         </p>
+      </div>
+
+      <!-- Other 2026 Races -->
+      <h3 class="font-serif text-2xl font-bold text-bcc-navy mb-6 border-b border-bcc-gray-200 pb-2">Other 2026 Local Races</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {downBallotRaces.map(race => (
+          <div class="bg-white border border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-bcc-gray-50 px-5 py-3 border-b border-bcc-gray-200 flex justify-between items-center">
+               <span class="font-serif font-bold text-bcc-navy">{race.office}</span>
+               <span class="text-xs font-mono font-bold tracking-wider text-bcc-red bg-red-50 border border-red-100 px-2 py-1 rounded">{race.status}</span>
+            </div>
+            <div class="p-5">
+              <div class="text-xs text-gray-500 font-mono mb-4">{race.election}</div>
+              <ul class="space-y-3">
+                {race.candidates.map(c => (
+                  <li class="flex justify-between items-center text-sm">
+                    <span class="font-medium text-gray-800">{c.name}</span>
+                    <span class={`text-xs font-mono font-bold ${c.party === 'R' ? 'text-bcc-red' : 'text-gray-500'}`}>{c.party}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
 
