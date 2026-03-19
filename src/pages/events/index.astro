@@ -4,18 +4,10 @@ import PageLayout from '../../layouts/PageLayout.astro';
 
 <PageLayout 
   title="Conservative Coalition Calendar — Bastrop County Conservatives"
+  heading="Conservative Coalition Calendar"
+  subheading="Central Texas Republican & Conservative Events"
 >
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
   <div class="calendar-wrapper">
-    <div class="header">
-      <div class="header-content">
-        <h1>Conservative <span>Coalition</span> Calendar</h1>
-        <div class="star-divider">★ ★ ★</div>
-        <p class="tagline">Central Texas Republican & Conservative Events</p>
-      </div>
-    </div>
-
     <div class="controls" id="controls">
       <div class="month-nav">
         <button id="prevMonth" aria-label="Previous month">‹</button>
@@ -30,19 +22,16 @@ import PageLayout from '../../layouts/PageLayout.astro';
 
     <div class="calendar-container">
       <div class="legend" id="legend"></div>
-
       <div class="filter-pills" id="filterPills" style="text-align:center; margin-bottom:1rem;"></div>
-
       <div class="cal-grid-wrap" id="calGridWrap">
         <div class="cal-grid" id="calGrid"></div>
       </div>
-
       <div class="list-view" id="listView"></div>
     </div>
 
     <div class="cal-footer">
-      <p>Maintained by <a href="https://bastropcc.com" target="_blank">Bastrop County Conservatives</a> · Events sourced from partner organizations across Central Texas</p>
-      <p style="margin-top:0.4rem;">Have an event to add? <a href="/contact" target="_blank">Contact us</a></p>
+      <p>Maintained by <a href="https://bastropcc.com">Bastrop County Conservatives</a> · Events sourced from partner organizations across Central Texas</p>
+      <p style="margin-top:0.4rem;">Have an event to add? <a href="/contact">Contact us</a></p>
     </div>
 
     <div class="modal-overlay" id="modalOverlay">
@@ -52,83 +41,24 @@ import PageLayout from '../../layouts/PageLayout.astro';
 
   <style>
     .calendar-wrapper {
-      --navy: #0a1628;
-      --navy-mid: #12233d;
-      --navy-light: #1a3050;
+      --navy: #1a2b4a;
+      --navy-mid: #243656;
       --gold: #c9a84c;
       --gold-light: #dfc374;
-      --gold-dim: rgba(201, 168, 76, 0.15);
-      --red: #bf2d2d;
-      --red-light: #d94444;
-      --white: #f0ece4;
-      --white-dim: rgba(240, 236, 228, 0.6);
-      --white-muted: rgba(240, 236, 228, 0.35);
-      --blue-accent: #3a7bd5;
-      --green-accent: #2d8f5c;
-      --text: #e8e4dc;
-      --text-dim: #a09888;
-      --radius: 6px;
-      --shadow: 0 4px 24px rgba(0,0,0,0.35);
+      --red: #b91c1c;
+      --cream: #faf8f4;
+      --white: #ffffff;
+      --border: #e5e2db;
+      --text: #1a2b4a;
+      --text-dim: #6b7280;
+      --radius: 8px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
 
-      font-family: 'Source Sans 3', -apple-system, sans-serif;
-      background: var(--navy);
+      font-family: 'Inter', -apple-system, sans-serif;
       color: var(--text);
-      min-height: 100vh;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       width: 100%;
-    }
-
-    /* ═══ HEADER ═══ */
-    .calendar-wrapper .header {
-      background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
-      padding: 4rem 1.5rem 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .calendar-wrapper .header::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      opacity: 0.5;
-    }
-    .calendar-wrapper .header-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
-    .calendar-wrapper .header h1 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 800;
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      color: var(--white);
-      letter-spacing: 0.02em;
-      margin-bottom: 0.3rem;
-      line-height: 1.2;
-    }
-    .calendar-wrapper .header h1 span { color: var(--gold); }
-    .calendar-wrapper .header .tagline {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 0;
-    }
-    .calendar-wrapper .star-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin: 0.8rem 0 0.5rem;
-      color: var(--gold);
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-    }
-    .calendar-wrapper .star-divider::before, .calendar-wrapper .star-divider::after {
-      content: '';
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
     }
 
     /* ═══ CONTROLS ═══ */
@@ -137,131 +67,149 @@ import PageLayout from '../../layouts/PageLayout.astro';
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 0.6rem;
+      gap: 1rem;
       padding: 1rem 1.5rem;
-      background: var(--navy-mid);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
     }
     .calendar-wrapper .month-nav {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
     .calendar-wrapper .month-nav button {
-      background: rgba(201, 168, 76, 0.12);
-      border: 1px solid rgba(201, 168, 76, 0.25);
-      color: var(--gold);
-      width: 34px;
-      height: 34px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
-    }
-    .calendar-wrapper .month-nav button:hover { background: rgba(201, 168, 76, 0.25); }
-    .calendar-wrapper .month-nav .current-month {
-      font-family: 'Playfair Display', serif;
       font-weight: 700;
-      font-size: 1.15rem;
-      min-width: 180px;
-      text-align: center;
+    }
+    .calendar-wrapper .month-nav button:hover { 
+      background: var(--navy); 
       color: var(--white);
+      border-color: var(--navy);
+    }
+    .calendar-wrapper .month-nav .current-month {
+      font-family: 'Playfair Display', 'Oswald', serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      min-width: 200px;
+      text-align: center;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .calendar-wrapper .view-toggle {
       display: flex;
-      background: rgba(0,0,0,0.3);
+      background: var(--white);
       border-radius: 20px;
       overflow: hidden;
-      border: 1px solid rgba(201, 168, 76, 0.15);
+      border: 1px solid var(--border);
     }
     .calendar-wrapper .view-toggle button {
       background: transparent;
       border: none;
       color: var(--text-dim);
-      padding: 6px 16px;
+      padding: 7px 18px;
       cursor: pointer;
       font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       transition: all 0.2s;
     }
     .calendar-wrapper .view-toggle button.active {
-      background: var(--gold);
-      color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
     }
     .calendar-wrapper .filter-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
+      gap: 0.4rem;
       justify-content: center;
     }
     .calendar-wrapper .filter-pill {
       font-size: 0.7rem;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 14px;
-      border: 1px solid rgba(240, 236, 228, 0.15);
-      background: transparent;
+      border: 1px solid var(--border);
+      background: var(--white);
       color: var(--text-dim);
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.2s;
       white-space: nowrap;
     }
-    .calendar-wrapper .filter-pill:hover { border-color: var(--gold); color: var(--gold); }
+    .calendar-wrapper .filter-pill:hover { 
+      border-color: var(--navy); 
+      color: var(--navy); 
+    }
     .calendar-wrapper .filter-pill.active {
-      background: var(--gold-dim);
-      border-color: var(--gold);
-      color: var(--gold);
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
     }
 
     /* ═══ CALENDAR GRID ═══ */
-    .calendar-wrapper .calendar-container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+    .calendar-wrapper .calendar-container { max-width: 1100px; margin: 0 auto; }
 
     .calendar-wrapper .cal-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 1px;
-      background: rgba(201, 168, 76, 0.08); /* Grid lines color */
+      background: var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      border: 1px solid rgba(201, 168, 76, 0.1);
+      border: 1px solid var(--border);
     }
     .calendar-wrapper .cal-header {
-      background: var(--navy-light);
+      background: var(--navy);
       padding: 10px 4px;
       text-align: center;
       font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--gold);
+      color: var(--white);
     }
     .calendar-wrapper .cal-day {
-      background: var(--navy-mid);
+      background: var(--white);
       min-height: 100px;
       padding: 6px;
       position: relative;
       transition: background 0.15s;
       cursor: default;
     }
-    .calendar-wrapper .cal-day:hover { background: var(--navy-light); }
-    .calendar-wrapper .cal-day.other-month { opacity: 0.3; }
-    .calendar-wrapper .cal-day.today { box-shadow: inset 0 0 0 2px var(--gold); }
+    .calendar-wrapper .cal-day:hover { background: var(--cream); }
+    .calendar-wrapper .cal-day.other-month { 
+      background: #f9f8f6;
+      opacity: 0.45;
+    }
+    .calendar-wrapper .cal-day.today { 
+      box-shadow: inset 0 0 0 2px var(--red);
+      background: #fef7f7;
+    }
     .calendar-wrapper .cal-day .day-num {
       font-size: 0.8rem;
       font-weight: 600;
-      color: var(--white-dim);
+      color: var(--text-dim);
       margin-bottom: 4px;
       display: block;
     }
-    .calendar-wrapper .cal-day.today .day-num { color: var(--gold); font-weight: 700; }
+    .calendar-wrapper .cal-day.today .day-num { 
+      color: var(--red); 
+      font-weight: 800; 
+    }
     .calendar-wrapper .cal-event {
       font-size: 0.65rem;
       padding: 3px 5px;
@@ -275,22 +223,22 @@ import PageLayout from '../../layouts/PageLayout.astro';
       line-height: 1.4;
       transition: filter 0.15s;
     }
-    .calendar-wrapper .cal-event:hover { filter: brightness(1.25); }
-    .calendar-wrapper .cal-event.county-bastrop { background: #bf2d2d; color: #fff; }
-    .calendar-wrapper .cal-event.county-hays { background: #2d6abf; color: #fff; }
-    .calendar-wrapper .cal-event.county-fayette { background: #7b2dbf; color: #fff; }
-    .calendar-wrapper .cal-event.county-travis { background: #bf6f2d; color: #fff; }
-    .calendar-wrapper .cal-event.county-williamson { background: #2d8f5c; color: #fff; }
-    .calendar-wrapper .cal-event.county-fredericksburg { background: #bf2d7b; color: #fff; }
+    .calendar-wrapper .cal-event:hover { filter: brightness(1.15); }
+    .calendar-wrapper .cal-event.county-bastrop { background: #b91c1c; color: #fff; }
+    .calendar-wrapper .cal-event.county-hays { background: #2563eb; color: #fff; }
+    .calendar-wrapper .cal-event.county-fayette { background: #7c3aed; color: #fff; }
+    .calendar-wrapper .cal-event.county-travis { background: #d97706; color: #fff; }
+    .calendar-wrapper .cal-event.county-williamson { background: #059669; color: #fff; }
+    .calendar-wrapper .cal-event.county-fredericksburg { background: #db2777; color: #fff; }
     .calendar-wrapper .cal-event.county-statewide { background: var(--gold); color: var(--navy); }
-    .calendar-wrapper .cal-event.county-burleson { background: #4a90bf; color: #fff; }
-    .calendar-wrapper .cal-event.county-cacrc { background: #6b8f2d; color: #fff; }
-    .calendar-wrapper .cal-event.county-wtp { background: #2dbfa0; color: var(--navy); }
-    .calendar-wrapper .cal-event.county-gawtp { background: #a05c2d; color: #fff; }
+    .calendar-wrapper .cal-event.county-burleson { background: #3b82f6; color: #fff; }
+    .calendar-wrapper .cal-event.county-cacrc { background: #65a30d; color: #fff; }
+    .calendar-wrapper .cal-event.county-wtp { background: #0d9488; color: #fff; }
+    .calendar-wrapper .cal-event.county-gawtp { background: #92400e; color: #fff; }
     .calendar-wrapper .cal-more {
       font-size: 0.65rem;
-      color: var(--gold);
-      font-weight: 600;
+      color: var(--red);
+      font-weight: 700;
       cursor: pointer;
       padding: 1px 4px;
     }
@@ -305,36 +253,37 @@ import PageLayout from '../../layouts/PageLayout.astro';
       margin-bottom: 2rem;
     }
     .calendar-wrapper .list-month-label {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Playfair Display', 'Oswald', serif;
       font-weight: 700;
       font-size: 1.2rem;
-      color: var(--gold);
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
-      padding-bottom: 0.4rem;
+      color: var(--navy);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
       margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .calendar-wrapper .list-event {
       display: grid;
       grid-template-columns: 70px 1fr;
       gap: 1rem;
-      padding: 0.8rem 0;
-      border-bottom: 1px solid rgba(240, 236, 228, 0.06);
+      padding: 0.8rem 0.5rem;
+      border-bottom: 1px solid var(--border);
       transition: background 0.15s;
       cursor: pointer;
       border-radius: var(--radius);
-      padding-left: 0.5rem;
       text-align: left;
     }
-    .calendar-wrapper .list-event:hover { background: rgba(201, 168, 76, 0.05); }
+    .calendar-wrapper .list-event:hover { background: var(--cream); }
     .calendar-wrapper .list-date {
       text-align: center;
       padding-top: 2px;
     }
     .calendar-wrapper .list-date .day {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Playfair Display', 'Oswald', serif;
       font-weight: 800;
       font-size: 1.6rem;
-      color: var(--white);
+      color: var(--navy);
       line-height: 1;
     }
     .calendar-wrapper .list-date .weekday {
@@ -342,22 +291,24 @@ import PageLayout from '../../layouts/PageLayout.astro';
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-dim);
-      font-weight: 600;
+      font-weight: 700;
       display: block;
     }
     .calendar-wrapper .list-info h3 {
       font-size: 1rem;
-      font-weight: 600;
-      color: var(--white);
+      font-weight: 700;
+      color: var(--navy);
       margin-bottom: 0.25rem;
       margin-top: 0;
+      text-transform: none;
+      letter-spacing: 0;
     }
     .calendar-wrapper .list-info .org-badge {
       display: inline-block;
       font-size: 0.65rem;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 10px;
-      font-weight: 600;
+      font-weight: 700;
       margin-right: 6px;
       margin-bottom: 4px;
       vertical-align: middle;
@@ -366,14 +317,17 @@ import PageLayout from '../../layouts/PageLayout.astro';
       font-size: 0.85rem;
       color: var(--text-dim);
     }
-    .calendar-wrapper .list-info .time-loc strong { color: var(--gold); font-weight: 600; }
+    .calendar-wrapper .list-info .time-loc strong { 
+      color: var(--red); 
+      font-weight: 700; 
+    }
 
     /* ═══ EVENT MODAL ═══ */
     .calendar-wrapper .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(10, 22, 40, 0.85);
+      background: rgba(26, 43, 74, 0.65);
       z-index: 1000;
       backdrop-filter: blur(6px);
       justify-content: center;
@@ -382,14 +336,14 @@ import PageLayout from '../../layouts/PageLayout.astro';
     }
     .calendar-wrapper .modal-overlay.show { display: flex; }
     .calendar-wrapper .modal {
-      background: var(--navy-mid);
-      border: 1px solid rgba(201, 168, 76, 0.2);
-      border-radius: 10px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       max-width: 520px;
       width: 100%;
       padding: 2rem;
       position: relative;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
       max-height: 80vh;
       overflow-y: auto;
       text-align: left;
@@ -403,22 +357,24 @@ import PageLayout from '../../layouts/PageLayout.astro';
       font-size: 1.4rem;
       cursor: pointer;
     }
-    .calendar-wrapper .modal-close:hover { color: var(--gold); }
+    .calendar-wrapper .modal-close:hover { color: var(--red); }
     .calendar-wrapper .modal h2 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Playfair Display', 'Oswald', serif;
       font-weight: 700;
       font-size: 1.3rem;
-      color: var(--white);
+      color: var(--navy);
       margin-bottom: 0.5rem;
       padding-right: 2rem;
-      line-height: 1.2;
+      line-height: 1.3;
+      text-transform: none;
+      letter-spacing: 0;
     }
     .calendar-wrapper .modal .modal-org {
       display: inline-block;
       font-size: 0.75rem;
       padding: 3px 10px;
       border-radius: 12px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 1rem;
     }
     .calendar-wrapper .modal .detail-row {
@@ -432,13 +388,16 @@ import PageLayout from '../../layouts/PageLayout.astro';
       width: 20px;
       text-align: center;
       flex-shrink: 0;
-      color: var(--gold);
       font-size: 0.95rem;
       margin-top: 1px;
     }
     .calendar-wrapper .modal .detail-row .detail-text { color: var(--text); }
-    .calendar-wrapper .modal .detail-row .detail-text a { color: var(--gold); text-decoration: none; }
-    .calendar-wrapper .modal .detail-row .detail-text a:hover { text-decoration: underline; }
+    .calendar-wrapper .modal .detail-row .detail-text a { 
+      color: var(--red); 
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .calendar-wrapper .modal .detail-row .detail-text a:hover { color: var(--navy); }
     .calendar-wrapper .modal-actions {
       display: flex;
       gap: 0.5rem;
@@ -446,33 +405,44 @@ import PageLayout from '../../layouts/PageLayout.astro';
     }
     .calendar-wrapper .modal-actions a {
       display: inline-block;
-      padding: 8px 18px;
-      border-radius: 20px;
+      padding: 9px 20px;
+      border-radius: 6px;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: none;
       transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .calendar-wrapper .modal-actions .btn-primary {
-      background: var(--gold);
+      background: var(--red);
+      color: var(--white);
+    }
+    .calendar-wrapper .modal-actions .btn-primary:hover { 
+      background: #991b1b; 
+    }
+    .calendar-wrapper .modal-actions .btn-secondary {
+      background: var(--cream);
+      border: 1px solid var(--border);
       color: var(--navy);
     }
-    .calendar-wrapper .modal-actions .btn-primary:hover { background: var(--gold-light); }
-    .calendar-wrapper .modal-actions .btn-secondary {
-      background: rgba(201, 168, 76, 0.1);
-      border: 1px solid rgba(201, 168, 76, 0.3);
-      color: var(--gold);
+    .calendar-wrapper .modal-actions .btn-secondary:hover { 
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
     }
-    .calendar-wrapper .modal-actions .btn-secondary:hover { background: rgba(201, 168, 76, 0.2); }
 
     /* ═══ LEGEND ═══ */
     .calendar-wrapper .legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.6rem;
       justify-content: center;
-      padding: 1rem 1.5rem;
+      padding: 0.75rem 1rem;
       margin-bottom: 1rem;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
     }
     .calendar-wrapper .legend-item {
       display: flex;
@@ -480,7 +450,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
       gap: 5px;
       font-size: 0.65rem;
       color: var(--text-dim);
-      font-weight: 500;
+      font-weight: 600;
     }
     .calendar-wrapper .legend-dot {
       width: 8px;
@@ -493,15 +463,20 @@ import PageLayout from '../../layouts/PageLayout.astro';
     .calendar-wrapper .cal-footer {
       text-align: center;
       padding: 2rem 1.5rem;
-      border-top: 1px solid rgba(201, 168, 76, 0.1);
-      margin-top: 1rem;
+      border-top: 2px solid var(--border);
+      margin-top: 2rem;
     }
     .calendar-wrapper .cal-footer p {
       font-size: 0.85rem;
       color: var(--text-dim);
     }
-    .calendar-wrapper .cal-footer a { color: var(--gold); text-decoration: none; }
-    .calendar-wrapper .cal-footer a:hover { text-decoration: underline; }
+    .calendar-wrapper .cal-footer a { 
+      color: var(--red); 
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .calendar-wrapper .cal-footer a:hover { color: var(--navy); }
 
     /* ═══ RESPONSIVE ═══ */
     @media (max-width: 700px) {
@@ -523,7 +498,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         width: 5px;
         height: 5px;
         border-radius: 50%;
-        background: var(--gold);
+        background: var(--red);
       }
     }
 
