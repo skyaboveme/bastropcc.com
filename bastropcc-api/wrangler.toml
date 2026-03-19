@@ -1,0 +1,17 @@
+name = "bastropcc-api"
+main = "src/index.ts"
+compatibility_date = "2024-03-14"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bastropcc-db"
+database_id = "086b30b8-1fca-4d8f-9199-41ad4f60148f"
+migrations_dir = "migrations"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "29975531168b4020b6f0f4b51716bbb4"
+
+[vars]
+CORS_ORIGIN = "https://bastropcc.pages.dev,https://bastropcc-admin.pages.dev"
+ENVIRONMENT = "production"
