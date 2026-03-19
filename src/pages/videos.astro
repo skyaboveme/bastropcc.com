@@ -1,0 +1,265 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+const videos = [
+  {
+    id: "7TkngH1S0rc",
+    title: "How to Actually Lower Your Property Taxes + BIG 2026 Propositions Texans Must Know!",
+    guest: "Ellen Owens",
+    desc: "Ellen Owens, Bastrop County Tax Assessor-Collector, breaks down property taxes, explains how to lower them through exemptions and protests, and discusses critical 2026 ballot propositions that every Texas taxpayer needs to understand.",
+    date: "January 2026"
+  },
+  {
+    id: "__Ym3DK45MI",
+    title: "Why Texas Needs a 'Real' Conservative AG — Mayes Middleton Explains",
+    guest: "Mayes Middleton",
+    desc: "Texas State Senator Mayes Middleton explains why Texas needs a truly conservative Attorney General and discusses key state issues affecting conservative Texans.",
+    date: "January 2026"
+  },
+  {
+    id: "-uDMNL8XkJk",
+    title: "Inside the Battle for Honest Elections — FEC Commissioner Speaks Out",
+    guest: "Trey Trainor",
+    desc: "FEC Commissioner Trey Trainor provides an insider's perspective on election integrity, the regulatory landscape, and what's being done to ensure every vote counts.",
+    date: "October 2025"
+  },
+  {
+    id: "qejgbPgJrbQ",
+    title: "Why Millions Don't Vote: Shocking Truths from iVoterGuide President",
+    guest: "Debbie Wuthnow",
+    desc: "Debbie Wuthnow, President of iVoterGuide, shares eye-opening insights on voter turnout, why millions of eligible voters stay home, and the research behind empowering informed voting.",
+    date: "July 2025"
+  },
+  {
+    id: "XQT744rfjU0",
+    title: "Tom Glass Exposes the Austin Swamp: Fighting for Texas Sovereignty & Constitutional Enforcement",
+    guest: "Tom Glass",
+    desc: "Tom Glass discusses the fight for Texas sovereignty, constitutional enforcement, and exposing the political establishment in Austin that undermines conservative principles.",
+    date: "June 2025"
+  },
+  {
+    id: "NLD5QlhwTEk",
+    title: "Inside the Texas Capitol: Cindi Castilla Exposes the Fight for Conservative Values",
+    guest: "Cindi Castilla",
+    desc: "Cindi Castilla, President of Texas Eagle Forum, provides an inside look at the battles being fought for conservative values in the Texas legislature.",
+    date: "June 2025"
+  },
+  {
+    id: "zMRSQ310-os",
+    title: "They're Destroying the Constitution — It's Time to Fight Back",
+    guest: "Rick Green",
+    desc: "Rick Green, founder of Patriot Academy and constitutional coach, delivers a passionate discussion on defending the Constitution and why every patriot must engage.",
+    date: "April 2025"
+  },
+  {
+    id: "fmfHiBofHII",
+    title: "How Texas Is Failing Its Kids At Math and Reading",
+    guest: "Julie Pickren & Jeremy Storey",
+    desc: "Julie Pickren and Jeremy Storey expose the challenges in the Texas education system, particularly how students are falling behind in math and reading standards.",
+    date: "April 2025"
+  },
+  {
+    id: "Vys4Lc6CMZg",
+    title: "More Illegal Immigrants Than Active-Duty Military? Breaking Down Border Crisis & More",
+    guest: "Allen West",
+    desc: "Lt. Col. Allen West brings his military and political expertise to break down the border crisis, national security threats, and the path forward for constitutional conservatives.",
+    date: "March 2025"
+  },
+  {
+    id: "-rmzEEIrOh8",
+    title: "Texas Under Threat? The Plan to Keep Our State Strong and Conservative",
+    guest: "Mayes Middleton",
+    desc: "State Senator Mayes Middleton outlines his plan to protect Texas from progressive overreach and keep the state strong and conservative for future generations.",
+    date: "February 2025"
+  },
+  {
+    id: "VDRbPqlwBLM",
+    title: "Is Texas Under Attack? The Bold Plan to Defend the Border & Keep Texas First",
+    guest: "Don Huffines",
+    desc: "Don Huffines discusses his bold vision for border security, defending Texas sovereignty, and putting Texas first in the face of federal overreach.",
+    date: "January 2025"
+  },
+  {
+    id: "GQlEHgjS4oY",
+    title: "US Congressman Michael Cloud — August Meeting of Bastrop County Conservatives",
+    guest: "Rep. Michael Cloud",
+    desc: "U.S. Congressman Michael Cloud addresses the Bastrop County Conservatives at their August meeting, discussing federal issues and their impact on Texas.",
+    date: "August 2024"
+  },
+  {
+    id: "NjzUe5P5w68",
+    title: "August Meeting with US Congressman Michael Cloud — Q&A",
+    guest: "Rep. Michael Cloud",
+    desc: "The Q&A session with Congressman Michael Cloud, where Bastrop County Conservatives members asked direct questions about issues that matter most to them.",
+    date: "August 2024"
+  },
+  {
+    id: "cm0ZPQ-K91M",
+    title: "Happy Independence Day from Bastrop County Conservatives",
+    guest: "",
+    desc: "A special Independence Day message from the Bastrop County Conservatives celebrating America's founding and the values we hold dear.",
+    date: "July 2024"
+  },
+  {
+    id: "S1Iifnmx_CE",
+    title: "Re-elect Kevin Plunkett for City Council Place 3 on May 6, 2023",
+    guest: "Kevin Plunkett",
+    desc: "Kevin Plunkett makes his case for re-election to City Council Place 3, discussing his record and vision for the community.",
+    date: "April 2023"
+  },
+  {
+    id: "a5cwAJJMAOc",
+    title: "Admiral Philip S. Davidson hosted by Bastrop County Conservatives",
+    guest: "Admiral Philip S. Davidson",
+    desc: "Retired Admiral Philip S. Davidson, former Commander of U.S. Indo-Pacific Command, shares insights on national defense and geopolitical strategy.",
+    date: "2023"
+  },
+  {
+    id: "ZMy9R5F11S4",
+    title: "Michael Dickson — Republican Party Bastrop County Precinct 1006 Chair",
+    guest: "Michael Dickson",
+    desc: "Michael Dickson discusses his role as Precinct 1006 Chair and the importance of precinct-level conservative organizing in Bastrop County.",
+    date: "2023"
+  },
+  {
+    id: "zXWhjOWaEWU",
+    title: "Ashley Mutschink — BISD Board of Trustees Place 7",
+    guest: "Ashley Mutschink",
+    desc: "Ashley Mutschink presents her platform for the Bastrop Independent School District Board of Trustees Place 7 seat.",
+    date: "2023"
+  },
+  {
+    id: "gw-oveFrbl4",
+    title: "Ashley Mutschink — Bastrop ISD Board of Trustees Place 7 (Extended)",
+    guest: "Ashley Mutschink",
+    desc: "Extended interview with Ashley Mutschink about her vision for Bastrop ISD and the issues facing local education.",
+    date: "2023"
+  },
+  {
+    id: "2-VnRZlpw0w",
+    title: "Stephanie Lippke — Elgin Mayor",
+    guest: "Stephanie Lippke",
+    desc: "Elgin Mayor candidate Stephanie Lippke discusses her platform and vision for the city of Elgin.",
+    date: "2023"
+  },
+  {
+    id: "0hlFSzj1oko",
+    title: "Joy Casnovsky — Elgin City Council Ward 1",
+    guest: "Joy Casnovsky",
+    desc: "Joy Casnovsky presents her platform for Elgin City Council Ward 1, focused on responsible growth and fiscal accountability.",
+    date: "2023"
+  },
+  {
+    id: "71rVYof-CDI",
+    title: "Patrick Maass — EISD School Board",
+    guest: "Patrick Maass",
+    desc: "Patrick Maass outlines his priorities for the Elgin Independent School District School Board.",
+    date: "2023"
+  },
+  {
+    id: "tkmpCKpvQTE",
+    title: "Sue Brasher — Elgin City Council Ward 4",
+    guest: "Sue Brasher",
+    desc: "Sue Brasher discusses her candidacy for Elgin City Council Ward 4 and the issues affecting the ward.",
+    date: "2023"
+  },
+  {
+    id: "wqO8TBYlEMk",
+    title: "Thomas Ibis — Elgin City Council Ward 3",
+    guest: "Thomas Ibis",
+    desc: "Thomas Ibis shares his platform and goals for Elgin City Council Ward 3.",
+    date: "2023"
+  },
+  {
+    id: "EmIXCDs9xjM",
+    title: "Joe Cox — EISD School Board District 4",
+    guest: "Joe Cox",
+    desc: "Joe Cox presents his case for the Elgin ISD School Board District 4 seat, focusing on accountability and student achievement.",
+    date: "2023"
+  },
+  {
+    id: "6NioUNxiPQw",
+    title: "Duane Weber — EISD School Board",
+    guest: "Duane Weber",
+    desc: "Duane Weber discusses his candidacy for the Elgin ISD School Board and priorities for local education.",
+    date: "2023"
+  },
+  {
+    id: "QEvp8mr_YC4",
+    title: "Chuck Swain — Elgin City Council Ward 2",
+    guest: "Chuck Swain",
+    desc: "Chuck Swain outlines his vision for Elgin City Council Ward 2.",
+    date: "2023"
+  },
+  {
+    id: "JgrWb8HyicQ",
+    title: "Jennifer Culver — EISD School Board",
+    guest: "Jennifer Culver",
+    desc: "Jennifer Culver shares her platform for the Elgin ISD School Board, emphasizing parental rights and academic excellence.",
+    date: "2023"
+  },
+  {
+    id: "xWxsyckmSK0",
+    title: "Angie Edmon — EISD District 4",
+    guest: "Angie Edmon",
+    desc: "Angie Edmon discusses her candidacy for Elgin ISD District 4 and the challenges facing local schools.",
+    date: "2023"
+  },
+  {
+    id: "FUEdkiF9QYY",
+    title: "Jeremy Story & Dustin Clark at the February 2022 Meeting of Bastrop County Conservatives",
+    guest: "Jeremy Story & Dustin Clark",
+    desc: "Jeremy Story and Dustin Clark present at the February 2022 monthly meeting of the Bastrop County Conservatives, discussing education policy and conservative engagement.",
+    date: "February 2022"
+  },
+];
+---
+
+<PageLayout 
+  title="Videos — Bastrop County Conservatives"
+  heading="BCC Video Library"
+  subheading="Watch interviews, candidate forums, and presentations from Bastrop County Conservatives meetings."
+>
+
+  <div class="text-center mb-10 not-prose">
+    <a href="https://www.youtube.com/@BastropCountyConservatives" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-bcc-red hover:bg-bcc-red-dark text-white font-bold px-6 py-3 rounded-lg transition-colors shadow-sm hover:shadow-md">
+      <Icon name="lucide:youtube" class="w-5 h-5" />
+      Subscribe on YouTube
+    </a>
+  </div>
+
+  <div class="space-y-12 not-prose">
+    {videos.map((video, idx) => (
+      <article class="bg-white border border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <div class="aspect-video">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${video.id}`}
+            title={video.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading={idx < 3 ? "eager" : "lazy"}
+            class="w-full h-full border-0"
+          ></iframe>
+        </div>
+        <div class="p-6">
+          <div class="flex flex-wrap items-center gap-3 mb-3">
+            {video.date && (
+              <span class="text-xs font-bold uppercase tracking-wider text-bcc-gray-500">
+                {video.date}
+              </span>
+            )}
+            {video.guest && (
+              <span class="bg-bcc-cream text-bcc-navy px-3 py-0.5 rounded-full text-xs font-bold uppercase border border-bcc-gray-200">
+                {video.guest}
+              </span>
+            )}
+          </div>
+          <h2 class="font-serif text-xl font-bold text-bcc-navy mb-3 leading-tight">{video.title}</h2>
+          <p class="text-bcc-gray-600 leading-relaxed">{video.desc}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+
+</PageLayout>
