@@ -1,0 +1,88 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
+
+const blogPosts = await getCollection('blog');
+const sortedPosts = blogPosts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+---
+
+<PageLayout 
+  title="Sitemap — Bastrop County Conservatives"
+  heading="Sitemap"
+  subheading="A complete list of every page on BastropCC.com."
+>
+
+  <div class="not-prose max-w-3xl mx-auto">
+
+    <!-- Main Pages -->
+    <section class="mb-10">
+      <h2 class="text-lg font-bold text-bcc-navy uppercase tracking-wider border-b border-bcc-gray-200 pb-2 mb-4 flex items-center gap-2">
+        <Icon name="lucide:home" class="w-5 h-5 text-bcc-gold" /> Main Pages
+      </h2>
+      <ul class="space-y-3 ml-2">
+        <li><a href="/" class="text-bcc-red hover:underline font-medium">Home</a></li>
+        <li><a href="/about" class="text-bcc-red hover:underline font-medium">About Us</a></li>
+        <li><a href="/contact" class="text-bcc-red hover:underline font-medium">Contact</a></li>
+        <li><a href="/privacy-policy" class="text-bcc-red hover:underline font-medium">Privacy Policy</a></li>
+      </ul>
+    </section>
+
+    <!-- Get Involved -->
+    <section class="mb-10">
+      <h2 class="text-lg font-bold text-bcc-navy uppercase tracking-wider border-b border-bcc-gray-200 pb-2 mb-4 flex items-center gap-2">
+        <Icon name="lucide:users" class="w-5 h-5 text-bcc-gold" /> Get Involved
+      </h2>
+      <ul class="space-y-3 ml-2">
+        <li><a href="/membership" class="text-bcc-red hover:underline font-medium">Membership</a></li>
+        <li><a href="/donate" class="text-bcc-red hover:underline font-medium">Donate</a></li>
+        <li><a href="/volunteer" class="text-bcc-red hover:underline font-medium">Volunteer</a></li>
+        <li><a href="/subscribe" class="text-bcc-red hover:underline font-medium">Newsletter Sign-Up</a></li>
+      </ul>
+    </section>
+
+    <!-- Voter Resources -->
+    <section class="mb-10">
+      <h2 class="text-lg font-bold text-bcc-navy uppercase tracking-wider border-b border-bcc-gray-200 pb-2 mb-4 flex items-center gap-2">
+        <Icon name="lucide:vote" class="w-5 h-5 text-bcc-gold" /> Voter Resources
+      </h2>
+      <ul class="space-y-3 ml-2">
+        <li><a href="/voter-info" class="text-bcc-red hover:underline font-medium">Voter Information</a></li>
+        <li><a href="/elected-officials" class="text-bcc-red hover:underline font-medium">Who Represents You — Elected Officials</a></li>
+        <li><a href="/endorsements" class="text-bcc-red hover:underline font-medium">BCC Endorsements</a></li>
+        <li><a href="/precinct-map" class="text-bcc-red hover:underline font-medium">Precinct Map & Polling Locations</a></li>
+        <li><a href="/bastrop-red-vs-blue" class="text-bcc-red hover:underline font-medium">Bastrop Red vs. Blue</a></li>
+      </ul>
+    </section>
+
+    <!-- Community -->
+    <section class="mb-10">
+      <h2 class="text-lg font-bold text-bcc-navy uppercase tracking-wider border-b border-bcc-gray-200 pb-2 mb-4 flex items-center gap-2">
+        <Icon name="lucide:calendar" class="w-5 h-5 text-bcc-gold" /> Community
+      </h2>
+      <ul class="space-y-3 ml-2">
+        <li><a href="/events" class="text-bcc-red hover:underline font-medium">Events Calendar</a></li>
+        <li><a href="/videos" class="text-bcc-red hover:underline font-medium">Videos</a></li>
+        <li><a href="/resources" class="text-bcc-red hover:underline font-medium">Resources</a></li>
+        <li><a href="/conservative-orgs" class="text-bcc-red hover:underline font-medium">Conservative Organizations</a></li>
+      </ul>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="mb-10">
+      <h2 class="text-lg font-bold text-bcc-navy uppercase tracking-wider border-b border-bcc-gray-200 pb-2 mb-4 flex items-center gap-2">
+        <Icon name="lucide:file-text" class="w-5 h-5 text-bcc-gold" /> Blog Posts
+      </h2>
+      <ul class="space-y-3 ml-2">
+        <li><a href="/blog" class="text-bcc-red hover:underline font-medium">All Blog Posts</a></li>
+        {sortedPosts.map((post) => (
+          <li class="flex items-baseline gap-3">
+            <span class="text-xs text-bcc-gray-400 font-mono whitespace-nowrap">{new Date(post.data.pubDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+            <a href={`/blog/${post.slug}`} class="text-bcc-red hover:underline font-medium">{post.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+  </div>
+</PageLayout>
