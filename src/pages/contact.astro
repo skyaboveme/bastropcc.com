@@ -60,7 +60,11 @@ import { Icon } from 'astro-icon/components';
       <div class="bg-white p-6 md:p-8 rounded-xl shadow-md border border-bcc-gray-200 lg:relative lg:-mt-12 lg:z-10">
         <h3 class="font-serif text-2xl font-bold text-bcc-navy mb-6">Send a Message</h3>
         
-        <form action="/api/contact" method="POST" id="contact-form" class="space-y-4">
+        <form action="https://formsubmit.co/info@bastropcc.com" method="POST" id="contact-form" class="space-y-4">
+          <input type="hidden" name="_subject" value="BCC Website - Contact Form Submission">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://bastropcc.pages.dev/contact?submitted=true">
+          <input type="text" name="_honey" style="display:none">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="name" class="block text-sm font-semibold text-bcc-navy mb-1">Full Name <span class="text-bcc-red">*</span></label>
