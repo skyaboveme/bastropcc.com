@@ -10,8 +10,6 @@ import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 
 // Fetch collections
-const events = await getCollection('events');
-const upcomingEvents = events.sort((a, b) => new Date(a.data.date).valueOf() - new Date(b.data.date).valueOf()).slice(0, 3);
 
 const videos = await getCollection('videos');
 const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()).slice(0, 3);
@@ -94,42 +92,7 @@ const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new
     </div>
   </section>
 
-  <!-- Upcoming Events -->
-  <SectionDivider />
-  
-  <section class="py-16 md:py-24 bg-white scroll-reveal opacity-0">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-bcc-gray-200 pb-6">
-        <SectionHeading title="Upcoming Events" class="mb-0" />
-        <a href="/events" class="text-bcc-red font-bold hover:text-bcc-red-dark mt-4 md:mt-0 inline-flex items-center gap-2 group">
-          View Full Calendar 
-          <span class="transform group-hover:translate-x-1 transition-transform">→</span>
-        </a>
-      </div>
-      
-      {upcomingEvents.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {upcomingEvents.map(event => (
-            <div class="bg-white border-2 border-bcc-gray-100 text-center rounded p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-              <div class="text-bcc-red font-bold mb-2 uppercase tracking-widest text-sm">
-                <time datetime={event.data.date}>{new Date(event.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric'})}</time>
-              </div>
-              <h3 class="font-heading uppercase text-2xl tracking-wide font-bold text-bcc-navy mb-3">{event.data.title}</h3>
-              <p class="text-bcc-gray-600 mb-6 font-medium">{event.data.time && `${event.data.time} •`} {event.data.location}</p>
-              <Button href={event.data.link || "/events"} variant="outline" fullWidth={true} class="font-heading uppercase border-2">Event Details</Button>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div class="bg-bcc-gray-50 border border-bcc-gray-200 rounded-xl p-12 text-center max-w-3xl mx-auto">
-          <Icon name="lucide:calendar-x" class="w-16 h-16 text-bcc-gray-400 mx-auto mb-4" />
-          <h3 class="text-2xl font-serif font-bold text-bcc-navy mb-2">No upcoming events</h3>
-          <p class="text-bcc-gray-600 mb-6">We're planning our next gathering. Check back soon or subscribe to receive updates.</p>
-          <Button href="#subscribe" variant="primary">Subscribe for Updates</Button>
-        </div>
-      )}
-    </div>
-  </section>
+
 
   <!-- Recent Meeting Videos -->
   <SectionDivider />
@@ -150,14 +113,15 @@ const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new
               speaker={video.data.speaker}
               date={video.data.date}
               location={video.data.location}
+              href="/videos"
             />
           </div>
         ))}
       </div>
       
       <div class="mt-8 text-center md:text-left">
-        <Button href="https://www.youtube.com/bastropcountyconservatives" target="_blank" rel="noopener noreferrer" variant="secondary">
-          View All Videos on YouTube →
+        <Button href="/videos" variant="secondary">
+          View All Videos →
         </Button>
       </div>
     </div>

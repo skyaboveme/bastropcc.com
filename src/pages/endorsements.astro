@@ -1,0 +1,173 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<PageLayout 
+  title="BCC Endorsements — Who We Support"
+  description="Official endorsements from Bastrop County Conservatives PAC for the 2026 Republican Primary and local races. See who we've vetted, why we support them, and how to vote."
+  heading="Official Endorsements"
+  subheading="Bastrop County Conservatives vets candidates and endorses those who align with our 15 Core Values. Here's who earned our support."
+>
+
+  <!-- Endorsement Process -->
+  <div class="bg-bcc-cream -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-xl border border-bcc-gray-200 not-prose mb-16">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-2xl font-serif font-bold text-bcc-navy mb-4">How We Endorse</h2>
+      <p class="text-bcc-gray-600 mb-8">Our endorsement process is rigorous and transparent. Every candidate is evaluated against our 15 Core Values through questionnaires, interviews, public record reviews, and member input. Endorsement requires a vote of the BCC membership. We do not endorse based on party alone — we endorse based on principle.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="flex flex-col items-center">
+          <div class="w-14 h-14 bg-bcc-navy text-bcc-gold rounded-full flex items-center justify-center text-xl font-bold mb-3">1</div>
+          <h3 class="font-bold text-bcc-navy text-sm">Candidate Vetting</h3>
+          <p class="text-xs text-bcc-gray-500 mt-1">Questionnaires, interviews, and public record review</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-14 h-14 bg-bcc-navy text-bcc-gold rounded-full flex items-center justify-center text-xl font-bold mb-3">2</div>
+          <h3 class="font-bold text-bcc-navy text-sm">Member Discussion</h3>
+          <p class="text-xs text-bcc-gray-500 mt-1">Open debate at membership meetings</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-14 h-14 bg-bcc-navy text-bcc-gold rounded-full flex items-center justify-center text-xl font-bold mb-3">3</div>
+          <h3 class="font-bold text-bcc-navy text-sm">Member Vote</h3>
+          <p class="text-xs text-bcc-gray-500 mt-1">Democratic vote by the full BCC membership</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2026 Republican Primary Endorsements -->
+  <section class="mb-20 not-prose" id="2026-primary">
+    <div class="flex items-center gap-4 mb-2">
+      <SectionHeading title="2026 Republican Primary Endorsements" />
+    </div>
+    <p class="text-bcc-gray-600 mb-8 max-w-3xl">The following candidates have been officially endorsed by Bastrop County Conservatives for the <strong>March 2026 Republican Primary Election</strong>. These candidates were vetted and approved by our membership.</p>
+
+    <!-- Statewide Races -->
+    <h3 class="text-lg font-bold text-bcc-navy uppercase tracking-wider mb-6 border-b border-bcc-gray-200 pb-2">
+      <Icon name="lucide:landmark" class="w-5 h-5 inline-block mb-0.5 text-bcc-gold" /> Statewide Races
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Texas Senate, District 5</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Senator Charles Schwertner</h3>
+        <p class="text-sm text-bcc-gray-600">Incumbent state senator with a strong conservative voting record. Proven defender of property rights, border security, and limited government in the Texas Legislature.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Texas House, District 17</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Tom Glass</h3>
+        <p class="text-sm text-bcc-gray-600">Conservative candidate for the state house seat representing Bastrop County. Committed to reducing property taxes, protecting Second Amendment rights, and limiting government overreach.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Texas Attorney General</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Senator Mayes Middleton</h3>
+        <p class="text-sm text-bcc-gray-600">Conservative state senator running for Attorney General. Known for his unwavering commitment to constitutional principles, border enforcement, and government accountability.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Texas State Comptroller</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Don Huffines</h3>
+        <p class="text-sm text-bcc-gray-600">Former state senator and proven fiscal conservative. Committed to transparent state finances, eliminating wasteful spending, and holding government accountable for every taxpayer dollar.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">TX Criminal Court of Appeals</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">John Messinger</h3>
+        <p class="text-sm text-bcc-gray-600">Conservative judicial candidate committed to strict constitutional interpretation and upholding the rule of law in Texas's highest criminal court.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">TX Criminal Court of Appeals</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Tom Smith</h3>
+        <p class="text-sm text-bcc-gray-600">Conservative judicial candidate who will defend the rights of Texans and apply the law as written, not as reinterpreted by activist judges.</p>
+      </div>
+    </div>
+
+    <!-- Local Races -->
+    <h3 class="text-lg font-bold text-bcc-navy uppercase tracking-wider mb-6 border-b border-bcc-gray-200 pb-2">
+      <Icon name="lucide:map-pin" class="w-5 h-5 inline-block mb-0.5 text-bcc-gold" /> Bastrop County Races
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Bastrop County Judge</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Gregory Klaus</h3>
+        <p class="text-sm text-bcc-gray-600">Incumbent County Judge seeking re-election. Has led the Commissioners Court with fiscal responsibility, defended local property rights against Austin Water's ASR project, and maintained strong county governance.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Bastrop County District Clerk</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Sara Loucks</h3>
+        <p class="text-sm text-bcc-gray-600">Incumbent District Clerk running for re-election. Has efficiently managed court records and served the judicial system with integrity and professionalism.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">GOP Precinct 1004 Chair</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Debbie Denny</h3>
+        <p class="text-sm text-bcc-gray-600">Endorsed for Republican Party Precinct 1004 Chair. Dedicated grassroots organizer committed to building conservative infrastructure at the precinct level.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Endorsement Card Image -->
+  <section class="mb-20 not-prose">
+    <SectionHeading title="Official Endorsement Card" centered={true} class="mb-8" />
+    <div class="max-w-2xl mx-auto">
+      <img src="/images/endorsements/2026-primary-card.jpg" alt="BCC 2026 Republican Primary Endorsements" class="w-full rounded-xl shadow-lg border border-bcc-gray-200" onerror="this.parentElement.style.display='none'" />
+    </div>
+  </section>
+
+  <!-- Past Endorsement Cycles -->
+  <section class="mb-20 not-prose">
+    <SectionHeading title="Endorsement History" />
+    <p class="text-bcc-gray-600 mb-8 max-w-3xl">Bastrop County Conservatives has endorsed candidates in every major election cycle since our founding. Our track record speaks for itself — the vast majority of BCC-endorsed candidates have won their races.</p>
+
+    <div class="bg-white border border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm">
+      <div class="bg-bcc-navy text-white px-6 py-4 flex items-center gap-3">
+        <Icon name="lucide:trophy" class="w-5 h-5 text-bcc-gold" />
+        <h3 class="font-bold text-lg">November 2024 General Election</h3>
+        <span class="ml-auto bg-bcc-gold text-bcc-navy text-xs font-bold px-3 py-1 rounded-full">CLEAN SWEEP</span>
+      </div>
+      <div class="p-6">
+        <p class="text-bcc-gray-600 mb-4">Every Republican candidate endorsed by BCC <strong>won their race</strong> in Bastrop County in the November 2024 general election. Donald Trump carried the county with 58.6% of the vote, and Ted Cruz won by a similar margin.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="bg-green-50 text-green-800 border border-green-200 px-3 py-1 rounded-full text-xs font-bold">✓ All County Races Won</span>
+          <span class="bg-green-50 text-green-800 border border-green-200 px-3 py-1 rounded-full text-xs font-bold">✓ Trump 58.6%</span>
+          <span class="bg-green-50 text-green-800 border border-green-200 px-3 py-1 rounded-full text-xs font-bold">✓ Cruz Re-elected</span>
+          <span class="bg-green-50 text-green-800 border border-green-200 px-3 py-1 rounded-full text-xs font-bold">✓ 65% Turnout</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="bg-bcc-navy -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-xl text-center not-prose">
+    <h2 class="text-2xl font-serif font-bold text-white mb-4">Want a Voice in Who We Endorse?</h2>
+    <p class="text-bcc-gray-300 mb-8 max-w-2xl mx-auto">Only BCC members can participate in the endorsement vote. Join today and help us identify, vet, and support the conservative candidates who will lead Bastrop County.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/membership" class="bg-bcc-red text-white font-bold px-8 py-3 rounded-lg hover:bg-red-700 transition-colors inline-flex items-center justify-center gap-2">
+        <Icon name="lucide:users" class="w-5 h-5" /> Become a Member
+      </a>
+      <a href="/volunteer" class="border-2 border-white text-white font-bold px-8 py-3 rounded-lg hover:bg-white hover:text-bcc-navy transition-colors inline-flex items-center justify-center gap-2">
+        <Icon name="lucide:hand-helping" class="w-5 h-5" /> Volunteer
+      </a>
+    </div>
+  </div>
+
+  <p class="text-sm text-bcc-gray-500 mt-12 text-center italic not-prose">
+    Pol. Adv. Paid for by Bastrop County Conservatives PAC. Not authorized by any candidate or candidate's committee.
+  </p>
+
+</PageLayout>

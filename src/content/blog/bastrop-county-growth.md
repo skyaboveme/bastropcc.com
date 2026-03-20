@@ -4,6 +4,7 @@ description: "With an estimated population of roughly 122,500 in 2026, Bastrop C
 pubDate: 2026-03-19
 author: "Bastrop County Conservatives"
 tags: ["Growth", "Elections", "Community", "Bastrop County"]
+image: "/images/blog/bastrop-county-growth.png"
 ---
 
 Bastrop County is no longer the quiet, rural stretch of Central Texas it was a generation ago. With an estimated population of roughly 122,500 in 2026, the county has grown more than 64% since 2010, when just 74,381 people called it home. That kind of growth changes everything: schools, roads, elections, and the character of the community itself.

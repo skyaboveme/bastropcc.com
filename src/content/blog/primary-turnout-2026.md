@@ -4,6 +4,7 @@ description: "Seventy percent of registered voters in Bastrop County sat this on
 pubDate: 2026-03-19
 author: "Bastrop County Conservatives"
 tags: ["Elections", "Turnout", "Bastrop County", "Primary"]
+image: "/images/blog/primary-turnout-2026.png"
 ---
 
 On March 3, Bastrop County held its 2026 primary election. Out of 62,294 registered voters, only 18,606 showed up. That is a 29.9% turnout rate.

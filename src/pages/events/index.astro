@@ -21,7 +21,6 @@ import PageLayout from '../../layouts/PageLayout.astro';
     </div>
 
     <div class="calendar-container">
-      <div class="legend" id="legend"></div>
       <div class="filter-pills" id="filterPills" style="text-align:center; margin-bottom:1rem;"></div>
       <div class="cal-grid-wrap" id="calGridWrap">
         <div class="cal-grid" id="calGrid"></div>
@@ -39,7 +38,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
     </div>
   </div>
 
-  <style>
+  <style is:global>
     .calendar-wrapper {
       --navy: #1a2b4a;
       --navy-mid: #243656;
@@ -135,12 +134,20 @@ import PageLayout from '../../layouts/PageLayout.astro';
     .calendar-wrapper .filter-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
+      gap: 0.5rem;
       justify-content: center;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
     }
     .calendar-wrapper .filter-pill {
-      font-size: 0.7rem;
-      padding: 4px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      padding: 5px 14px;
       border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--white);
@@ -149,6 +156,13 @@ import PageLayout from '../../layouts/PageLayout.astro';
       font-weight: 600;
       transition: all 0.2s;
       white-space: nowrap;
+    }
+    .calendar-wrapper .filter-pill .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1.5px rgba(255,255,255,0.85);
     }
     .calendar-wrapper .filter-pill:hover { 
       border-color: var(--navy); 
@@ -166,29 +180,39 @@ import PageLayout from '../../layouts/PageLayout.astro';
     .calendar-wrapper .cal-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 1px;
-      background: var(--border);
+      gap: 0;
+      background: var(--white);
       border-radius: var(--radius);
       overflow: hidden;
-      border: 1px solid var(--border);
+      border: 2px solid var(--navy);
     }
     .calendar-wrapper .cal-header {
       background: var(--navy);
-      padding: 10px 4px;
+      padding: 12px 4px;
       text-align: center;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--white);
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .calendar-wrapper .cal-header:last-child {
+      border-right: none;
     }
     .calendar-wrapper .cal-day {
       background: var(--white);
-      min-height: 100px;
-      padding: 6px;
+      min-height: 110px;
+      padding: 8px;
       position: relative;
       transition: background 0.15s;
       cursor: default;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    /* Remove right border on last column (every 7th day cell, accounting for 7 header cells) */
+    .calendar-wrapper .cal-grid > div:not(.cal-header):nth-child(7n + 7) {
+      border-right: none;
     }
     .calendar-wrapper .cal-day:hover { background: var(--cream); }
     .calendar-wrapper .cal-day.other-month { 
@@ -432,32 +456,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
       border-color: var(--navy);
     }
 
-    /* ═══ LEGEND ═══ */
-    .calendar-wrapper .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      justify-content: center;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1rem;
-      background: var(--cream);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-    }
-    .calendar-wrapper .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      font-weight: 600;
-    }
-    .calendar-wrapper .legend-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
+    /* Legend removed — filter pills serve as both legend and filter */
 
     /* ═══ FOOTER ═══ */
     .calendar-wrapper .cal-footer {
@@ -821,7 +820,6 @@ import PageLayout from '../../layouts/PageLayout.astro';
     // INITIALIZE
     // ═══════════════════════════════════════════
     function init() {
-      buildLegend();
       buildFilters();
       render();
       document.getElementById('prevMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); render(); });
@@ -833,20 +831,14 @@ import PageLayout from '../../layouts/PageLayout.astro';
     // Attach to DOMContentLoaded to ensure elements exist when script runs in Astro
     document.addEventListener('DOMContentLoaded', init);
 
-    function buildLegend() {
-      const legend = document.getElementById('legend');
-      if (!legend) return;
-      legend.innerHTML = Object.entries(COUNTIES).map(([key, val]) =>
-        `<div class="legend-item"><span class="legend-dot" style="background:${val.color}"></span>${val.label}</div>`
-      ).join('');
-    }
+    // Legend removed — filter pills serve as both legend and filter
 
     function buildFilters() {
       const pills = document.getElementById('filterPills');
       if (!pills) return;
       pills.innerHTML = `<button class="filter-pill active" data-filter="all">All</button>` +
         Object.entries(COUNTIES).map(([key, val]) =>
-          `<button class="filter-pill active" data-filter="${key}">${val.label}</button>`
+          `<button class="filter-pill active" data-filter="${key}"><span class="pill-dot" style="background:${val.color}"></span>${val.label}</button>`
         ).join('');
 
       pills.querySelectorAll('.filter-pill').forEach(btn => {

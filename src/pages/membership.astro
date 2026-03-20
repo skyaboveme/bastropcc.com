@@ -147,6 +147,33 @@ import { Icon } from 'astro-icon/components';
     </div>
   </div>
 
+  <!-- Donorbox Checkout -->
+  <div id="checkout" class="mt-24 mb-16 scroll-mt-24">
+    <SectionHeading title="Join & Checkout" centered={true} class="mb-10" />
+    <div class="max-w-2xl mx-auto not-prose">
+      <p class="text-center text-bcc-gray-600 mb-8">
+        Select your membership tier below to complete your registration. All contributions go directly to supporting conservative candidates and civic engagement in Bastrop County.
+      </p>
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-8 shadow-sm">
+        <Fragment set:html={`
+          <script src="https://donorbox.org/widget.js" paypalExpress="false"></script>
+          <iframe 
+            src="https://donorbox.org/embed/become-a-member-85?a=b" 
+            name="donorbox" 
+            allowpaymentrequest="allowpaymentrequest"
+            seamless="seamless" 
+            frameborder="0" 
+            scrolling="no" 
+            height="900px" 
+            width="100%" 
+            style="max-width: 500px; min-width: 250px; max-height: none!important; margin: 0 auto; display: block;"
+            allow="payment"
+          ></iframe>
+        `} />
+      </div>
+    </div>
+  </div>
+
 </PageLayout>
 
 <script>

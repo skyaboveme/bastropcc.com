@@ -537,7 +537,7 @@ const downBallotRaces = [
       </div>
 
       <div class="flex flex-wrap gap-2 mb-8">
-        {["presidential|PRESIDENTIAL TREND", "primary2026|2026 PRIMARY", "localraces|LOCAL RACES", "trajectory|TRAJECTORY"].map((spec, idx) => {
+        {["presidential|PRESIDENTIAL TREND", "primary2026|2026 PRIMARY", "trajectory|TRAJECTORY"].map((spec, idx) => {
           const [id, label] = spec.split("|");
           return (
             <button 
@@ -643,42 +643,6 @@ const downBallotRaces = [
         </div>
       </div>
 
-      <div id="partisan-localraces" data-pane-group="partisan" class="hidden">
-        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">BASTROP COUNTY LOCAL RACES — 2022 TO 2024</div>
-        <div class="flex flex-col gap-4">
-          {[
-            { year: "2022", race: "County Judge", r: "Gregory Klaus", d: "Dock Jackson", rPct: "~57%", dPct: "~43%" },
-            { year: "2022", race: "Governor", r: "Greg Abbott", d: "Beto O'Rourke", rPct: "~61%", dPct: "~38%" },
-            { year: "2024", race: "President", r: "Donald Trump", d: "Kamala Harris", rPct: "58.6%", dPct: "40.1%" },
-            { year: "2024", race: "TX HD-17", r: "Stan Gerdes", d: "Desiree Venable", rPct: "69.5%", dPct: "30.5%" },
-          ].map(race => (
-            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-              <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex justify-between items-center">
-                <div class="flex gap-3 items-center">
-                  <span class="text-yellow-600 font-mono font-bold text-xs">{race.year}</span>
-                  <span class="text-gray-900 font-bold">{race.race}</span>
-                </div>
-                <span class="text-xs font-mono font-bold tracking-wider text-bcc-red bg-red-50 border border-red-200 px-2 py-0.5 rounded">R WIN</span>
-              </div>
-              <div class="grid grid-cols-2">
-                <div class="p-4 border-r border-gray-100">
-                  <div class="text-bcc-red font-mono text-xs tracking-wider mb-2">REPUBLICAN</div>
-                  <div class="text-gray-900 font-bold">{race.r}</div>
-                  <div class="text-bcc-red font-mono font-bold text-2xl mt-2">{race.rPct}</div>
-                  <div class="bg-gray-100 rounded h-1.5 mt-3 overflow-hidden"><div class="bg-bcc-red h-full rounded" style={`width: ${race.rPct.replace(/[^0-9.]/g, '')}%`}></div></div>
-                </div>
-                <div class="p-4">
-                  <div class="text-blue-600 font-mono text-xs tracking-wider mb-2">DEMOCRAT</div>
-                  <div class="text-gray-900 font-bold">{race.d}</div>
-                  <div class="text-blue-600 font-mono font-bold text-2xl mt-2">{race.dPct}</div>
-                  <div class="bg-gray-100 rounded h-1.5 mt-3 overflow-hidden"><div class="bg-blue-500 h-full rounded" style={`width: ${race.dPct.replace(/[^0-9.]/g, '')}%`}></div></div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div class="text-gray-400 font-mono text-xs mt-4">Sources: BastropVotes.org, KVUE, Community Impact, Bastrop County GOP.</div>
-      </div>
 
       <div id="partisan-trajectory" data-pane-group="partisan" class="hidden">
         <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">REPUBLICAN MARGIN OF VICTORY — PRESIDENTIAL ELECTIONS</div>
