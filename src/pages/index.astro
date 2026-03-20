@@ -94,6 +94,46 @@ const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new
 
 
 
+  <!-- Election Resources -->
+  <SectionDivider />
+  
+  <section class="py-16 md:py-24 bg-white scroll-reveal opacity-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading 
+        title="Election Resources" 
+        subtitle="Know your officials, see our endorsements, and find your polling location."
+        centered={true}
+      />
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <a href="/elected-officials" class="group bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-8 text-center hover:shadow-lg hover:border-bcc-red transition-all duration-300">
+          <div class="w-16 h-16 bg-bcc-navy text-bcc-gold rounded-full flex items-center justify-center mx-auto mb-5 group-hover:bg-bcc-red group-hover:text-white transition-colors">
+            <Icon name="lucide:landmark" class="w-8 h-8" />
+          </div>
+          <h3 class="font-heading uppercase text-xl font-bold text-bcc-navy mb-3 group-hover:text-bcc-red transition-colors">Who Represents You</h3>
+          <p class="text-bcc-gray-600 text-sm">Complete directory of Bastrop County elected officials — commissioners, sheriff, JPs, school board, and more.</p>
+        </a>
+
+        <a href="/endorsements" class="group bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-8 text-center hover:shadow-lg hover:border-bcc-red transition-all duration-300">
+          <div class="w-16 h-16 bg-bcc-navy text-bcc-gold rounded-full flex items-center justify-center mx-auto mb-5 group-hover:bg-bcc-red group-hover:text-white transition-colors">
+            <Icon name="lucide:badge-check" class="w-8 h-8" />
+          </div>
+          <h3 class="font-heading uppercase text-xl font-bold text-bcc-navy mb-3 group-hover:text-bcc-red transition-colors">BCC Endorsements</h3>
+          <p class="text-bcc-gray-600 text-sm">See who Bastrop County Conservatives has endorsed for the 2026 Republican Primary and why.</p>
+        </a>
+
+        <a href="/precinct-map" class="group bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-8 text-center hover:shadow-lg hover:border-bcc-red transition-all duration-300">
+          <div class="w-16 h-16 bg-bcc-navy text-bcc-gold rounded-full flex items-center justify-center mx-auto mb-5 group-hover:bg-bcc-red group-hover:text-white transition-colors">
+            <Icon name="lucide:map" class="w-8 h-8" />
+          </div>
+          <h3 class="font-heading uppercase text-xl font-bold text-bcc-navy mb-3 group-hover:text-bcc-red transition-colors">Precinct Map</h3>
+          <p class="text-bcc-gray-600 text-sm">Find your voting precinct, polling locations, and key election dates for Bastrop County.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
   <!-- Recent Meeting Videos -->
   <SectionDivider />
   
