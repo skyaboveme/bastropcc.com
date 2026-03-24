@@ -1,0 +1,340 @@
+---
+import Button from './ui/Button.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<div id="hero-slider" class="relative min-h-[85vh] overflow-hidden">
+  <!-- Slides -->
+  <div class="hero-slides">
+    <!-- Slide 1: Local Action = National Wins -->
+    <div class="hero-slide active" data-bg="/images/hero-bg.jpg">
+      <div class="slide-bg" style="background-image: url('/images/hero-bg.jpg');"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="max-w-3xl space-y-8">
+          <h1 class="font-heading uppercase text-5xl md:text-7xl font-bold leading-tight text-white drop-shadow-xl border-l-8 border-bcc-red pl-6">
+            Local Action = <span class="text-bcc-red drop-shadow-xl">National Wins</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-white font-medium max-w-2xl leading-relaxed drop-shadow-md pl-6">
+            Bastrop County Conservatives upholds the family values, faith, and traditions that have defined our community for over 250 years.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 pt-4 pl-6">
+            <Button href="/volunteer" variant="primary" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Get Involved →</Button>
+            <Button href="#subscribe" variant="white-outline" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Sign Up</Button>
+          </div>
+        </div>
+        <div class="mt-20 pt-8 border-t border-white/30 flex flex-wrap gap-x-12 gap-y-4 text-sm font-bold uppercase tracking-wider text-bcc-gray-50 drop-shadow-md border-l-8 md:border-l-0 border-bcc-red pl-6 md:pl-0">
+          <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5 text-bcc-red"/> 250+ Years of Tradition</span>
+          <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5 text-bcc-red"/> Conservative Candidates Endorsed</span>
+          <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5 text-bcc-red"/> Bastrop County Strong</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Electing Republicans -->
+    <div class="hero-slide" data-bg="/Assets/ColoradoRiver.png">
+      <div class="slide-bg" style="background-image: url('/Assets/ColoradoRiver.png');"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="max-w-3xl space-y-8">
+          <h1 class="font-heading uppercase text-5xl md:text-7xl font-bold leading-tight text-white drop-shadow-xl border-l-8 border-bcc-red pl-6">
+            Electing Republicans. <span class="text-bcc-red drop-shadow-xl">Amplifying Conservative Voices.</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-white font-medium max-w-2xl leading-relaxed drop-shadow-md pl-6">
+            We mobilize grassroots support to elect strong conservative leaders across Bastrop County.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 pt-4 pl-6">
+            <Button href="/endorsements" variant="primary" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Our Endorsements →</Button>
+            <Button href="/membership" variant="white-outline" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Join Us</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Keep Texas Red -->
+    <div class="hero-slide" data-bg="/Assets/TX-Bastrop.jpg">
+      <div class="slide-bg" style="background-image: url('/Assets/TX-Bastrop.jpg');"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="max-w-3xl space-y-8">
+          <h1 class="font-heading uppercase text-5xl md:text-7xl font-bold leading-tight text-white drop-shadow-xl border-l-8 border-bcc-red pl-6">
+            Keep Texas <span class="text-bcc-red drop-shadow-xl">Red</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-white font-medium max-w-2xl leading-relaxed drop-shadow-md pl-6">
+            Bastrop County is the front line. Stand with us to defend conservative values across the Lone Star State.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 pt-4 pl-6">
+            <Button href="/volunteer" variant="primary" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Take Action →</Button>
+            <Button href="/donate" variant="white-outline" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Donate</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <button id="hero-prev" class="hero-arrow hero-arrow-left" aria-label="Previous slide">
+    <Icon name="lucide:chevron-left" class="w-8 h-8" />
+  </button>
+  <button id="hero-next" class="hero-arrow hero-arrow-right" aria-label="Next slide">
+    <Icon name="lucide:chevron-right" class="w-8 h-8" />
+  </button>
+
+  <!-- Dot Indicators -->
+  <div class="hero-dots">
+    <button class="hero-dot active" data-slide="0" aria-label="Go to slide 1"></button>
+    <button class="hero-dot" data-slide="1" aria-label="Go to slide 2"></button>
+    <button class="hero-dot" data-slide="2" aria-label="Go to slide 3"></button>
+  </div>
+</div>
+
+<style>
+  .hero-slides {
+    position: relative;
+    width: 100%;
+    min-height: 85vh;
+  }
+
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none;
+  }
+
+  .hero-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+  }
+
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: right center;
+    z-index: 1;
+  }
+
+  @media (min-width: 768px) {
+    .slide-bg {
+      background-position: center center;
+      background-attachment: fixed;
+    }
+  }
+
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    width: 100%;
+    background: linear-gradient(to bottom, #1E3A5F, rgba(30, 58, 95, 0.9), rgba(30, 58, 95, 0.4));
+  }
+
+  @media (min-width: 768px) {
+    .slide-overlay {
+      width: 66.666%;
+      background: linear-gradient(to right, #1E3A5F, rgba(30, 58, 95, 0.8), transparent);
+    }
+  }
+
+  .slide-content {
+    position: relative;
+    z-index: 10;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 8rem 1rem 5rem;
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 85vh;
+  }
+
+  @media (min-width: 640px) {
+    .slide-content {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .slide-content {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* Arrows */
+  .hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    background: rgba(30, 58, 95, 0.6);
+    backdrop-filter: blur(4px);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 9999px;
+    width: 3rem;
+    height: 3rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .hero-arrow:hover {
+    background: rgba(185, 28, 28, 0.8);
+    border-color: rgba(185, 28, 28, 1);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  @media (min-width: 768px) {
+    .hero-arrow {
+      display: flex;
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+  }
+
+  .hero-arrow-left {
+    left: 1rem;
+  }
+
+  .hero-arrow-right {
+    right: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-arrow-left { left: 1.5rem; }
+    .hero-arrow-right { right: 1.5rem; }
+  }
+
+  /* Dot Indicators */
+  .hero-dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .hero-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 9999px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .hero-dot:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .hero-dot.active {
+    background: #B91C1C;
+    border-color: #B91C1C;
+    transform: scale(1.25);
+  }
+
+  /* Animate slide content on entry */
+  .hero-slide.active .slide-content > div {
+    animation: slideContentIn 0.8s ease-out 0.3s both;
+  }
+
+  @keyframes slideContentIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    const prevBtn = document.getElementById('hero-prev');
+    const nextBtn = document.getElementById('hero-next');
+    const slider = document.getElementById('hero-slider');
+    let current = 0;
+    let autoInterval: ReturnType<typeof setInterval>;
+    const INTERVAL_MS = 6000;
+
+    function goToSlide(index: number) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function nextSlide() {
+      goToSlide(current + 1);
+    }
+
+    function prevSlide() {
+      goToSlide(current - 1);
+    }
+
+    function startAuto() {
+      autoInterval = setInterval(nextSlide, INTERVAL_MS);
+    }
+
+    function resetAuto() {
+      clearInterval(autoInterval);
+      startAuto();
+    }
+
+    // Arrow clicks
+    nextBtn?.addEventListener('click', () => { nextSlide(); resetAuto(); });
+    prevBtn?.addEventListener('click', () => { prevSlide(); resetAuto(); });
+
+    // Dot clicks
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt((dot as HTMLElement).dataset.slide || '0');
+        goToSlide(idx);
+        resetAuto();
+      });
+    });
+
+    // Pause on hover
+    slider?.addEventListener('mouseenter', () => clearInterval(autoInterval));
+    slider?.addEventListener('mouseleave', () => startAuto());
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    slider?.addEventListener('touchstart', (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    slider?.addEventListener('touchend', (e: TouchEvent) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) nextSlide();
+        else prevSlide();
+        resetAuto();
+      }
+    }, { passive: true });
+
+    // Start auto-advance
+    startAuto();
+  });
+</script>

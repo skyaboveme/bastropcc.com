@@ -4,6 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 
 <PageLayout 
   title="Conservative Coalition Calendar — Bastrop County Conservatives"
+  description="Interactive calendar of conservative and Republican events across Bastrop, Travis, Hays, Fayette, and Williamson counties. Filterable by county and organization."
   heading="Conservative Coalition Calendar"
   subheading="Central Texas Republican & Conservative Events"
 >
@@ -14,14 +15,27 @@ import PageLayout from '../../layouts/PageLayout.astro';
         <span class="current-month" id="currentMonth"></span>
         <button id="nextMonth" aria-label="Next month">›</button>
       </div>
-      <div class="view-toggle">
-        <button class="active" id="btnCalendar" onclick="setView('calendar')">Calendar</button>
-        <button id="btnList" onclick="setView('list')">List</button>
+      <div class="view-toggle hide-on-mobile">
+        <button id="btnCalendar" onclick="setView('calendar')">Calendar</button>
+        <button class="active" id="btnList" onclick="setView('list')">List</button>
       </div>
     </div>
 
     <div class="calendar-container">
-      <div class="filter-pills" id="filterPills" style="text-align:center; margin-bottom:1rem;"></div>
+      <button class="filter-toggle-btn" id="filterToggleBtn" aria-expanded="false">
+        <span>⚙ Filters</span>
+        <span class="filter-chevron" id="filterChevron">▼</span>
+      </button>
+      <div class="filter-section collapsed-mobile" id="filterSection">
+        <div class="type-filter-row" id="typeFilterRow">
+          <span class="filter-row-label">Type:</span>
+          <div class="type-pills" id="typePills"></div>
+        </div>
+        <div class="county-filter-row">
+          <span class="filter-row-label">County / Org:</span>
+          <div class="filter-pills" id="filterPills" style="text-align:center;"></div>
+        </div>
+      </div>
       <div class="cal-grid-wrap" id="calGridWrap">
         <div class="cal-grid" id="calGrid"></div>
       </div>
@@ -131,16 +145,46 @@ import PageLayout from '../../layouts/PageLayout.astro';
       background: var(--navy);
       color: var(--white);
     }
+    .calendar-wrapper .filter-section {
+      margin-bottom: 1.25rem;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+    }
+    .calendar-wrapper .type-filter-row,
+    .calendar-wrapper .county-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .calendar-wrapper .county-filter-row {
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--border);
+    }
+    .calendar-wrapper .filter-row-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-right: 0.25rem;
+      white-space: nowrap;
+    }
+    .calendar-wrapper .type-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
     .calendar-wrapper .filter-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
       justify-content: center;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1.25rem;
-      background: var(--cream);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
     }
     .calendar-wrapper .filter-pill {
       display: inline-flex;
@@ -172,6 +216,55 @@ import PageLayout from '../../layouts/PageLayout.astro';
       background: var(--navy);
       border-color: var(--navy);
       color: var(--white);
+    }
+    .calendar-wrapper .type-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      padding: 5px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-dim);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .calendar-wrapper .type-pill .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .calendar-wrapper .type-pill:hover { 
+      border-color: var(--navy); 
+      color: var(--navy); 
+    }
+    .calendar-wrapper .type-pill.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
+    }
+    .calendar-wrapper .list-event .type-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .calendar-wrapper .type-badge.political {
+      background: #fde8e8;
+      color: #991b1b;
+    }
+    .calendar-wrapper .type-badge.community {
+      background: #e8f5e9;
+      color: #1b5e20;
     }
 
     /* ═══ CALENDAR GRID ═══ */
@@ -477,6 +570,32 @@ import PageLayout from '../../layouts/PageLayout.astro';
     }
     .calendar-wrapper .cal-footer a:hover { color: var(--navy); }
 
+    /* ═══ FILTER TOGGLE (MOBILE) ═══ */
+    .calendar-wrapper .filter-toggle-btn {
+      display: none;
+      width: 100%;
+      padding: 10px 16px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--navy);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .calendar-wrapper .filter-toggle-btn .filter-chevron {
+      font-size: 0.7rem;
+      transition: transform 0.2s;
+    }
+    .calendar-wrapper .filter-toggle-btn[aria-expanded="true"] .filter-chevron {
+      transform: rotate(180deg);
+    }
+
     /* ═══ RESPONSIVE ═══ */
     @media (max-width: 700px) {
       .calendar-wrapper .cal-day { min-height: 70px; padding: 3px; }
@@ -484,6 +603,10 @@ import PageLayout from '../../layouts/PageLayout.astro';
       .calendar-wrapper .cal-event { font-size: 0.5rem; padding: 1px 3px; }
       .calendar-wrapper .cal-header { font-size: 0.55rem; padding: 6px 2px; }
       .calendar-wrapper .controls { padding: 0.7rem 0.8rem; }
+      .calendar-wrapper .hide-on-mobile { display: none !important; }
+      .calendar-wrapper .filter-toggle-btn { display: flex; }
+      .calendar-wrapper .filter-section.collapsed-mobile { display: none !important; }
+      .calendar-wrapper .filter-section.expanded-mobile { display: block !important; }
     }
     @media (max-width: 480px) {
       .calendar-wrapper .cal-day { min-height: 55px; }
@@ -525,6 +648,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Bastrop County Republican Party",
         orgShort: "BCRP",
         county: "bastrop",
+        type: "political",
         url: "https://www.bastropctygop.com/march-monthly-informational-meeting/",
         desc: "Doors open at 6 PM, discussion begins at 6:30 PM."
       },
@@ -536,6 +660,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Bastrop County Republican Party",
         orgShort: "BCRP",
         county: "bastrop",
+        type: "political",
         url: "https://www.bastropctygop.com/bcrps-2026-county-convention/",
         desc: "Bastrop County Republican Party Convention. Must attend Precinct Convention first."
       },
@@ -547,6 +672,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Bastrop County Republican Party",
         orgShort: "BCRP",
         county: "bastrop",
+        type: "community",
         url: "https://www.bastropctygop.com/4th-annual-golf-classic-returns/",
         desc: "Annual fundraiser golf tournament. Registration now open."
       },
@@ -559,6 +685,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Fayette County Republican Party",
         orgShort: "FCRP",
         county: "fayette",
+        type: "political",
         url: "https://www.fcrptx.org/",
         desc: "Precinct conventions start at 9 AM. County Convention convenes after adjournment of all Precinct Conventions."
       },
@@ -572,6 +699,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Hays County Republican Party",
         orgShort: "Hays GOP",
         county: "hays",
+        type: "political",
         url: "https://hayscountygop.org/events-2-1/the-constitution-your-past-your-present-your-future",
         desc: "Constitutional education event. Register at luma.com/z8tqsv6u"
       },
@@ -583,6 +711,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Hays County Republican Party",
         orgShort: "Hays GOP",
         county: "hays",
+        type: "political",
         url: "https://hayscountygop.org/events-2-1/hays-county-gop-convention",
         desc: "SD 21 & 25 Senatorial Conventions. Check Home Page for locations and times."
       },
@@ -595,6 +724,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Hays County Republican Party",
         orgShort: "Hays GOP",
         county: "hays",
+        type: "community",
         url: "https://www.haysgopdinner.com",
         desc: "Celebrating America's 250th. Annual signature dinner event."
       },
@@ -608,6 +738,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Fredericksburg Tea Party",
         orgShort: "FTP",
         county: "fredericksburg",
+        type: "community",
         url: "https://fredericksburgteaparty.org/event/hill-country-preppers-meeting-13/",
         desc: "Guest speaker Dave Murdock: 'The Gray Man: Hiding in Plain Sight.' La Tapatia food truck 5–6 PM."
       },
@@ -620,6 +751,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Fredericksburg Tea Party",
         orgShort: "FTP",
         county: "fredericksburg",
+        type: "community",
         url: "https://fredericksburgteaparty.org/event/braveheart-gala/",
         desc: "Annual Fredericksburg Tea Party gala event."
       },
@@ -631,6 +763,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Fredericksburg Tea Party",
         orgShort: "FTP",
         county: "fredericksburg",
+        type: "political",
         url: "https://fredericksburgteaparty.org/event/texas-freedom-summit/",
         desc: "Full-day Texas Freedom Summit event."
       },
@@ -643,6 +776,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Travis County Republican Party",
         orgShort: "Travis GOP",
         county: "travis",
+        type: "political",
         url: "https://traviscountygop.org/conventions",
         desc: "Local precinct conventions across Travis County. Numerous times and locations."
       },
@@ -656,6 +790,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Capital Area Conservative Republican Club",
         orgShort: "CACRC",
         county: "cacrc",
+        type: "political",
         url: "https://www.capitalareaconservativerepublicans.com/",
         desc: "Full-day special training event with Dr. Marlene McMillan."
       },
@@ -669,6 +804,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "We The People Lake Travis",
         orgShort: "WTP-LT",
         county: "wtp",
+        type: "political",
         url: "https://wethepeoplelaketravis.com/",
         desc: "Vote Keely Cano (Place 7) and Robert Aird (Place 6). Early voting April 20–28."
       },
@@ -680,6 +816,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "We The People Lake Travis",
         orgShort: "WTP-LT",
         county: "wtp",
+        type: "political",
         url: "https://wethepeoplelaketravis.com/",
         desc: "Early voting begins for LTISD School Board and Bee Cave City Council elections. Runs through April 28."
       },
@@ -692,6 +829,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Republican Party of Texas",
         orgShort: "RPT",
         county: "statewide",
+        type: "political",
         url: "https://texasgop.org/",
         desc: "Early voting begins for Texas Republican Primary Runoff. Runs through May 22."
       },
@@ -704,6 +842,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Republican Party of Texas",
         orgShort: "RPT",
         county: "statewide",
+        type: "political",
         url: "https://texasgop.org/",
         desc: "Primary Runoff Election Day."
       },
@@ -716,6 +855,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Republican Party of Texas",
         orgShort: "RPT",
         county: "statewide",
+        type: "political",
         url: "https://texasgop.org/",
         desc: "State Convention Day 1. Must attend Precinct & Senatorial Conventions to participate."
       },
@@ -727,6 +867,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Republican Party of Texas",
         orgShort: "RPT",
         county: "statewide",
+        type: "political",
         url: "https://texasgop.org/",
         desc: "State Convention Day 2."
       },
@@ -738,6 +879,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Republican Party of Texas",
         orgShort: "RPT",
         county: "statewide",
+        type: "political",
         url: "https://texasgop.org/",
         desc: "State Convention final day."
       },
@@ -749,6 +891,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Grassroots America — We The People",
         orgShort: "GAWTP",
         county: "gawtp",
+        type: "community",
         url: "https://gawtp.com/events/",
         desc: "Annual Champions of Freedom Awards Gala."
       },
@@ -760,6 +903,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Republican Party of Texas",
         orgShort: "RPT",
         county: "statewide",
+        type: "political",
         url: "https://texasgop.org/",
         desc: "Early voting begins for the 2026 General Election. Runs through October 30."
       },
@@ -772,6 +916,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Republican Party of Texas",
         orgShort: "RPT",
         county: "statewide",
+        type: "political",
         url: "https://texasgop.org/",
         desc: "General Election Day. Polls open 7 AM to 7 PM."
       },
@@ -784,6 +929,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         org: "Burleson County Republican Party",
         orgShort: "Burleson GOP",
         county: "burleson",
+        type: "political",
         url: "https://republicanpartyofburlesoncounty.com/",
         desc: "Early voting for midterm election. Oct 19–30, 2026."
       },
@@ -810,8 +956,14 @@ import PageLayout from '../../layouts/PageLayout.astro';
     // STATE
     // ═══════════════════════════════════════════
     let currentDate = new Date(2026, 2, 1); // March 2026
-    let currentView = 'calendar';
+    let currentView = 'list';
     let activeFilters = new Set(Object.keys(COUNTIES));
+    let activeTypeFilters = new Set(['political', 'community']);
+
+    const EVENT_TYPES = {
+      political: { label: 'Political', color: '#991b1b' },
+      community: { label: 'Community', color: '#1b5e20' },
+    };
 
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -821,11 +973,29 @@ import PageLayout from '../../layouts/PageLayout.astro';
     // ═══════════════════════════════════════════
     function init() {
       buildFilters();
+      // Force list view on mobile
+      if (window.innerWidth <= 700) {
+        currentView = 'list';
+        document.getElementById('btnList').classList.add('active');
+        document.getElementById('btnCalendar').classList.remove('active');
+      }
       render();
       document.getElementById('prevMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); render(); });
       document.getElementById('nextMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); render(); });
       document.getElementById('modalOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+      
+      // Filter toggle for mobile
+      const filterToggleBtn = document.getElementById('filterToggleBtn');
+      if (filterToggleBtn) {
+        filterToggleBtn.addEventListener('click', () => {
+          const section = document.getElementById('filterSection');
+          const isExpanded = filterToggleBtn.getAttribute('aria-expanded') === 'true';
+          filterToggleBtn.setAttribute('aria-expanded', !isExpanded);
+          section.classList.toggle('collapsed-mobile', isExpanded);
+          section.classList.toggle('expanded-mobile', !isExpanded);
+        });
+      }
     }
 
     // Attach to DOMContentLoaded to ensure elements exist when script runs in Astro
@@ -834,6 +1004,19 @@ import PageLayout from '../../layouts/PageLayout.astro';
     // Legend removed — filter pills serve as both legend and filter
 
     function buildFilters() {
+      // Build type filter pills
+      const typePills = document.getElementById('typePills');
+      if (typePills) {
+        typePills.innerHTML = `<button class="type-pill active" data-type-filter="all">All Types</button>` +
+          Object.entries(EVENT_TYPES).map(([key, val]) =>
+            `<button class="type-pill active" data-type-filter="${key}"><span class="pill-dot" style="background:${val.color}"></span>${val.label}</button>`
+          ).join('');
+        typePills.querySelectorAll('.type-pill').forEach(btn => {
+          btn.addEventListener('click', () => toggleTypeFilter(btn));
+        });
+      }
+
+      // Build county filter pills
       const pills = document.getElementById('filterPills');
       if (!pills) return;
       pills.innerHTML = `<button class="filter-pill active" data-filter="all">All</button>` +
@@ -861,6 +1044,25 @@ import PageLayout from '../../layouts/PageLayout.astro';
           btn.classList.add('active');
         }
         allBtn.classList.toggle('active', activeFilters.size === Object.keys(COUNTIES).length);
+      }
+      render();
+    };
+
+    window.toggleTypeFilter = function(btn) {
+      const filter = btn.dataset.typeFilter;
+      if (filter === 'all') {
+        activeTypeFilters = new Set(['political', 'community']);
+        document.querySelectorAll('.type-pill').forEach(p => p.classList.add('active'));
+      } else {
+        const allBtn = document.querySelector('[data-type-filter="all"]');
+        if (activeTypeFilters.has(filter)) {
+          activeTypeFilters.delete(filter);
+          btn.classList.remove('active');
+        } else {
+          activeTypeFilters.add(filter);
+          btn.classList.add('active');
+        }
+        allBtn.classList.toggle('active', activeTypeFilters.size === Object.keys(EVENT_TYPES).length);
       }
       render();
     };
@@ -895,7 +1097,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
     }
 
     function getFilteredEvents() {
-      return EVENTS.filter(e => activeFilters.has(e.county));
+      return EVENTS.filter(e => activeFilters.has(e.county) && activeTypeFilters.has(e.type));
     }
 
     function renderCalendar(year, month) {
@@ -980,6 +1182,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
             </div>
             <div class="list-info">
               <span class="org-badge" style="background:${countyConf.color};color:${ev.county === 'statewide' || ev.county === 'wtp' ? 'var(--navy)' : '#fff'}">${ev.orgShort}</span>
+              <span class="type-badge ${ev.type}">${ev.type === 'political' ? '★ Political' : '⌂ Community'}</span>
               <h3>${ev.title}</h3>
               <div class="time-loc">
                 <strong>${ev.time}</strong>${ev.location ? ` · ${ev.location.split(',')[0]}` : ''}
@@ -1009,6 +1212,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
         <button class="modal-close" onclick="closeModal()">✕</button>
         <h2>${ev.title}</h2>
         <span class="modal-org" style="background:${countyConf.color};color:${ev.county === 'statewide' || ev.county === 'wtp' ? 'var(--navy)' : '#fff'}">${ev.org}</span>
+        <span class="type-badge ${ev.type}" style="display:inline-block;margin-left:6px;font-size:0.7rem;padding:3px 10px;border-radius:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;${ev.type === 'political' ? 'background:#fde8e8;color:#991b1b;' : 'background:#e8f5e9;color:#1b5e20;'}">${ev.type === 'political' ? '★ Political' : '⌂ Community'}</span>
         <div class="detail-row"><span class="icon">📅</span><span class="detail-text">${dateStr}</span></div>
         <div class="detail-row"><span class="icon">🕐</span><span class="detail-text">${ev.time}${ev.endTime ? ' – ' + ev.endTime : ''}</span></div>
         ${ev.location ? `<div class="detail-row"><span class="icon">📍</span><span class="detail-text">${ev.location}</span></div>` : ''}

@@ -6,6 +6,7 @@ import ValueCard from '../components/ui/ValueCard.astro';
 import VideoEmbed from '../components/ui/VideoEmbed.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import SectionDivider from '../components/ui/SectionDivider.astro';
+import HeroSlider from '../components/HeroSlider.astro';
 import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 
@@ -15,33 +16,12 @@ const videos = await getCollection('videos');
 const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()).slice(0, 3);
 ---
 
-<BaseLayout>
-  <!-- Hero Section -->
-  <section class="relative text-white min-h-[85vh] flex items-center pt-20 overflow-hidden bg-cover bg-center bg-fixed" style="background-image: url('/images/hero-bg.jpg');">
-    <!-- Dallas GOP Style Left-Aligned Navy Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-bcc-navy via-bcc-navy/90 md:via-bcc-navy/80 to-bcc-navy/40 md:to-transparent z-10 w-full md:w-3/4 lg:w-2/3"></div>
-    
-    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
-      <div class="max-w-3xl space-y-8 scroll-reveal opacity-0">
-        <h1 class="font-heading uppercase text-5xl md:text-7xl font-bold leading-tight text-white drop-shadow-xl border-l-8 border-bcc-red pl-6">
-          Local Action = <span class="text-bcc-red drop-shadow-xl">National Wins</span>
-        </h1>
-        <p class="text-xl md:text-2xl text-white font-medium max-w-2xl leading-relaxed drop-shadow-md pl-6">
-          Bastrop County Conservatives upholds the family values, faith, and traditions that have defined our community for over 250 years.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 pt-4 pl-6">
-          <Button href="/volunteer" variant="primary" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Get Involved →</Button>
-          <Button href="#subscribe" variant="white-outline" class="font-heading uppercase tracking-wide text-lg shadow-lg hover:scale-105 transition-transform duration-300">Sign Up</Button>
-        </div>
-      </div>
-      
-      <div class="mt-20 pt-8 border-t border-white/30 flex flex-wrap gap-x-12 gap-y-4 text-sm font-bold uppercase tracking-wider text-bcc-gray-50 drop-shadow-md scroll-reveal opacity-0 border-l-8 md:border-l-0 border-bcc-red pl-6 md:pl-0">
-        <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5 text-bcc-red"/> 250+ Years of Tradition</span>
-        <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5 text-bcc-red"/> Conservative Candidates Endorsed</span>
-        <span class="flex items-center gap-2"><Icon name="lucide:check" class="w-5 h-5 text-bcc-red"/> Bastrop County Strong</span>
-      </div>
-    </div>
-  </section>
+<BaseLayout
+  title="Bastrop County Conservatives — Local Action = National Wins"
+  description="Bastrop County Conservatives PAC identifies, endorses, and supports conservative candidates in Bastrop County, Texas. Join our mission to uphold family values, faith, and freedom."
+>
+  <!-- Hero Slider -->
+  <HeroSlider />
 
   <!-- Mission Strip -->
   <section class="bg-bcc-navy-dark text-white py-16 border-b-4 border-bcc-red">

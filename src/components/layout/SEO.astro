@@ -22,7 +22,12 @@ const imageUrl = new URL(image, Astro.site || 'https://bastropcc.com');
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#1a2b4a" />
+<meta name="geo.region" content="US-TX" />
+<meta name="geo.placename" content="Bastrop County, Texas" />
 
+<link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="canonical" href={canonicalURL} />
 
 <title>{title}</title>

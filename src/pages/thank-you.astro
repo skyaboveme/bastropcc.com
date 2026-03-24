@@ -1,0 +1,55 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<PageLayout 
+  title="Thank You for Subscribing — Bastrop County Conservatives"
+  heading="You're In!"
+  subheading="Thank you for joining the Bastrop County Conservatives mailing list."
+>
+
+  <div class="not-prose max-w-2xl mx-auto text-center">
+
+    <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+      <Icon name="lucide:check-circle" class="w-10 h-10" />
+    </div>
+
+    <p class="text-lg text-bcc-gray-700 mb-6">
+      You'll now receive important updates on local issues, upcoming events, candidate endorsements, and ways to get involved — straight to your inbox.
+    </p>
+
+    <p class="text-bcc-gray-600 mb-10">
+      Keep an eye on your email for a welcome message from us. If you don't see it, check your spam folder and mark us as a safe sender.
+    </p>
+
+    <div class="bg-bcc-cream rounded-xl border border-bcc-gray-200 p-8 mb-10">
+      <h2 class="text-xl font-serif font-bold text-bcc-navy mb-4">While You're Here — Take the Next Step</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/membership" class="bg-white rounded-lg p-4 border border-bcc-gray-200 hover:border-bcc-red hover:shadow-md transition-all group">
+          <Icon name="lucide:users" class="w-6 h-6 text-bcc-navy group-hover:text-bcc-red mx-auto mb-2 transition-colors" />
+          <span class="text-sm font-bold text-bcc-navy group-hover:text-bcc-red transition-colors block">Become a Member</span>
+        </a>
+        <a href="/volunteer" class="bg-white rounded-lg p-4 border border-bcc-gray-200 hover:border-bcc-red hover:shadow-md transition-all group">
+          <Icon name="lucide:hand-helping" class="w-6 h-6 text-bcc-navy group-hover:text-bcc-red mx-auto mb-2 transition-colors" />
+          <span class="text-sm font-bold text-bcc-navy group-hover:text-bcc-red transition-colors block">Volunteer</span>
+        </a>
+        <a href="/endorsements" class="bg-white rounded-lg p-4 border border-bcc-gray-200 hover:border-bcc-red hover:shadow-md transition-all group">
+          <Icon name="lucide:badge-check" class="w-6 h-6 text-bcc-navy group-hover:text-bcc-red mx-auto mb-2 transition-colors" />
+          <span class="text-sm font-bold text-bcc-navy group-hover:text-bcc-red transition-colors block">See Endorsements</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://www.facebook.com/BastropCountyConservatives" target="_blank" class="inline-flex items-center gap-2 text-bcc-gray-600 hover:text-bcc-red transition-colors font-medium">
+        <Icon name="lucide:facebook" class="w-5 h-5" /> Follow on Facebook
+      </a>
+      <a href="https://www.instagram.com/bastropcountyconservatives/" target="_blank" class="inline-flex items-center gap-2 text-bcc-gray-600 hover:text-bcc-red transition-colors font-medium">
+        <Icon name="lucide:instagram" class="w-5 h-5" /> Follow on Instagram
+      </a>
+    </div>
+
+  </div>
+
+</PageLayout>

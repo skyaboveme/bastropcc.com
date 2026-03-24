@@ -22,17 +22,22 @@ import { Icon } from 'astro-icon/components';
     </div>
   </div>
 
-  <!-- Interactive Map -->
+  <!-- Interactive Precinct Map (ArcGIS) -->
   <section class="mb-16 not-prose">
-    <SectionHeading title="Bastrop County Map" />
-    <p class="text-bcc-gray-600 mb-6">Click any marker to see the Vote Center name and address. All locations are open to any registered Bastrop County voter on Election Day.</p>
+    <SectionHeading title="Bastrop County Precinct Map" />
+    <p class="text-bcc-gray-600 mb-6">Interactive map showing Bastrop County voting precincts, congressional districts, and commissioner precincts. Use the search bar or zoom in to find your precinct number. <strong class="text-bcc-navy">Red boundary = Congressional District</strong>, <strong class="text-bcc-navy">Blue boundaries = Voting Precincts</strong>.</p>
     
-    <div id="precinct-map" class="w-full h-[500px] rounded-xl border border-bcc-gray-200 shadow-sm overflow-hidden bg-bcc-gray-50">
-      <div class="flex items-center justify-center h-full text-bcc-gray-400">
-        <Icon name="lucide:loader-2" class="w-8 h-8 animate-spin" />
-        <span class="ml-3 font-medium">Loading map...</span>
-      </div>
+    <div class="w-full rounded-xl border-2 border-bcc-navy/20 shadow-lg overflow-hidden bg-bcc-gray-50">
+      <iframe 
+        src="https://experience.arcgis.com/experience/62572e361b48450c8917f702b716c7dc"
+        title="Bastrop County Voting Precinct Map"
+        class="w-full border-0"
+        style="height: 700px;"
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
     </div>
+    <p class="text-xs text-bcc-gray-400 mt-3 text-center">Source: Bastrop County Elections Office via ArcGIS. Click and drag to pan, scroll to zoom. Use the search bar to find your address.</p>
   </section>
 
   <!-- Vote Center Locations -->
@@ -228,97 +233,3 @@ import { Icon } from 'astro-icon/components';
   </p>
 
 </PageLayout>
-
-<!-- Leaflet CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', function() {
-    const mapEl = document.getElementById('precinct-map');
-    if (!mapEl || typeof L === 'undefined') return;
-
-    // Clear loading state
-    mapEl.innerHTML = '';
-
-    // Initialize map centered on Bastrop County
-    const map = L.map('precinct-map', {
-      scrollWheelZoom: false
-    }).setView([30.28, -97.32], 11);
-
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18
-    }).addTo(map);
-
-    // Custom red marker icon
-    const redIcon = L.divIcon({
-      className: 'custom-marker',
-      html: '<div style="background:#c41e3a;width:28px;height:28px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:12px;"></div>',
-      iconSize: [28, 28],
-      iconAnchor: [14, 14],
-      popupAnchor: [0, -16]
-    });
-
-    // Vote Center locations
-    const locations = [
-      {
-        name: 'Bastrop County Courthouse Annex',
-        address: '804 Pecan St., Bastrop, TX 78602',
-        note: 'Main Early Voting Location',
-        lat: 30.1105,
-        lng: -97.3151
-      },
-      {
-        name: 'Smithville Recreation Center',
-        address: '106 Royston St., Smithville, TX 78957',
-        note: '',
-        lat: 30.0086,
-        lng: -97.1561
-      },
-      {
-        name: 'Cedar Creek Annex',
-        address: '5785 FM 535, Cedar Creek, TX 78612',
-        note: '',
-        lat: 30.2146,
-        lng: -97.4753
-      },
-      {
-        name: 'North Bastrop County Community Annex',
-        address: '702 Bull Run, Elgin, TX 78621',
-        note: '',
-        lat: 30.3499,
-        lng: -97.3701
-      },
-      {
-        name: 'Faith Lutheran Church',
-        address: '230 Waco St., McDade, TX 78650',
-        note: '',
-        lat: 30.3352,
-        lng: -97.2151
-      }
-    ];
-
-    // Add markers
-    const markers = [];
-    locations.forEach(function(loc, i) {
-      const noteHtml = loc.note ? '<br><span style="color:#c41e3a;font-weight:bold;font-size:11px;">★ ' + loc.note + '</span>' : '';
-      const marker = L.marker([loc.lat, loc.lng], { icon: redIcon })
-        .addTo(map)
-        .bindPopup(
-          '<div style="min-width:200px">' +
-          '<strong style="font-size:14px;color:#1a2744;">' + loc.name + '</strong><br>' +
-          '<span style="color:#666;font-size:12px;">' + loc.address + '</span>' +
-          noteHtml +
-          '<br><a href="https://maps.google.com/?q=' + encodeURIComponent(loc.address) + '" target="_blank" style="color:#c41e3a;font-size:12px;font-weight:bold;">Get Directions →</a>' +
-          '</div>'
-        );
-      markers.push(marker);
-    });
-
-    // Fit map to show all markers
-    const group = L.featureGroup(markers);
-    map.fitBounds(group.getBounds().pad(0.15));
-  });
-</script>

@@ -1,0 +1,8 @@
+{
+  "name": "bastropccnew",
+  "account_id": "b08d1a8316ab33834898d634d2e5db09",
+  "compatibility_date": "2024-09-23",
+  "assets": {
+    "directory": "./dist"
+  }
+}
