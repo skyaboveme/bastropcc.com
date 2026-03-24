@@ -35,6 +35,9 @@ import PageLayout from '../../layouts/PageLayout.astro';
           <span class="filter-row-label">County / Org:</span>
           <div class="filter-pills" id="filterPills" style="text-align:center;"></div>
         </div>
+        <div style="text-align:center; font-size:0.75rem; color:var(--text-dim); margin-top:0.6rem; font-style:italic; font-weight:500;">
+          * Showing Bastrop County events by default. Select other counties or organizations above to view their events.
+        </div>
       </div>
       <div class="cal-grid-wrap" id="calGridWrap">
         <div class="cal-grid" id="calGrid"></div>
@@ -957,7 +960,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
     // ═══════════════════════════════════════════
     let currentDate = new Date(2026, 2, 1); // March 2026
     let currentView = 'list';
-    let activeFilters = new Set(Object.keys(COUNTIES));
+    let activeFilters = new Set(['bastrop']);
     let activeTypeFilters = new Set(['political', 'community']);
 
     const EVENT_TYPES = {
@@ -1019,9 +1022,9 @@ import PageLayout from '../../layouts/PageLayout.astro';
       // Build county filter pills
       const pills = document.getElementById('filterPills');
       if (!pills) return;
-      pills.innerHTML = `<button class="filter-pill active" data-filter="all">All</button>` +
+      pills.innerHTML = `<button class="filter-pill ${activeFilters.size === Object.keys(COUNTIES).length ? 'active' : ''}" data-filter="all">All</button>` +
         Object.entries(COUNTIES).map(([key, val]) =>
-          `<button class="filter-pill active" data-filter="${key}"><span class="pill-dot" style="background:${val.color}"></span>${val.label}</button>`
+          `<button class="filter-pill ${activeFilters.has(key) ? 'active' : ''}" data-filter="${key}"><span class="pill-dot" style="background:${val.color}"></span>${val.label}</button>`
         ).join('');
 
       pills.querySelectorAll('.filter-pill').forEach(btn => {
