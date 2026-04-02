@@ -134,7 +134,7 @@ export default function BlogEditor() {
           </button>
           {!isNew && formData.status === 'published' && (
             <a
-              href={`https://bastropcc.pages.dev/blog/${formData.slug}`}
+              href={`https://bastropcc.com/blog/${formData.slug}`}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-secondary bg-white hover:bg-gray-50"
@@ -169,7 +169,7 @@ export default function BlogEditor() {
           <label htmlFor="slug" className="block text-sm font-medium text-gray-700">Slug</label>
           <div className="mt-1 flex rounded-md shadow-sm">
             <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-              bastropcc.pages.dev/blog/
+              bastropcc.com/blog/
             </span>
             <input
               type="text"

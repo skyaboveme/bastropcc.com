@@ -15,7 +15,7 @@ const app = new Hono<AppEnvironment>();
 app.use('*', logger());
 
 app.use('*', async (c, next) => {
-  const allowedOrigins = (c.env.CORS_ORIGIN || 'https://bastropcc.pages.dev')
+  const allowedOrigins = (c.env.CORS_ORIGIN || 'https://bastropcc.com')
     .split(',')
     .map(o => o.trim());
 
