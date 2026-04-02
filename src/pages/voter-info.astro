@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
+import Button from '../components/ui/Button.astro';
 import { Icon } from 'astro-icon/components';
 
 const resources = [
@@ -56,10 +57,13 @@ const resources = [
   subheading="Everything you need to confidently participate in Bastrop County elections."
 >
   
-  <div class="mb-12">
-    <p class="text-xl text-bcc-navy font-medium leading-relaxed">
+  <div class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <p class="text-xl text-bcc-navy font-medium leading-relaxed max-w-3xl">
       A well-informed and active electorate is the foundation of a free republic. We've compiled the essential resources you need to register, research, and cast your ballot effectively in Bastrop County.
     </p>
+    <div class="shrink-0 not-prose text-center md:text-right">
+      <Button href="/endorsements" variant="primary">View BCC Endorsements</Button>
+    </div>
   </div>
 
   <div class="not-prose max-w-5xl mx-auto">
