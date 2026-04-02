@@ -2,6 +2,15 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 
+const shorts = [
+  { id: "GTJF0fUTf1c", title: "Mayes Middleton - Voter Mandate  Taking Our Country Back Together!" },
+  { id: "uCnu55YlUfc", title: "Don Huffines: Texas: The Unyielding Beacon of Liberty for the World" },
+  { id: "ms6B3v1Lae4", title: "Mayes Middleton Texas Senate  Trump's 74 Point Swing Explained!" },
+  { id: "Vm5cBCJ5XIs", title: "Rick Green - Local Action: Rebuilding Justice from the Ground Up" },
+  { id: "gGSKyI2AgJE", title: "Mayes Middleton - Common Sense  The Republican Party's Core Values Explained" },
+  { id: "u4DRfcaCwhw", title: "Rick Green - America's Wake-Up Call: Protecting Freedom from Tyranny" }
+];
+
 const videos = [
   {
     id: "7TkngH1S0rc",
@@ -223,11 +232,44 @@ const videos = [
   subheading="Watch interviews, candidate forums, and presentations from Bastrop County Conservatives meetings."
 >
 
-  <div class="text-center mb-10 not-prose">
+  <div class="text-center mb-16 not-prose">
     <a href="https://www.youtube.com/@BastropCountyConservatives" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-bcc-red hover:bg-bcc-red-dark text-white font-bold px-6 py-3 rounded-lg transition-colors shadow-sm hover:shadow-md">
       <Icon name="lucide:youtube" class="w-5 h-5" />
       Subscribe on YouTube
     </a>
+  </div>
+
+  <!-- Shorts Section -->
+  <div class="mb-20 not-prose">
+    <div class="border-b border-bcc-gray-200 pb-4 mb-8 flex items-center justify-between">
+      <h2 class="font-heading uppercase text-2xl md:text-3xl font-bold tracking-wide text-bcc-navy">Top YouTube Shorts</h2>
+      <Icon name="lucide:flame" class="w-6 h-6 text-bcc-red" />
+    </div>
+    
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6">
+      {shorts.map((short) => (
+        <div class="bg-white border border-bcc-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col">
+          <div class="aspect-[9/16] relative bg-black">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${short.id}?rel=0`}
+              title={short.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"
+              class="w-full h-full border-0 absolute inset-0"
+            ></iframe>
+          </div>
+          <div class="p-3 md:p-4 bg-bcc-cream flex-grow flex items-center">
+            <h3 class="font-bold text-bcc-navy text-xs md:text-sm leading-snug line-clamp-2" title={short.title}>{short.title}</h3>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Long Form Videos -->
+  <div class="border-b border-bcc-gray-200 pb-4 mb-8 not-prose">
+    <h2 class="font-heading uppercase text-2xl md:text-3xl font-bold tracking-wide text-bcc-navy">Long-Form Videos & Meetings</h2>
   </div>
 
   <div class="space-y-12 not-prose">
