@@ -2,6 +2,8 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { Icon } from 'astro-icon/components';
+import DonutChart from '../components/ui/charts/DonutChart.astro';
+import BarChart from '../components/ui/charts/BarChart.astro';
 
 // ── DATA ──────────────────────────────────────────────────────────
 
@@ -61,6 +63,19 @@ const subTabsData = [
   { id: "growth", label: "GROWTH" },
   { id: "partisan", label: "PARTISAN TRENDS" },
   { id: "voter-data", label: "VOTER DATA" }
+];
+
+const precinctData = [
+  { label: "Pct 1001 (Bastrop City)", value: 4320 },
+  { label: "Pct 1002 (Tahitian Village)", value: 3840 },
+  { label: "Pct 3012 (Cedar Creek)", value: 3650 },
+  { label: "Pct 2008 (Smithville)", value: 3410 },
+  { label: "Pct 4015 (Elgin South)", value: 3200 },
+  { label: "Pct 4016 (Elgin North)", value: 2980 },
+  { label: "Pct 2011 (Rosanky)", value: 2450 },
+  { label: "Pct 3014 (Red Rock)", value: 2100 },
+  { label: "Pct 1004 (Camp Swift)", value: 1850 },
+  { label: "Pct 2009 (Paige)", value: 1540 },
 ];
 
 const downBallotRaces = [
@@ -412,23 +427,18 @@ const downBallotRaces = [
       <!-- Add placeholders for other Growth subtabs as needed, keep it concise -->
       <div id="growth-demographics" data-pane-group="growth" class="hidden">
         <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">BASTROP COUNTY DEMOGRAPHICS</div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          {[
-            { label: "White (non-Hispanic)", pct: 45.7, color: "bg-gray-600" },
-            { label: "Hispanic / Latino", pct: 44.0, color: "bg-orange-500" },
-            { label: "Black / African American", pct: 5.7, color: "bg-blue-500" },
-            { label: "Other / Multiracial", pct: 4.6, color: "bg-gray-400" },
-          ].map(d => (
-            <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
-              <div class="flex justify-between mb-3">
-                <span class="text-gray-800 font-bold">{d.label}</span>
-                <span class="font-mono font-bold text-lg">{d.pct}%</span>
-              </div>
-              <div class="bg-gray-100 rounded h-2 overflow-hidden">
-                <div class={`${d.color} h-full rounded`} style={`width: ${d.pct}%`}></div>
-              </div>
-            </div>
-          ))}
+        <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm mb-8">
+          <DonutChart 
+            data={[
+              { label: "White (non-Hispanic)", value: 45.7, color: "#475569" }, // gray-600
+              { label: "Hispanic / Latino", value: 44.0, color: "#f97316" }, // orange-500
+              { label: "Black / African American", value: 5.7, color: "#3b82f6" }, // blue-500
+              { label: "Other / Multiracial", value: 4.6, color: "#94a3b8" } // gray-400
+            ]} 
+            size={260} 
+            thickness={60} 
+            centerLabel="COUNTY" 
+          />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           {[
@@ -696,7 +706,7 @@ const downBallotRaces = [
       </div>
 
       <div class="flex flex-wrap gap-2 mb-8">
-        {["rolls|📋 VOTER ROLLS & TURNOUT", "primary|🔴🔵 PRIMARY PARTICIPATION", "general|🗳 GENERAL ELECTION", "early|🕐 EARLY VS ELECTION DAY"].map((spec, idx) => {
+        {["rolls|📋 VOTER ROLLS & TURNOUT", "primary|🔴🔵 PRIMARY PARTICIPATION", "precincts|📍 REGISTRATION BY PRECINCT", "general|🗳 GENERAL ELECTION", "early|🕐 EARLY VS ELECTION DAY"].map((spec, idx) => {
           const [id, label] = spec.split("|");
           return (
             <button data-tab-group="voter" data-tab-target={`voter-${id}`} class={`px-3 py-1.5 font-bold text-xs font-mono tracking-wider rounded border transition-colors ${idx === 0 ? 'bg-bcc-navy text-white border-bcc-navy' : 'bg-white text-gray-600 border-gray-200 hover:border-bcc-navy hover:text-bcc-navy'}`}>{label}</button>
@@ -798,6 +808,17 @@ const downBallotRaces = [
         <div class="bg-green-50 border-2 border-green-500 rounded-xl p-5">
           <div class="text-green-700 font-mono text-xs font-bold tracking-wider mb-2">THE KEY TREND: DEM PRIMARY SHARE GROWING</div>
           <div class="text-green-900 text-sm leading-relaxed"><strong>The Dem primary share jumped from ~33% to 44.5% in a single cycle.</strong> That is an 11-point swing. Whether this is a lasting structural shift or a 2026 enthusiasm spike will be visible in 2028 primary numbers. It is the single most important data point for understanding Bastrop County's trajectory.</div>
+        </div>
+      </div>
+
+      <div id="voter-precincts" data-pane-group="voter" class="hidden">
+        <div class="text-bcc-navy font-mono text-xs font-bold tracking-widest mb-4">ACTIVE VOTERS BY TOP PRECINCTS (EST. 2026)</div>
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6">
+          <BarChart data={precinctData} color="#1a2b4a" format="number" title="Top 10 Precincts by Active Registration" />
+        </div>
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-5">
+          <div class="text-yellow-700 font-mono text-xs font-bold tracking-wider mb-2">PRECINCT MOBILIZATION</div>
+          <div class="text-yellow-900 text-sm leading-relaxed">Bastrop City and Tahitian Village (Pct 1001 & 1002) drive the largest concentration of active voters. Candidates who dominate the top 4 precincts mathematically secure a massive firewall against rural fragmentation.</div>
         </div>
       </div>
 

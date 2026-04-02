@@ -1,0 +1,55 @@
+---
+export interface BarDataPoint {
+  label: string;
+  value: number;
+  subValue?: string; // Optional text to put below or next to the label
+}
+
+export interface Props {
+  data: BarDataPoint[];
+  color?: string;
+  format?: 'number' | 'percentage';
+  title?: string;
+}
+
+const { 
+  data, 
+  color = '#b01616', // bcc-red default
+  format = 'number',
+  title
+} = Astro.props;
+
+// Sort descending by value
+const sortedData = [...data].sort((a, b) => b.value - a.value);
+const maxVal = Math.max(...sortedData.map(d => d.value));
+
+export function formatValue(val: number, type: 'number' | 'percentage') {
+  if (type === 'percentage') return `${val}%`;
+  return val.toLocaleString();
+}
+---
+
+<div class="w-full font-sans">
+  {title && <h4 class="text-xs font-mono font-bold text-gray-500 tracking-wider mb-4 uppercase">{title}</h4>}
+  <div class="flex flex-col gap-4">
+    {sortedData.map((item) => (
+      <div class="group">
+        <div class="flex justify-between items-end mb-1">
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-gray-800">{item.label}</span>
+            {item.subValue && <span class="text-xs text-gray-500">{item.subValue}</span>}
+          </div>
+          <span class="text-sm font-mono font-bold" style={`color: ${color}`}>
+            {formatValue(item.value, format)}
+          </span>
+        </div>
+        <div class="w-full bg-gray-100 rounded h-4 overflow-hidden relative shadow-inner">
+          <div 
+            class="h-full rounded transition-all duration-700 ease-out origin-left group-hover:brightness-110" 
+            style={`width: ${(item.value / maxVal) * 100}%; background-color: ${color}`}
+          ></div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
