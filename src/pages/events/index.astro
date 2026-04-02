@@ -958,7 +958,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
     // ═══════════════════════════════════════════
     // STATE
     // ═══════════════════════════════════════════
-    let currentDate = new Date(2026, 2, 1); // March 2026
+    let currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     let currentView = 'list';
     let activeFilters = new Set(['bastrop']);
     let activeTypeFilters = new Set(['political', 'community']);
