@@ -1,0 +1,99 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div id="endorsement-popup" class="fixed inset-0 z-[100] flex items-center justify-center bg-bcc-navy/80 hidden opacity-0 transition-opacity duration-300 px-4">
+  <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto" id="endorsement-popup-content">
+    <button id="close-endorsement-popup" class="absolute top-4 right-4 text-bcc-gray-400 hover:text-bcc-red transition-colors bg-slate-100 rounded-full p-1" aria-label="Close popup">
+      <Icon name="lucide:x" class="w-6 h-6" />
+    </button>
+    
+    <div class="text-center mb-6 mt-2">
+      <div class="w-16 h-16 bg-bcc-red rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+        <Icon name="lucide:vote" class="w-8 h-8 text-white relative left-[1px]" />
+      </div>
+      <h2 class="text-2xl md:text-3xl font-serif font-bold text-bcc-navy uppercase tracking-wide">BCC Endorses</h2>
+    </div>
+    
+    <div class="space-y-4 mb-8">
+      <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg text-center hover:border-bcc-red transition-colors group">
+        <h3 class="font-bold text-bcc-navy text-xl leading-tight mb-1 group-hover:text-bcc-red transition-colors">Wini Griffin</h3>
+        <p class="text-sm font-medium text-bcc-gray-600 mb-2">Smithville City Council Place 4</p>
+        <a href="https://voteforwini.com" target="_blank" class="text-sm font-bold text-bcc-red hover:underline inline-flex items-center gap-1.5"><Icon name="lucide:external-link" class="w-3.5 h-3.5" /> voteforwini.com</a>
+      </div>
+      
+      <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg text-center hover:border-bcc-red transition-colors group">
+        <h3 class="font-bold text-bcc-navy text-xl leading-tight mb-1 group-hover:text-bcc-red transition-colors">Daña Tovar</h3>
+        <p class="text-sm font-medium text-bcc-gray-600 mb-2">Smithville City Council Place 5</p>
+        <a href="https://electdanatovar.com" target="_blank" class="text-sm font-bold text-bcc-red hover:underline inline-flex items-center gap-1.5"><Icon name="lucide:external-link" class="w-3.5 h-3.5" /> electdanatovar.com</a>
+      </div>
+      
+      <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg text-center hover:border-bcc-red transition-colors group">
+        <h3 class="font-bold text-bcc-navy text-xl leading-tight mb-1 group-hover:text-bcc-red transition-colors">Ishmael Harris</h3>
+        <p class="text-sm font-medium text-bcc-gray-600 mb-2">for Bastrop Mayor</p>
+        <a href="https://www.ishmaelharrisformayor.com" target="_blank" class="text-sm font-bold text-bcc-red hover:underline inline-flex items-center gap-1.5"><Icon name="lucide:external-link" class="w-3.5 h-3.5" /> ishmaelharrisformayor.com</a>
+      </div>
+    </div>
+    
+    <div class="bg-bcc-navy text-white p-5 rounded-lg text-center shadow-inner relative overflow-hidden">
+      <!-- Decorative background accent -->
+      <Icon name="lucide:calendar-days" class="absolute -right-4 -bottom-4 w-24 h-24 text-white/10" />
+      
+      <div class="relative z-10">
+        <div class="font-bold uppercase tracking-wider text-xs md:text-sm mb-1 text-bcc-gold">Election Day</div>
+        <div class="font-bold text-2xl md:text-3xl mb-1 text-white drop-shadow-sm">May 2nd</div>
+        <div class="text-sm text-white/90 italic mt-2 bg-black/20 px-3 py-1.5 rounded-full inline-block">Early voting April 20th to April 28th</div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('endorsement-popup');
+    const popupContent = document.getElementById('endorsement-popup-content');
+    const closeBtn = document.getElementById('close-endorsement-popup');
+    
+    if (!popup || !closeBtn || !popupContent) return;
+    
+    // Ensure popup displays once per user by using localStorage
+    const hasSeenPopup = localStorage.getItem('hasSeenEndorsementPopup2026May');
+    
+    if (!hasSeenPopup) {
+      // 1.5 second delay allows the page to settle before asking for attention
+      setTimeout(() => {
+        popup.classList.remove('hidden');
+        // Force reflow for transitions
+        void popup.offsetWidth;
+        popup.classList.remove('opacity-0');
+        popupContent.classList.remove('scale-95');
+      }, 1500);
+      
+      const closePopup = () => {
+        popup.classList.add('opacity-0');
+        popupContent.classList.add('scale-95');
+        setTimeout(() => {
+          popup.classList.add('hidden');
+        }, 300);
+        localStorage.setItem('hasSeenEndorsementPopup2026May', 'true');
+      };
+      
+      closeBtn.addEventListener('click', closePopup);
+      
+      // Close when clicking the semi-transparent background array
+      popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+          closePopup();
+        }
+      });
+      
+      // Close on escape key press
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+          closePopup();
+        }
+      });
+    }
+  });
+</script>
