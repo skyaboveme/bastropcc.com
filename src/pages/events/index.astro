@@ -44,10 +44,57 @@ import PageLayout from '../../layouts/PageLayout.astro';
       </div>
       <div class="list-view" id="listView"></div>
     </div>
+    
+    <!-- Submit Event Form -->
+    <div class="max-w-3xl mx-auto mt-16 bg-white p-6 md:p-8 rounded-xl shadow-md border border-bcc-gray-200 not-prose" id="submit-event">
+      <h3 class="font-serif text-2xl font-bold text-bcc-navy mb-2">Submit an Event</h3>
+      <p class="text-bcc-gray-600 mb-6 text-sm">Please provide the details for your event below. All submissions will be reviewed by our team before being added to the calendar.</p>
+      
+      <form action="https://formsubmit.co/info@bastropcc.com" method="POST" id="event-submit-form" class="space-y-4">
+        <input type="hidden" name="_subject" value="BCC Website - New Event Submission">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://bastropcc.com/event-submitted">
+        <input type="text" name="_honey" style="display:none">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-2">
+            <label for="event_title" class="block text-sm font-semibold text-bcc-navy mb-1">Event Title <span class="text-bcc-red">*</span></label>
+            <input type="text" id="event_title" name="EVENT_TITLE" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+          </div>
+          <div>
+            <label for="event_date" class="block text-sm font-semibold text-bcc-navy mb-1">Date <span class="text-bcc-red">*</span></label>
+            <input type="date" id="event_date" name="EVENT_DATE" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+          </div>
+          <div>
+             <label for="event_time" class="block text-sm font-semibold text-bcc-navy mb-1">Time <span class="text-bcc-red">*</span></label>
+             <input type="text" id="event_time" name="EVENT_TIME" placeholder="e.g. 6:00 PM" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+          </div>
+          <div class="md:col-span-2">
+            <label for="event_location" class="block text-sm font-semibold text-bcc-navy mb-1">Location <span class="text-bcc-red">*</span></label>
+            <input type="text" id="event_location" name="EVENT_LOCATION" placeholder="Full address or venue name" required class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+          </div>
+          <div class="md:col-span-2">
+            <label for="event_org" class="block text-sm font-semibold text-bcc-navy mb-1">Hosting Organization</label>
+            <input type="text" id="event_org" name="EVENT_ORG" class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+          </div>
+          <div class="md:col-span-2">
+            <label for="event_url" class="block text-sm font-semibold text-bcc-navy mb-1">Event URL / Link</label>
+            <input type="url" id="event_url" name="EVENT_URL" placeholder="https://" class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50">
+          </div>
+          <div class="md:col-span-2">
+            <label for="event_desc" class="block text-sm font-semibold text-bcc-navy mb-1">Additional Details</label>
+            <textarea id="event_desc" name="EVENT_DESC" rows="3" class="w-full px-4 py-2 border border-bcc-gray-300 rounded-md focus:ring-bcc-navy focus:border-bcc-navy transition-colors bg-bcc-gray-50"></textarea>
+          </div>
+        </div>
+        
+        <div class="pt-2">
+          <button type="submit" class="bg-bcc-red hover:bg-[#991b1b] text-white font-bold py-2 px-8 rounded-md transition-colors w-full sm:w-auto">Submit Event</button>
+        </div>
+      </form>
+    </div>
 
     <div class="cal-footer">
       <p>Maintained by <a href="https://bastropcc.com">Bastrop County Conservatives</a> · Events sourced from partner organizations across Central Texas</p>
-      <p style="margin-top:0.4rem;">Have an event to add? <a href="/contact">Contact us</a></p>
     </div>
 
     <div class="modal-overlay" id="modalOverlay">
@@ -196,9 +243,9 @@ import PageLayout from '../../layouts/PageLayout.astro';
       font-size: 0.72rem;
       padding: 5px 14px;
       border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--white);
-      color: var(--text-dim);
+      border: 1px solid var(--navy);
+      background: var(--navy);
+      color: var(--white);
       cursor: pointer;
       font-weight: 600;
       transition: all 0.2s;
@@ -212,13 +259,19 @@ import PageLayout from '../../layouts/PageLayout.astro';
       box-shadow: 0 0 0 1.5px rgba(255,255,255,0.85);
     }
     .calendar-wrapper .filter-pill:hover { 
+      background: var(--navy-mid);
+    }
+    .calendar-wrapper .filter-pill.active {
+      background: var(--white);
+      border-color: var(--border);
+      color: var(--text-dim);
+    }
+    .calendar-wrapper .filter-pill.active:hover { 
       border-color: var(--navy); 
       color: var(--navy); 
     }
-    .calendar-wrapper .filter-pill.active {
-      background: var(--navy);
-      border-color: var(--navy);
-      color: var(--white);
+    .calendar-wrapper .filter-pill:not(.active) .pill-dot {
+      /* When inactive (navy background), make dot pop more if needed, or leave it */
     }
     .calendar-wrapper .type-pill {
       display: inline-flex;
@@ -227,9 +280,9 @@ import PageLayout from '../../layouts/PageLayout.astro';
       font-size: 0.72rem;
       padding: 5px 14px;
       border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--white);
-      color: var(--text-dim);
+      border: 1px solid var(--navy);
+      background: var(--navy);
+      color: var(--white);
       cursor: pointer;
       font-weight: 600;
       transition: all 0.2s;
@@ -242,13 +295,16 @@ import PageLayout from '../../layouts/PageLayout.astro';
       flex-shrink: 0;
     }
     .calendar-wrapper .type-pill:hover { 
-      border-color: var(--navy); 
-      color: var(--navy); 
+      background: var(--navy-mid);
     }
     .calendar-wrapper .type-pill.active {
-      background: var(--navy);
-      border-color: var(--navy);
-      color: var(--white);
+      background: var(--white);
+      border-color: var(--border);
+      color: var(--text-dim);
+    }
+    .calendar-wrapper .type-pill.active:hover { 
+      border-color: var(--navy); 
+      color: var(--navy); 
     }
     .calendar-wrapper .list-event .type-badge {
       display: inline-block;
@@ -679,6 +735,18 @@ import PageLayout from '../../layouts/PageLayout.astro';
         url: "https://www.bastropctygop.com/events/golf-classic/",
         desc: "Annual fundraiser golf tournament. Registration now open."
       },
+      {
+        title: "Smithville Jamboree Parade",
+        date: "2026-04-10",
+        time: "1:00 PM",
+        location: "Smithville Main Street, Smithville, TX",
+        org: "Smithville Jamboree",
+        orgShort: "Jamboree",
+        county: "bastrop",
+        type: "community",
+        url: "https://www.jamboreesmithville.com",
+        desc: "Smithville Jamboree Parade on Smithville Main Street."
+      },
       // ─── FAYETTE COUNTY ───
       {
         title: "Fayette County Precinct & County Conventions",
@@ -1035,8 +1103,14 @@ import PageLayout from '../../layouts/PageLayout.astro';
     window.toggleFilter = function(btn) {
       const filter = btn.dataset.filter;
       if (filter === 'all') {
-        activeFilters = new Set(Object.keys(COUNTIES));
-        document.querySelectorAll('.filter-pill').forEach(p => p.classList.add('active'));
+        const isAllActive = activeFilters.size === Object.keys(COUNTIES).length;
+        if (isAllActive) {
+          activeFilters.clear();
+          document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        } else {
+          activeFilters = new Set(Object.keys(COUNTIES));
+          document.querySelectorAll('.filter-pill').forEach(p => p.classList.add('active'));
+        }
       } else {
         const allBtn = document.querySelector('[data-filter="all"]');
         if (activeFilters.has(filter)) {
@@ -1054,8 +1128,14 @@ import PageLayout from '../../layouts/PageLayout.astro';
     window.toggleTypeFilter = function(btn) {
       const filter = btn.dataset.typeFilter;
       if (filter === 'all') {
-        activeTypeFilters = new Set(['political', 'community']);
-        document.querySelectorAll('.type-pill').forEach(p => p.classList.add('active'));
+        const isAllActive = activeTypeFilters.size === Object.keys(EVENT_TYPES).length;
+        if (isAllActive) {
+          activeTypeFilters.clear();
+          document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
+        } else {
+          activeTypeFilters = new Set(Object.keys(EVENT_TYPES));
+          document.querySelectorAll('.type-pill').forEach(p => p.classList.add('active'));
+        }
       } else {
         const allBtn = document.querySelector('[data-type-filter="all"]');
         if (activeTypeFilters.has(filter)) {
