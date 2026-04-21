@@ -5,7 +5,7 @@ pubDate: 2026-04-20
 author: "BastropCC Editorial"
 category: "Economic Development"
 tags: ["Data Centers", "Bastrop County", "Cedar Creek", "EdgeConneX", "Economic Development", "Texas Growth"]
-image: "/images/blog/edgeconnex-aus02-cedar-creek.jpg"
+image: "/images/blog/edgeconnex-aus02-cedar-creek.png"
 canonical: "https://bastropcc.com/blog/bastrop-data-center-edgeconnex-aus02"
 ---
 
