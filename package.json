@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "cd bastropcc-admin && npm i && npm run build && rm -rf ../public/admin && mv dist ../public/admin",
+    "prebuild": "cd bastropcc-admin && npm ci --include=dev && npm run build && rm -rf ../public/admin && mv dist ../public/admin",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
