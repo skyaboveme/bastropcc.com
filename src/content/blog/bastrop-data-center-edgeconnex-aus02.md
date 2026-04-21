@@ -117,6 +117,49 @@ Whether EdgeConneX has committed to specific noise mitigation measures, sound wa
 
 ---
 
+## Who Is Opposing Data Centers — and Why?
+
+Understanding the full picture means understanding the opposition. While data centers bring significant economic benefits and technological advancement, they are not without critics. According to research compiled by [TomorrowBeginsHere.com](https://tomorrowbeginshere.com/who-is-opposed/), opposition to data center development generally falls into four categories.
+
+### 1. Local Environmental Groups & Activists
+
+Certain local environmental organizations frequently oppose data center projects. Their primary concerns revolve around resource consumption, specifically water usage for cooling systems and electricity demands. While modern data centers increasingly rely on closed-loop systems that reuse water and renewable energy sources, historical perceptions of high consumption continue to drive opposition from these groups.
+
+### 2. "NIMBY" (Not In My Backyard) Residents
+
+It is natural for residents living immediately adjacent to proposed development sites to express concerns about how construction and operations might affect their daily lives. Key issues typically raised include construction noise, increased traffic during the building phase, and questions about the visual footprint of the facilities compared to the existing rural landscape.
+
+### 3. Misinformation Campaigns
+
+The complex nature of cloud computing infrastructure often makes it a target for misinformation. Some organized opposition stems from groups that circulate out-of-context data, conflating standard data centers with highly polarizing topics like cryptocurrency mining, or presenting outdated statistics regarding power and water efficiency from decade-old facilities.
+
+### 4. Competing Developers
+
+Occasionally, opposition is quietly funded or supported by competing land developers or interests who wish to utilize large tracts of land for alternative commercial or residential purposes, viewing data centers as competition for prime real estate and resources.
+
+### Opposition Transparency — Direct Campaign Links
+
+We encourage residents to review opposition materials directly so they can form their own informed opinions:
+
+- [MediaJustice: "The People Say No: Resisting Data Centers in the South" (September 2025)](https://mediajustice.org/resource/the-people-say-no-report/)
+- [Southwest Workers Union: "Data Center Rebellion Convening 2026" (March 2026)](https://swunion.org/blog/data-center-rebellion-convening-2026)
+- [Clayton Tucker for TX Ag Commissioner: "Stop AI Centers"](https://claytontuckertx.com/stop_ai_centers)
+- [NAACP: "Stop Dirty Data Centers" Campaign Page](https://naacp.org/campaigns/stop-dirty-data-centers)
+- [Data Center Watch Report: $64B Blocked/Delayed Projects](https://datacenterwatch.org/report)
+- [MacArthur Foundation: Grant Record for MediaJustice](https://macfound.org/grantee/center-for-media-justice-10115159/)
+- [Climate Justice Alliance: Funders & Donors Page](https://climatejusticealliance.org/funders/)
+
+**Additional News & Reports:**
+- Texas Tribune: "Texans are demanding their local governments push pause on data centers" (February 2026)
+- Reporting Texas: "Texans Demand Special Legislative Session for Data Center Debate" (February 2026)
+- Taylor Press: "In Taylor, critics rally against data centers" (March 2026)
+- NAACP: "2026 Recommendations for Protecting Frontline Communities" (January 2026)
+- Data Center Watch: Full database of 142 activist groups across 24 states
+
+The existence of organized opposition does not mean the opposition is wrong, and the existence of economic benefits does not mean the project should proceed without scrutiny. Bastrop County residents deserve to hear every side and evaluate every claim on its merits. For a deeper dive into myth versus reality, visit [TomorrowBeginsHere.com/myth-vs-reality](https://tomorrowbeginshere.com/myth-vs-reality).
+
+---
+
 ## A Piece of a Bigger Picture
 
 The EdgeConneX investment does not exist in isolation. Bastrop County has quietly become one of the most important technology corridors in the state, home to Tesla's manufacturing and headquarters, xAI, Starlink, The Boring Company, and Neuralink. A $43 million grant is also extending gigabit fiber across the county, delivering fast broadband to every resident.
