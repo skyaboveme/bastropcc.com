@@ -2,6 +2,23 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { Icon } from 'astro-icon/components';
+import { generateEndorsementsSchema, generateBreadcrumbSchema } from '../utils/schema';
+
+const endorsedCandidates = [
+  { name: 'Senator Charles Schwertner', jobTitle: 'Texas State Senator, District 5', description: 'Incumbent state senator with a strong conservative voting record. Proven defender of property rights, border security, and limited government.', url: 'https://senate.texas.gov' },
+  { name: 'Tom Glass', jobTitle: 'Texas State Representative Candidate, District 17', description: 'Conservative candidate committed to reducing property taxes, protecting Second Amendment rights, and limiting government overreach.' },
+  { name: 'Senator Mayes Middleton', jobTitle: 'Texas Attorney General Candidate', description: 'Conservative state senator running for Attorney General. Known for unwavering commitment to constitutional principles and border enforcement.' },
+  { name: 'Don Huffines', jobTitle: 'Texas State Comptroller Candidate', description: 'Former state senator and proven fiscal conservative. Committed to transparent state finances and eliminating wasteful spending.' },
+  { name: 'John Messinger', jobTitle: 'TX Criminal Court of Appeals Candidate', description: 'Conservative judicial candidate committed to strict constitutional interpretation.' },
+  { name: 'Tom Smith', jobTitle: 'TX Criminal Court of Appeals Candidate', description: 'Conservative judicial candidate who will apply the law as written.' },
+  { name: 'Gregory Klaus', jobTitle: 'Bastrop County Judge', description: 'Incumbent County Judge. Led Commissioners Court with fiscal responsibility, defended local property rights, and maintained strong county governance.', url: 'https://electgregoryklaus.com' },
+  { name: 'Sara Loucks', jobTitle: 'Bastrop County District Clerk', description: 'Incumbent District Clerk. Efficiently managed court records and served the judicial system with integrity.' },
+  { name: 'Debbie Denny', jobTitle: 'GOP Precinct 1004 Chair Candidate', description: 'Dedicated grassroots organizer committed to building conservative infrastructure at the precinct level.' },
+  { name: 'Ishmael Harris', jobTitle: 'Bastrop Mayor', description: 'Endorsed for Bastrop Mayor. Community leader committed to responsible growth and strong local governance.' },
+  { name: 'Wini Griffin', jobTitle: 'Smithville City Council, Place 4', description: 'Endorsed for Smithville City Council Place 4. Dedicated to conservative values and community service in Smithville.' },
+  { name: 'Daña Tovar', jobTitle: 'Smithville City Council, Place 5', description: 'Endorsed for Smithville City Council Place 5. Committed to fiscal responsibility and community-first governance.', url: 'https://electdanatovar.com' },
+  { name: 'Chuck Swain', jobTitle: 'Elgin City Council', description: 'Endorsed for Elgin City Council. Dedicated to conservative values and serving the Elgin community.', url: 'https://www.elgintexas.gov/directory.aspx?EID=74' },
+];
 ---
 
 <PageLayout 
@@ -34,10 +51,10 @@ import { Icon } from 'astro-icon/components';
     </div>
   </div>
 
-  <!-- 2026 Republican Primary Endorsements -->
+  <!-- 2026 Endorsements -->
   <section class="mb-20 not-prose" id="2026-primary">
     <div class="flex items-center gap-4 mb-2">
-      <SectionHeading title="2026 Republican Primary Endorsements" />
+      <SectionHeading title="2026 Endorsements" />
     </div>
     <p class="text-bcc-gray-600 mb-8 max-w-3xl">The following candidates have been officially endorsed by Bastrop County Conservatives for the <strong>March 2026 Republican Primary Election</strong>. These candidates were vetted and approved by our membership.</p>
 
@@ -117,6 +134,43 @@ import { Icon } from 'astro-icon/components';
         <p class="text-sm text-bcc-gray-600">Endorsed for Republican Party Precinct 1004 Chair. Dedicated grassroots organizer committed to building conservative infrastructure at the precinct level.</p>
       </div>
     </div>
+
+    <!-- City & Municipal Races -->
+    <h3 class="text-lg font-bold text-bcc-navy uppercase tracking-wider mb-6 border-b border-bcc-gray-200 pb-2">
+      <Icon name="lucide:building-2" class="w-5 h-5 inline-block mb-0.5 text-bcc-gold" /> City & Municipal Races
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Bastrop Mayor</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Ishmael Harris</h3>
+        <p class="text-sm text-bcc-gray-600">Endorsed for Bastrop Mayor. Community leader committed to responsible growth and strong local governance.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Smithville City Council, Place 4</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Wini Griffin</h3>
+        <p class="text-sm text-bcc-gray-600">Endorsed for Smithville City Council Place 4. Dedicated to conservative values and community service in Smithville.</p>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Smithville City Council, Place 5</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Daña Tovar</h3>
+        <p class="text-sm text-bcc-gray-600">Endorsed for Smithville City Council Place 5. Committed to fiscal responsibility and community-first governance.</p>
+        <a href="https://electdanatovar.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-3 text-sm font-bold text-bcc-red hover:underline">Visit Website <Icon name="lucide:external-link" class="w-3.5 h-3.5" /></a>
+      </div>
+
+      <div class="bg-white border-2 border-bcc-red rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-bcc-red text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ENDORSED</div>
+        <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider block mb-1">Elgin City Council</span>
+        <h3 class="text-xl font-bold text-bcc-navy mb-2">Chuck Swain</h3>
+        <p class="text-sm text-bcc-gray-600">Endorsed for Elgin City Council. Dedicated to conservative values and serving the Elgin community.</p>
+        <a href="https://www.elgintexas.gov/directory.aspx?EID=74" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-3 text-sm font-bold text-bcc-red hover:underline">Visit Website <Icon name="lucide:external-link" class="w-3.5 h-3.5" /></a>
+      </div>
+    </div>
   </section>
 
 
@@ -163,24 +217,10 @@ import { Icon } from 'astro-icon/components';
     Pol. Adv. Paid for by Bastrop County Conservatives PAC. Not authorized by any candidate or candidate's committee.
   </p>
 
-  <script type="application/ld+json" is:inline>
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Bastrop County Conservatives 2026 Endorsements",
-      "description": "Official endorsements for the 2026 Republican Primary and local races by Bastrop County Conservatives PAC.",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "item": { "@type": "Person", "name": "Charles Schwertner", "jobTitle": "Texas State Senator", "url": "https://senate.texas.gov" } },
-        { "@type": "ListItem", "position": 2, "item": { "@type": "Person", "name": "Tom Glass", "jobTitle": "Texas State Representative Candidate" } },
-        { "@type": "ListItem", "position": 3, "item": { "@type": "Person", "name": "Mayes Middleton", "jobTitle": "Texas Attorney General Candidate" } },
-        { "@type": "ListItem", "position": 4, "item": { "@type": "Person", "name": "Don Huffines", "jobTitle": "Texas State Comptroller Candidate" } },
-        { "@type": "ListItem", "position": 5, "item": { "@type": "Person", "name": "John Messinger", "jobTitle": "TX Criminal Court of Appeals Candidate" } },
-        { "@type": "ListItem", "position": 6, "item": { "@type": "Person", "name": "Tom Smith", "jobTitle": "TX Criminal Court of Appeals Candidate" } },
-        { "@type": "ListItem", "position": 7, "item": { "@type": "Person", "name": "Gregory Klaus", "jobTitle": "Bastrop County Judge" } },
-        { "@type": "ListItem", "position": 8, "item": { "@type": "Person", "name": "Sara Loucks", "jobTitle": "Bastrop County District Clerk" } },
-        { "@type": "ListItem", "position": 9, "item": { "@type": "Person", "name": "Debbie Denny", "jobTitle": "GOP Precinct 1004 Chair Candidate" } }
-      ]
-    }
-  </script>
+  <script type="application/ld+json" set:html={generateEndorsementsSchema(endorsedCandidates)} />
+  <script type="application/ld+json" set:html={generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://bastropcc.com' },
+    { name: 'Endorsements', url: 'https://bastropcc.com/endorsements' }
+  ])} />
 
 </PageLayout>

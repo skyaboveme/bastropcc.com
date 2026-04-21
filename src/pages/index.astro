@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { generateWebSiteSchema } from '../utils/schema';
 import Button from '../components/ui/Button.astro';
+import EndorsementPopup from '../components/ui/EndorsementPopup.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import ValueCard from '../components/ui/ValueCard.astro';
 import VideoEmbed from '../components/ui/VideoEmbed.astro';
@@ -43,7 +45,7 @@ const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new
         centered={true}
       />
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-bcc-gray-200 group hover:border-bcc-red hover:shadow-2xl transition-all duration-300 flex flex-col">
           <div class="bg-bcc-red text-white text-center py-2 font-bold uppercase tracking-wider text-sm">Official Endorsement</div>
           <div class="p-8 text-center bg-gradient-to-b from-bcc-red/5 to-transparent flex flex-col flex-grow">
@@ -76,6 +78,16 @@ const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new
             </div>
           </div>
         </div>
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-bcc-gray-200 group hover:border-bcc-red hover:shadow-2xl transition-all duration-300 flex flex-col mt-4 md:mt-0">
+          <div class="bg-bcc-red text-white text-center py-2 font-bold uppercase tracking-wider text-sm">Official Endorsement</div>
+          <div class="p-8 text-center bg-gradient-to-b from-bcc-red/5 to-transparent flex flex-col flex-grow">
+            <h3 class="font-bold text-bcc-navy text-2xl leading-tight mb-2 group-hover:text-bcc-red transition-colors">Chuck Swain</h3>
+            <p class="text-bcc-gray-600 mb-8 font-medium">Elgin City Council</p>
+            <div class="mt-auto">
+              <a href="https://www.elgintexas.gov/directory.aspx?EID=74" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-bcc-navy hover:bg-bcc-red text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md">Visit Website</a>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div class="mt-12 text-center">
@@ -101,7 +113,7 @@ const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new
             <Icon name="lucide:landmark" class="w-8 h-8" />
           </div>
           <h3 class="font-heading uppercase text-xl font-bold text-bcc-navy mb-3 group-hover:text-bcc-red transition-colors">Who Represents You</h3>
-          <p class="text-bcc-gray-600 text-sm">Complete directory of Bastrop County elected officials — commissioners, sheriff, JPs, school board, and more.</p>
+          <p class="text-bcc-gray-600 text-sm">Your complete guide to your elected officials — who they are, how to reach them, and when they're up for re-election.</p>
         </a>
 
         <a href="/endorsements" class="group bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-8 text-center hover:shadow-lg hover:border-bcc-red transition-all duration-300">
@@ -237,4 +249,7 @@ const recentVideos = videos.sort((a, b) => new Date(b.data.date).valueOf() - new
       </div>
     </div>
   </section>
+
+  <script type="application/ld+json" set:html={generateWebSiteSchema()} />
+  <EndorsementPopup />
 </BaseLayout>
