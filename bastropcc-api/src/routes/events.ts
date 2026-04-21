@@ -45,14 +45,14 @@ router.get('/:id', async (c) => {
 router.post('/', async (c) => {
   const user = c.get('user');
   const body = await c.req.json();
-  const { title, description, start_datetime, end_datetime, location, location_url, event_url, category, status, is_featured } = body;
+  const { title, description, start_datetime, end_datetime, date, time, org, county, type, location, location_url, event_url, category, status, is_featured } = body;
 
   const validStatus = ['active', 'cancelled', 'past'].includes(status) ? status : 'active';
 
   const { results } = await c.env.DB.prepare(
-    `INSERT INTO events (title, description, start_datetime, end_datetime, location, location_url, event_url, category, status, is_featured, created_by) 
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`
-  ).bind(title, description || null, start_datetime, end_datetime || null, location || null, location_url || null, event_url || null, category || 'general', validStatus, is_featured ? 1 : 0, user.id).all();
+    `INSERT INTO events (title, description, start_datetime, end_datetime, date, time, org, county, type, location, location_url, event_url, category, status, is_featured, created_by) 
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`
+  ).bind(title, description || null, start_datetime || date, end_datetime || null, date || null, time || null, org || null, county || 'bastrop', type || 'community', location || null, location_url || null, event_url || null, category || 'general', validStatus, is_featured ? 1 : 0, user.id).all();
 
   const newId = results && results[0] ? (results[0] as any).id : null;
   await logActivity(c, user.id, user.email, 'CREATE_EVENT', 'events', newId, `Created event ${title}`);
@@ -64,13 +64,13 @@ router.put('/:id', async (c) => {
   const user = c.get('user');
   const id = c.req.param('id');
   const body = await c.req.json();
-  const { title, description, start_datetime, end_datetime, location, location_url, event_url, category, status, is_featured } = body;
+  const { title, description, start_datetime, end_datetime, date, time, org, county, type, location, location_url, event_url, category, status, is_featured } = body;
 
   const validStatus = ['active', 'cancelled', 'past'].includes(status) ? status : 'active';
 
   await c.env.DB.prepare(
-    `UPDATE events SET title = ?, description = ?, start_datetime = ?, end_datetime = ?, location = ?, location_url = ?, event_url = ?, category = ?, status = ?, is_featured = ?, updated_at = datetime("now") WHERE id = ?`
-  ).bind(title, description || null, start_datetime, end_datetime || null, location || null, location_url || null, event_url || null, category || 'general', validStatus, is_featured ? 1 : 0, id).run();
+    `UPDATE events SET title = ?, description = ?, start_datetime = ?, end_datetime = ?, date = ?, time = ?, org = ?, county = ?, type = ?, location = ?, location_url = ?, event_url = ?, category = ?, status = ?, is_featured = ?, updated_at = datetime("now") WHERE id = ?`
+  ).bind(title, description || null, start_datetime || date, end_datetime || null, date || null, time || null, org || null, county || 'bastrop', type || 'community', location || null, location_url || null, event_url || null, category || 'general', validStatus, is_featured ? 1 : 0, id).run();
 
   await logActivity(c, user.id, user.email, 'UPDATE_EVENT', 'events', id, `Updated event ${title}`);
   return c.json({ success: true, message: 'Event updated' });

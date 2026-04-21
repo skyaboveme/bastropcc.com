@@ -2,7 +2,6 @@
 import SEO from '../components/layout/SEO.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
-import EndorsementPopup from '../components/ui/EndorsementPopup.astro';
 import { Icon } from 'astro-icon/components';
 import '../styles/global.css';
 
@@ -88,6 +87,5 @@ const { title, description, image, article } = Astro.props;
         scrollElements.forEach(el => observer.observe(el));
       });
     </script>
-    <EndorsementPopup />
   </body>
 </html>

@@ -1,0 +1,533 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+// ── WHY CONSERVATIVE — VALUES WITH LOCAL POLICY CONTEXT ──────
+const values = [
+  {
+    id: "property-rights",
+    title: "Property Rights & Small Government",
+    coreValue: "Small Government • Free Market",
+    icon: "lucide:home",
+    color: "#c41e3a",
+    localHook: "Your property tax bill went up again. Here's who decides that — and how to fight back.",
+    body: `Bastrop County property valuations have surged as the county's population grew from 74,000 to over 122,000 in fifteen years. Every year, the Bastrop Central Appraisal District reassesses your home's value — and every year, local taxing entities (the county, your city, your school district) set the rate that determines what you actually pay.
+
+Conservatives believe government should tax as little as possible. When your home value increases 20% but government spending increases 25%, you're not just keeping up with growth — you're funding expansion. City councils, county commissioners, and school boards have the power to lower the tax rate to offset rising appraisals. Most don't.
+
+**What this means in Bastrop County:** The county tax rate, city tax rates, and school district rates are all set by elected officials you can vote for in local elections. The people at BCC monthly meetings are the ones holding those officials accountable. Property rights don't defend themselves.`,
+    action: "Attend a Bastrop County Commissioners Court meeting when the budget is set each September."
+  },
+  {
+    id: "second-amendment",
+    title: "Second Amendment Rights",
+    coreValue: "Individual Rights • Freedom",
+    icon: "lucide:shield",
+    color: "#1a2b4a",
+    localHook: "Texas is a constitutional carry state. But your local officials still shape how 2A is respected in Bastrop County.",
+    body: `The Second Amendment protects your God-given right to keep and bear arms. Texas passed constitutional carry in 2021, meaning law-abiding Texans 21 and older can carry a handgun without a permit. But your local government still matters.
+
+City councils can pass ordinances affecting where firearms are allowed on city property. County commissioners fund the Sheriff's office that enforces (or doesn't enforce) state gun laws. School boards set policies on campus security. And local judges determine how firearms cases are handled in court.
+
+**What this means in Bastrop County:** Every local official either respects or undermines the Second Amendment through their policies and priorities. A city council that restricts firearms on public property, a school board that refuses to consider guardian programs, or a county judge who deprioritizes rural law enforcement — these are the local battles that matter. The Second Amendment is preserved or eroded one city council vote at a time.`,
+    action: "Ask every local candidate: 'Do you support constitutional carry on all city/county property?'"
+  },
+  {
+    id: "school-choice",
+    title: "Education & Parental Rights",
+    coreValue: "Family • Individual Rights",
+    icon: "lucide:graduation-cap",
+    color: "#c41e3a",
+    localHook: "Bastrop ISD spends over $12,000 per student. Are your kids getting $12,000 worth of education?",
+    body: `Conservatives believe parents — not bureaucrats — should direct their children's education. In Texas, the school choice debate has intensified as Governor Abbott continues to push for Education Savings Accounts (ESAs) that would let parents use state funding for private schools, homeschool curricula, or tutoring.
+
+But regardless of where the state legislature lands, your local school board has enormous power right now. They set curriculum standards, hire and fire superintendents, approve sex education materials, decide whether to arm staff, and control a budget that often exceeds $100 million.
+
+**What this means in Bastrop County:** Bastrop ISD's board meets regularly and makes decisions that directly affect what your children learn, who teaches them, and how safe they are at school. Elmore, Smithville, and McDade ISDs all have their own boards with their own elections. These are races decided by a few hundred votes — often fewer than 200. If you care about what's happening in your child's classroom, the school board election is the single most impactful vote you can cast.`,
+    action: "Attend a Bastrop ISD board meeting. They're open to the public every month."
+  },
+  {
+    id: "border-security",
+    title: "Border Security & Rule of Law",
+    coreValue: "America First • Integrity",
+    icon: "lucide:shield-alert",
+    color: "#1a2b4a",
+    localHook: "Bastrop County is 150 miles from the border. But the consequences are in your neighborhood.",
+    body: `The southern border crisis is not an abstract policy debate for Central Texas. Bastrop County sits on the I-35 corridor, one of the primary drug and human trafficking routes from the Rio Grande Valley to Austin, Dallas, and beyond. Fentanyl seizures in Texas have increased every year since 2020.
+
+Conservatives believe in national sovereignty, legal immigration, and the rule of law. Governor Abbott's Operation Lone Star has deployed Texas National Guard and DPS troopers to the border, and the state has spent billions on border enforcement. But the local impact is real: your county sheriff, your local judges, and your district attorney all determine how immigration-related crimes are prosecuted in Bastrop County.
+
+**What this means in Bastrop County:** When the Bastrop County Sheriff cooperates with federal immigration authorities, it strengthens enforcement. When the DA prosecutes trafficking cases aggressively, it sends a signal. These are locally elected officials. Their approach to border-related crime is a direct function of whether conservative voters show up to elect them.`,
+    action: "Support the Bastrop County Sheriff's cooperation with federal law enforcement."
+  },
+  {
+    id: "faith-family",
+    title: "Faith, Family & Moral Foundation",
+    coreValue: "Freedom of Religion • Family • Morality",
+    icon: "lucide:heart",
+    color: "#c41e3a",
+    localHook: "Bastrop County's churches and families are the backbone of this community. Local policy either supports them or undermines them.",
+    body: `Conservatives believe the traditional family — a married mother and father raising children — is the foundational unit of a healthy society. We believe faith communities provide the moral framework that no government program can replace. And we believe public policy should strengthen families, not weaken them.
+
+In Bastrop County, this plays out in concrete ways. City councils decide whether to permit sexually oriented businesses near neighborhoods and churches. School boards determine what materials children are exposed to. County commissioners fund programs that either support families or expand government dependency.
+
+**What this means in Bastrop County:** When new residents arrive from Austin, California, or New York, they bring different cultural expectations. The zoning decisions, curriculum choices, and community standards that define Bastrop County's character are all set by local officials. If the people who built this community don't stay engaged, the newcomers who don't share our values will reshape it by default. Faith and family values don't survive on autopilot.`,
+    action: "Get your church involved. Share voter guides with your congregation before every election."
+  },
+  {
+    id: "free-speech",
+    title: "Free Speech & Open Debate",
+    coreValue: "Free Speech • Individual Rights",
+    icon: "lucide:megaphone",
+    color: "#1a2b4a",
+    localHook: "The First Amendment doesn't just protect you from the federal government. It defines the culture of your community.",
+    body: `Conservatives believe in the free and open exchange of ideas. The First Amendment protects your right to speak, publish, worship, and petition your government without fear of retaliation. But in the modern era, free speech is under pressure not just from government, but from cultural institutions, social media platforms, and activist groups that seek to silence dissent.
+
+At the local level, free speech matters at school board meetings, city council public comment periods, and political forums. Conservative voices that don't show up don't get heard. Progressive activist groups are organized, vocal, and present at every public meeting. If conservatives cede the public square, the perception that our community supports progressive policies becomes the default narrative.
+
+**What this means in Bastrop County:** Show up to public meetings. Speak during public comment. Write letters to the editor of the Bastrop Advertiser. Post on community social media groups. Run for precinct chair. The First Amendment protects your right to speak — but it doesn't exercise that right for you.`,
+    action: "Speak at the next city council or school board public comment period."
+  },
+  {
+    id: "pro-life",
+    title: "Sanctity of Life",
+    coreValue: "Preserving Dignity • Morality • Life, Liberty...",
+    icon: "lucide:baby",
+    color: "#c41e3a",
+    localHook: "Texas protects life. But your community's support systems for mothers and families are locally funded and locally run.",
+    body: `Conservatives believe in the sanctity of human life from conception to natural death. Since the Dobbs decision, Texas has enacted strong protections for the unborn. But the pro-life commitment doesn't end at legislation — it requires community support for mothers, families, and crisis pregnancy centers.
+
+In Bastrop County, organizations like local crisis pregnancy centers provide counseling, material support, and referrals to women facing unplanned pregnancies. These organizations rely on community fundraising, church partnerships, and volunteer networks — not government grants.
+
+**What this means in Bastrop County:** Being pro-life in Bastrop County means more than voting. It means supporting the local organizations that serve women and families in crisis. It means ensuring your elected officials fund adoption support, maternal health access, and family services. It means building a community where choosing life is supported by real resources, not just rhetoric.`,
+    action: "Volunteer with or donate to a local crisis pregnancy center or family services organization."
+  },
+  {
+    id: "fiscal-responsibility",
+    title: "Fiscal Responsibility & Low Taxes",
+    coreValue: "Small Government • Free Market",
+    icon: "lucide:wallet",
+    color: "#1a2b4a",
+    localHook: "Bastrop County's budget has grown faster than its population. Who approved that spending?",
+    body: `Conservatives believe government should live within its means. Every dollar the government spends is a dollar taken from a family, a business, or a community. Fiscal responsibility isn't just a federal issue — it plays out most directly in your local tax bill.
+
+City councils pass budgets. County commissioners approve spending. School boards issue bonds. Special districts levy taxes for roads, water, and emergency services. In a fast-growing county like Bastrop, the temptation is always to spend more: more staff, more buildings, more programs. The question is whether that spending is necessary and efficient, or whether it's driven by bureaucratic inertia and political ambition.
+
+**What this means in Bastrop County:** Bond elections are the single biggest fiscal decision local voters make. A bond approves debt that taxpayers repay for 20–30 years. When a $200 million school bond appears on the ballot, do you know what it funds? When the county proposes a new courthouse or the city wants a new recreation center, who's asking whether the existing facilities are being used efficiently? Conservative voters who don't show up for bond elections hand their wallets to the people who do.`,
+    action: "Vote in every bond election. Read the ballot language before you go to the polls."
+  },
+];
+---
+
+<BaseLayout
+  title="Why Conservative? — Bastrop County Policy Guide"
+  description="What conservative values mean for Bastrop County, Texas. Property rights, education, border security, faith, free speech, and fiscal responsibility — explained through local policy."
+>
+  <div class="wc-page">
+    <!-- ═══ HERO ═══ -->
+    <section class="wc-hero">
+      <div class="wc-container">
+        <div class="wc-hero-badge">EDUCATIONAL SERIES</div>
+        <h1 class="wc-hero-title">Why Conservative?</h1>
+        <p class="wc-hero-sub">What our values mean for Bastrop County — not in theory, but in the policies, budgets, and decisions that affect your family every day.</p>
+        <div class="wc-hero-stats">
+          <div class="wc-stat">
+            <span class="wc-stat-num">15</span>
+            <span class="wc-stat-label">Core Values</span>
+          </div>
+          <div class="wc-stat-divider"></div>
+          <div class="wc-stat">
+            <span class="wc-stat-num">8</span>
+            <span class="wc-stat-label">Policy Issues</span>
+          </div>
+          <div class="wc-stat-divider"></div>
+          <div class="wc-stat">
+            <span class="wc-stat-num">1</span>
+            <span class="wc-stat-label">County</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ INTRO ═══ -->
+    <section class="wc-section">
+      <div class="wc-container wc-intro">
+        <p>Conservative values are not abstract. They are the principles that determine whether your property taxes go up or down. Whether your child's school teaches facts or ideology. Whether your neighborhood stays safe. Whether your community retains its character — or is reshaped by people who don't share your values.</p>
+        <p>Bastrop County Conservatives holds <a href="/about#values">15 core values</a>. Below, we explain what those values mean in practice — specifically for Bastrop County residents. This is not a national policy paper. This is your neighborhood.</p>
+      </div>
+    </section>
+
+    <!-- ═══ QUICK NAV ═══ -->
+    <section class="wc-section wc-nav-section">
+      <div class="wc-container">
+        <div class="wc-quick-nav">
+          {values.map((v) => (
+            <a href={`#${v.id}`} class="wc-nav-item">
+              <Icon name={v.icon} class="w-4 h-4" />
+              <span>{v.title}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ VALUE SECTIONS ═══ -->
+    {values.map((v, i) => (
+      <section class={`wc-section ${i % 2 === 0 ? 'wc-section-alt' : ''}`} id={v.id}>
+        <div class="wc-container">
+          <div class="wc-value-header">
+            <div class="wc-value-icon" style={`background: ${v.color};`}>
+              <Icon name={v.icon} class="w-6 h-6" />
+            </div>
+            <div>
+              <div class="wc-value-core">{v.coreValue}</div>
+              <h2 class="wc-value-title">{v.title}</h2>
+            </div>
+          </div>
+          <div class="wc-value-hook">
+            <Icon name="lucide:map-pin" class="w-4 h-4 wc-hook-icon" />
+            {v.localHook}
+          </div>
+          <div class="wc-value-body" set:html={v.body.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>')} />
+          <div class="wc-value-action">
+            <Icon name="lucide:arrow-right-circle" class="w-5 h-5" />
+            <div>
+              <span class="wc-action-label">Take Action</span>
+              <span class="wc-action-text">{v.action}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <!-- ═══ ALL 15 VALUES ═══ -->
+    <section class="wc-section wc-all-values">
+      <div class="wc-container">
+        <h2 class="wc-section-heading">All 15 Core Values</h2>
+        <p class="wc-section-sub">Every candidate endorsed by BCC is vetted against these principles.</p>
+        <div class="wc-values-grid">
+          <div class="wc-val-chip"><Icon name="lucide:flag" class="w-4 h-4" /> America First</div>
+          <div class="wc-val-chip"><Icon name="lucide:users" class="w-4 h-4" /> Family</div>
+          <div class="wc-val-chip"><Icon name="lucide:book-open" class="w-4 h-4" /> Freedom of Religion</div>
+          <div class="wc-val-chip"><Icon name="lucide:trending-up" class="w-4 h-4" /> Free Market</div>
+          <div class="wc-val-chip"><Icon name="lucide:message-square" class="w-4 h-4" /> Free Speech</div>
+          <div class="wc-val-chip"><Icon name="lucide:heart-handshake" class="w-4 h-4" /> Grace</div>
+          <div class="wc-val-chip"><Icon name="lucide:user-check" class="w-4 h-4" /> Individual Rights</div>
+          <div class="wc-val-chip"><Icon name="lucide:shield" class="w-4 h-4" /> Integrity & Honesty</div>
+          <div class="wc-val-chip"><Icon name="lucide:sun" class="w-4 h-4" /> Life, Liberty & Pursuit of Happiness</div>
+          <div class="wc-val-chip"><Icon name="lucide:venetian-mask" class="w-4 h-4" /> Male and Female True</div>
+          <div class="wc-val-chip"><Icon name="lucide:scale" class="w-4 h-4" /> Morality</div>
+          <div class="wc-val-chip"><Icon name="lucide:baby" class="w-4 h-4" /> Preserving Dignity</div>
+          <div class="wc-val-chip"><Icon name="lucide:handshake" class="w-4 h-4" /> Respect</div>
+          <div class="wc-val-chip"><Icon name="lucide:award" class="w-4 h-4" /> Servant Leadership</div>
+          <div class="wc-val-chip"><Icon name="lucide:minimize-2" class="w-4 h-4" /> Small Government</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="wc-cta">
+      <div class="wc-container">
+        <h2 class="wc-cta-title">Values Without Action Are Just Words</h2>
+        <p class="wc-cta-desc">The conservative majority in Bastrop County was built by people who showed up — to meetings, to elections, to precinct walks. Join us.</p>
+        <div class="wc-cta-actions">
+          <a href="/membership" class="wc-btn-primary">Join BCC</a>
+          <a href="/voter-guide" class="wc-btn-outline">Voter Guide</a>
+          <a href="/endorsements" class="wc-btn-outline">View Endorsements</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <style is:global>
+    /* ═══ HEADER OVERRIDE — DARK MODE ═══ */
+    header { background: var(--wc-navy, #1a2b4a) !important; border-bottom-color: rgba(255,255,255,0.1) !important; }
+    header .bg-slate-50 { background: rgba(255,255,255,0.05) !important; border-bottom-color: rgba(255,255,255,0.1) !important; }
+    header .bg-white, header nav .bg-white { background: transparent !important; }
+    header .border-bcc-gray-200 { border-color: rgba(255,255,255,0.1) !important; }
+    header a.text-bcc-navy, header button.text-bcc-navy, header span.text-bcc-navy { color: #fff !important; }
+    header .text-bcc-gray-200 { color: rgba(255,255,255,0.3) !important; }
+    header a:hover.text-bcc-navy, header a.hover\:text-bcc-red:hover { color: var(--wc-gold, #c9a84c) !important; }
+    header .drop-shadow-sm { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)) !important; }
+    header .bg-white\/50 { background: transparent !important; }
+    header div[class*="shadow-xl"] { background: #1e3355 !important; border-color: rgba(255,255,255,0.15) !important; }
+    header div[class*="shadow-xl"] a { color: #fff !important; }
+    header div[class*="shadow-xl"] a:hover { color: var(--wc-gold, #c9a84c) !important; background: rgba(255,255,255,0.05) !important; }
+
+    /* ═══════════════════════════════════════════
+       WHY CONSERVATIVE — EDUCATIONAL HUB
+    ═══════════════════════════════════════════ */
+    .wc-page {
+      --wc-red: #c41e3a;
+      --wc-navy: #1a2b4a;
+      --wc-gold: #c9a84c;
+      --wc-bg: #faf9f6;
+      --wc-surface: #ffffff;
+      --wc-border: #e2e0db;
+      --wc-text: #2d2d2d;
+      --wc-dim: #6b7280;
+      background: var(--wc-bg);
+      font-family: 'Inter', -apple-system, sans-serif;
+      margin: -2rem -1rem;
+    }
+    @media (min-width: 640px) { .wc-page { margin: -2rem -1.5rem; } }
+    @media (min-width: 1024px) { .wc-page { margin: -2rem; } }
+    .wc-container { max-width: 780px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* ═══ HERO ═══ */
+    .wc-hero {
+      background: linear-gradient(135deg, #0f1d33 0%, var(--wc-navy) 50%, #1e3355 100%);
+      padding: 4rem 0 3rem;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .wc-hero-badge {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--wc-gold);
+      border: 1px solid var(--wc-gold);
+      padding: 4px 18px;
+      border-radius: 4px;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+    .wc-hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 900;
+      margin: 0 0 1rem;
+      line-height: 1.1;
+      color: #ffffff !important;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+    .wc-hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.9);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+    .wc-hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .wc-stat { text-align: center; }
+    .wc-stat-num { display: block; font-size: 2rem; font-weight: 800; color: var(--wc-gold); }
+    .wc-stat-label { font-family: monospace; font-size: 0.55rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+    .wc-stat-divider { width: 1px; height: 2.5rem; background: rgba(255,255,255,0.2); }
+
+    /* ═══ SECTIONS ═══ */
+    .wc-section { padding: 3rem 0; }
+    .wc-section-alt { background: var(--wc-surface); border-top: 1px solid var(--wc-border); border-bottom: 1px solid var(--wc-border); }
+
+    /* ═══ INTRO ═══ */
+    .wc-intro p {
+      font-size: 1.05rem;
+      color: var(--wc-text);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .wc-intro a { color: var(--wc-red); font-weight: 600; text-decoration: underline; }
+
+    /* ═══ QUICK NAV ═══ */
+    .wc-nav-section { padding: 1.5rem 0; background: var(--wc-navy); }
+    .wc-quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .wc-nav-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      padding: 6px 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .wc-nav-item:hover { color: var(--wc-gold); border-color: var(--wc-gold); }
+
+    /* ═══ VALUE SECTIONS ═══ */
+    .wc-value-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .wc-value-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .wc-value-core {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--wc-dim);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .wc-value-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--wc-navy);
+      margin: 0;
+    }
+    .wc-value-hook {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--wc-red);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .wc-hook-icon { flex-shrink: 0; margin-top: 2px; }
+    .wc-value-body {
+      font-size: 0.95rem;
+      color: var(--wc-text);
+      line-height: 1.8;
+    }
+    .wc-value-body p { margin-bottom: 1rem; }
+    .wc-value-body strong { color: var(--wc-navy); }
+
+    .wc-value-action {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, var(--wc-navy), #243b5e);
+      color: #fff;
+      padding: 1rem 1.25rem;
+      border-radius: 10px;
+    }
+    .wc-value-action > svg { flex-shrink: 0; margin-top: 2px; color: var(--wc-gold); }
+    .wc-action-label {
+      display: block;
+      font-family: monospace;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--wc-gold);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .wc-action-text { font-size: 0.9rem; color: rgba(255,255,255,0.9); line-height: 1.5; }
+
+    /* ═══ ALL 15 VALUES GRID ═══ */
+    .wc-all-values { background: var(--wc-navy); color: #fff; }
+    .wc-section-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 0 0 0.5rem;
+    }
+    .wc-section-sub {
+      text-align: center;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 2rem;
+    }
+    .wc-values-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .wc-val-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ═══ CTA ═══ */
+    .wc-cta {
+      background: linear-gradient(135deg, var(--wc-red), #a31830);
+      padding: 4rem 0;
+      text-align: center;
+      color: #fff;
+    }
+    .wc-cta-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+    }
+    .wc-cta-desc {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+    .wc-cta-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .wc-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #fff;
+      color: var(--wc-red);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: all 0.2s;
+    }
+    .wc-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .wc-btn-outline {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .wc-btn-outline:hover { border-color: #fff; }
+  </style>
+</BaseLayout>

@@ -2,6 +2,30 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { Icon } from 'astro-icon/components';
+import { generateElectedOfficialsSchema, generateBreadcrumbSchema } from '../utils/schema';
+
+const officials = [
+  // State & Federal
+  { name: 'Greg Abbott', jobTitle: 'Governor of Texas', affiliation: 'Republican', url: 'https://gov.texas.gov', worksFor: 'State of Texas' },
+  { name: 'Dan Patrick', jobTitle: 'Lt. Governor of Texas', affiliation: 'Republican', url: 'https://ltgov.texas.gov', worksFor: 'State of Texas' },
+  { name: 'Ken Paxton', jobTitle: 'Attorney General of Texas', affiliation: 'Republican', url: 'https://texasattorneygeneral.gov', worksFor: 'State of Texas' },
+  { name: 'Glenn Hegar', jobTitle: 'Comptroller of Texas', affiliation: 'Republican', url: 'https://comptroller.texas.gov', worksFor: 'State of Texas' },
+  { name: 'Charles Schwertner', jobTitle: 'State Senator, District 5', affiliation: 'Republican', url: 'https://senate.texas.gov', worksFor: 'Texas Senate' },
+  { name: 'Stan Gerdes', jobTitle: 'State Representative, District 17', affiliation: 'Republican', url: 'https://house.texas.gov', worksFor: 'Texas House' },
+  { name: 'John Cornyn', jobTitle: 'U.S. Senator', affiliation: 'Republican', worksFor: 'United States Senate' },
+  { name: 'Ted Cruz', jobTitle: 'U.S. Senator', affiliation: 'Republican', worksFor: 'United States Senate' },
+  { name: 'Jake Ellzey', jobTitle: 'U.S. Representative, District 10', affiliation: 'Republican', worksFor: 'United States House of Representatives' },
+  // County Officials
+  { name: 'Gregory Klaus', jobTitle: 'Bastrop County Judge', affiliation: 'Republican', worksFor: 'Bastrop County' },
+  { name: 'Butch Carmack', jobTitle: 'Commissioner, Precinct 1', affiliation: 'Republican', worksFor: 'Bastrop County Commissioners Court' },
+  { name: 'Clara Beckett', jobTitle: 'Commissioner, Precinct 2', affiliation: 'Democrat', worksFor: 'Bastrop County Commissioners Court' },
+  { name: 'Mark Meuth', jobTitle: 'Commissioner, Precinct 3', affiliation: 'Republican', worksFor: 'Bastrop County Commissioners Court' },
+  { name: 'David Glass', jobTitle: 'Commissioner, Precinct 4', affiliation: 'Republican', worksFor: 'Bastrop County Commissioners Court' },
+  { name: 'Maurice Cook', jobTitle: 'Sheriff', affiliation: 'Republican', worksFor: 'Bastrop County' },
+  { name: 'Krista Bartsch', jobTitle: 'County Clerk', affiliation: 'Republican', worksFor: 'Bastrop County' },
+  { name: 'Sarah Loucks', jobTitle: 'District Clerk', affiliation: 'Republican', worksFor: 'Bastrop County' },
+  { name: 'Ellen Owens', jobTitle: 'Tax Assessor-Collector', affiliation: 'Republican', url: 'https://bastroptac.com', worksFor: 'Bastrop County' },
+];
 ---
 
 <PageLayout 
@@ -13,13 +37,156 @@ import { Icon } from 'astro-icon/components';
 
   <!-- Quick Jump Nav -->
   <div class="not-prose mb-16 flex flex-wrap justify-center gap-3">
+    <a href="#state-federal" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">State & Federal</a>
     <a href="#commissioners" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">Commissioners Court</a>
     <a href="#county-officers" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">County Officers</a>
     <a href="#justice-peace" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">Justice of the Peace</a>
     <a href="#constables" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">Constables</a>
     <a href="#school-board" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">School Board</a>
-    <a href="#state-federal" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">State & Federal</a>
   </div>
+
+  <!-- State & Federal -->
+  <section id="state-federal" class="mb-20 not-prose scroll-mt-20">
+    <SectionHeading title="State & Federal Representatives" />
+    <p class="text-bcc-gray-600 mb-8 max-w-3xl">Bastrop County residents are represented at the state and federal level by the following officials.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">U.S. Senator</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Ted Cruz</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://www.cruz.senate.gov" target="_blank" class="text-bcc-red hover:underline">cruz.senate.gov</a></div>
+          <div class="flex items-center gap-2"><Icon name="lucide:phone" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> (512) 916-5834</div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">U.S. Senator</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">John Cornyn</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://www.cornyn.senate.gov" target="_blank" class="text-bcc-red hover:underline">cornyn.senate.gov</a></div>
+          <div class="flex items-center gap-2"><Icon name="lucide:phone" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> (512) 469-6034</div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Governor</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Greg Abbott</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://gov.texas.gov" target="_blank" class="text-bcc-red hover:underline">gov.texas.gov</a></div>
+          <div class="flex items-center gap-2"><Icon name="lucide:phone" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> (512) 463-2000</div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Lt. Governor</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Dan Patrick</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://ltgov.texas.gov" target="_blank" class="text-bcc-red hover:underline">ltgov.texas.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Attorney General</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Ken Paxton</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://texasattorneygeneral.gov" target="_blank" class="text-bcc-red hover:underline">texasattorneygeneral.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Comptroller</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Glenn Hegar</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://comptroller.texas.gov" target="_blank" class="text-bcc-red hover:underline">comptroller.texas.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Land Commissioner</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Dawn Buckingham</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://glo.texas.gov" target="_blank" class="text-bcc-red hover:underline">glo.texas.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Agriculture Commissioner</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Sid Miller</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://texasagriculture.gov" target="_blank" class="text-bcc-red hover:underline">texasagriculture.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Railroad Commission</span>
+        </div>
+        <h3 class="text-[1.05rem] font-bold text-bcc-navy mb-1 leading-tight">Christi Craddick<br/>Wayne Christian<br/>Jim Wright</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600 mt-2">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://rrc.texas.gov" target="_blank" class="text-bcc-red hover:underline">rrc.texas.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">State Senator, Dist. 5</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Charles Schwertner</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://senate.texas.gov" target="_blank" class="text-bcc-red hover:underline">senate.texas.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">State Rep, Dist. 17</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Stan Gerdes</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://house.texas.gov" target="_blank" class="text-bcc-red hover:underline">house.texas.gov</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">D</span>
+          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">SBOE, Dist. 5</span>
+        </div>
+        <h3 class="text-xl font-bold text-bcc-navy mb-3">Rebecca Bell-Metereau</h3>
+        <div class="space-y-2 text-sm text-bcc-gray-600">
+          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://sboe.texas.gov" target="_blank" class="text-bcc-red hover:underline">sboe.texas.gov</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Commissioners Court -->
   <section id="commissioners" class="mb-20 not-prose scroll-mt-20">
@@ -305,149 +472,6 @@ import { Icon } from 'astro-icon/components';
     </div>
   </section>
 
-  <!-- State & Federal -->
-  <section id="state-federal" class="mb-20 not-prose scroll-mt-20">
-    <SectionHeading title="State & Federal Representatives" />
-    <p class="text-bcc-gray-600 mb-8 max-w-3xl">Bastrop County residents are represented at the state and federal level by the following officials.</p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">U.S. Senator</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Ted Cruz</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://www.cruz.senate.gov" target="_blank" class="text-bcc-red hover:underline">cruz.senate.gov</a></div>
-          <div class="flex items-center gap-2"><Icon name="lucide:phone" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> (512) 916-5834</div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">U.S. Senator</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">John Cornyn</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://www.cornyn.senate.gov" target="_blank" class="text-bcc-red hover:underline">cornyn.senate.gov</a></div>
-          <div class="flex items-center gap-2"><Icon name="lucide:phone" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> (512) 469-6034</div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Governor</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Greg Abbott</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://gov.texas.gov" target="_blank" class="text-bcc-red hover:underline">gov.texas.gov</a></div>
-          <div class="flex items-center gap-2"><Icon name="lucide:phone" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> (512) 463-2000</div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Lt. Governor</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Dan Patrick</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://ltgov.texas.gov" target="_blank" class="text-bcc-red hover:underline">ltgov.texas.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Attorney General</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Ken Paxton</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://texasattorneygeneral.gov" target="_blank" class="text-bcc-red hover:underline">texasattorneygeneral.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Comptroller</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Glenn Hegar</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://comptroller.texas.gov" target="_blank" class="text-bcc-red hover:underline">comptroller.texas.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Land Commissioner</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Dawn Buckingham</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://glo.texas.gov" target="_blank" class="text-bcc-red hover:underline">glo.texas.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Agriculture Commissioner</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Sid Miller</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://texasagriculture.gov" target="_blank" class="text-bcc-red hover:underline">texasagriculture.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">Railroad Commission</span>
-        </div>
-        <h3 class="text-[1.05rem] font-bold text-bcc-navy mb-1 leading-tight">Christi Craddick<br/>Wayne Christian<br/>Jim Wright</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600 mt-2">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://rrc.texas.gov" target="_blank" class="text-bcc-red hover:underline">rrc.texas.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">State Senator, Dist. 5</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Charles Schwertner</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://senate.texas.gov" target="_blank" class="text-bcc-red hover:underline">senate.texas.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-bcc-red text-white text-xs font-bold px-2 py-0.5 rounded-full">R</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">State Rep, Dist. 17</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Stan Gerdes</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://house.texas.gov" target="_blank" class="text-bcc-red hover:underline">house.texas.gov</a></div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-bcc-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="bg-blue-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">D</span>
-          <span class="text-xs text-bcc-gray-500 font-medium uppercase tracking-wider">SBOE, Dist. 5</span>
-        </div>
-        <h3 class="text-xl font-bold text-bcc-navy mb-3">Rebecca Bell-Metereau</h3>
-        <div class="space-y-2 text-sm text-bcc-gray-600">
-          <div class="flex items-center gap-2"><Icon name="lucide:globe" class="w-4 h-4 text-bcc-gold flex-shrink-0" /> <a href="https://sboe.texas.gov" target="_blank" class="text-bcc-red hover:underline">sboe.texas.gov</a></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Helpful Links -->
   <div class="bg-bcc-cream -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-xl border border-bcc-gray-200 not-prose">
     <SectionHeading title="Helpful Resources" centered={true} class="mb-8" />
@@ -474,27 +498,10 @@ import { Icon } from 'astro-icon/components';
     Information current as of March 2026. Contact information sourced from bastropcounty.gov, bastropvotes.org, and bisdtx.org. If you notice an error, please <a href="/contact" class="text-bcc-red hover:underline">let us know</a>.
   </p>
 
-  <script type="application/ld+json" is:inline>
-    {
-      "@context": "https://schema.org",
-      "@type": "GovernmentOrganization",
-      "name": "Bastrop County Government",
-      "areaServed": {
-        "@type": "AdministrativeArea",
-        "name": "Bastrop County, Texas"
-      },
-      "member": [
-        { "@type": "Role", "roleName": "County Judge", "member": { "@type": "Person", "name": "Gregory Klaus" } },
-        { "@type": "Role", "roleName": "Commissioner, Pct. 1", "member": { "@type": "Person", "name": "Butch Carmack" } },
-        { "@type": "Role", "roleName": "Commissioner, Pct. 2", "member": { "@type": "Person", "name": "Clara Beckett" } },
-        { "@type": "Role", "roleName": "Commissioner, Pct. 3", "member": { "@type": "Person", "name": "Mark Meuth" } },
-        { "@type": "Role", "roleName": "Commissioner, Pct. 4", "member": { "@type": "Person", "name": "David Glass" } },
-        { "@type": "Role", "roleName": "Sheriff", "member": { "@type": "Person", "name": "Maurice Cook" } },
-        { "@type": "Role", "roleName": "County Clerk", "member": { "@type": "Person", "name": "Krista Bartsch" } },
-        { "@type": "Role", "roleName": "District Clerk", "member": { "@type": "Person", "name": "Sarah Loucks" } },
-        { "@type": "Role", "roleName": "Tax Assessor-Collector", "member": { "@type": "Person", "name": "Ellen Owens", "url": "https://bastroptac.com" } }
-      ]
-    }
-  </script>
+  <script type="application/ld+json" set:html={generateElectedOfficialsSchema(officials)} />
+  <script type="application/ld+json" set:html={generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://bastropcc.com' },
+    { name: 'Elected Officials', url: 'https://bastropcc.com/elected-officials' }
+  ])} />
 
 </PageLayout>

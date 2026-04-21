@@ -1,0 +1,664 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+// ── ELECTION DATA ──────────────────────────────────────────────
+const electionDate = "May 2, 2026";
+const earlyVotingStart = "April 21, 2026";
+const earlyVotingEnd = "April 29, 2026";
+const registrationDeadline = "April 2, 2026";
+
+const races = [
+  {
+    office: "City of Bastrop — Mayor",
+    type: "Municipal",
+    candidates: [
+      { name: "Ishmael Harris", endorsed: true, note: "BCC Endorsed", url: "" },
+      { name: "Joseph Stanfield", endorsed: false, note: "", url: "" },
+    ],
+  },
+  {
+    office: "City of Bastrop — Council, Place 3",
+    type: "Municipal",
+    candidates: [
+      { name: "Kevin Plunkett", endorsed: false, note: "Unopposed", url: "" },
+    ],
+  },
+  {
+    office: "Smithville City Council — Place 4",
+    type: "Municipal",
+    candidates: [
+      { name: "Wini Griffin", endorsed: true, note: "BCC Endorsed", url: "" },
+    ],
+  },
+  {
+    office: "Smithville City Council — Place 5",
+    type: "Municipal",
+    candidates: [
+      { name: "Daña Tovar", endorsed: true, note: "BCC Endorsed", url: "https://electdanatovar.com" },
+    ],
+  },
+];
+
+const runoffRaces = [
+  {
+    office: "Republican Primary Runoff — U.S. Senate",
+    date: "May 26, 2026",
+    type: "Runoff",
+    candidates: [
+      { name: "John Cornyn", endorsed: false, note: "Incumbent" },
+      { name: "Ken Paxton", endorsed: false, note: "Former AG" },
+    ],
+  },
+  {
+    office: "Republican Primary Runoff — Bastrop County District Clerk",
+    date: "May 26, 2026",
+    type: "Runoff",
+    candidates: [
+      { name: "Sara Loucks", endorsed: true, note: "BCC Endorsed — Incumbent" },
+      { name: "Holly Cox", endorsed: false, note: "" },
+    ],
+  },
+];
+
+const whatToBring = [
+  { item: "Texas Driver's License or State ID", icon: "lucide:credit-card" },
+  { item: "Texas Election ID Certificate", icon: "lucide:badge-check" },
+  { item: "Texas Personal ID (DPS-issued)", icon: "lucide:shield-check" },
+  { item: "U.S. Passport (book or card)", icon: "lucide:book-open" },
+  { item: "U.S. Military ID with photo", icon: "lucide:shield" },
+  { item: "U.S. Citizenship Certificate with photo", icon: "lucide:award" },
+  { item: "Texas Handgun License", icon: "lucide:target" },
+];
+---
+
+<BaseLayout
+  title="2026 Voter Guide — Bastrop County Conservative Recommendations"
+  description="Printable voter guide for the May 2, 2026 election in Bastrop County, Texas. BCC endorsed candidates, polling locations, early voting dates, and what to bring to the polls."
+>
+  <div class="voter-guide">
+    <!-- ═══ PRINT HEADER (only shows when printing) ═══ -->
+    <div class="vg-print-header">
+      <div class="vg-print-logo">★ BASTROP COUNTY CONSERVATIVES ★</div>
+      <div class="vg-print-title">2026 VOTER GUIDE</div>
+      <div class="vg-print-sub">May 2, 2026 — Uniform Election</div>
+    </div>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="vg-hero">
+      <div class="vg-container">
+        <div class="vg-hero-badge">OFFICIAL VOTER GUIDE</div>
+        <h1 class="vg-hero-title">2026 Bastrop County<br/>Voter Guide</h1>
+        <p class="vg-hero-sub">Your conservative voting guide for the May 2, 2026 Uniform Election.<br/>Print this page and take it to the polls.</p>
+        <div class="vg-hero-actions">
+          <button onclick="window.print()" class="vg-btn-print" id="print-guide-btn">
+            <Icon name="lucide:printer" class="w-5 h-5" /> Print This Guide
+          </button>
+          <a href="/endorsements" class="vg-btn-secondary">View Full Endorsements</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ KEY DATES ═══ -->
+    <section class="vg-section">
+      <div class="vg-container">
+        <h2 class="vg-section-title">
+          <Icon name="lucide:calendar" class="w-5 h-5" /> Key Dates
+        </h2>
+        <div class="vg-dates-grid">
+          <div class="vg-date-card vg-date-warn">
+            <div class="vg-date-label">Registration Deadline</div>
+            <div class="vg-date-value">{registrationDeadline}</div>
+            <div class="vg-date-note">Must be registered by this date to vote May 2</div>
+          </div>
+          <div class="vg-date-card">
+            <div class="vg-date-label">Early Voting</div>
+            <div class="vg-date-value">{earlyVotingStart} – {earlyVotingEnd}</div>
+            <div class="vg-date-note">Multiple locations across Bastrop County</div>
+          </div>
+          <div class="vg-date-card vg-date-primary">
+            <div class="vg-date-label">Election Day</div>
+            <div class="vg-date-value">{electionDate}</div>
+            <div class="vg-date-note">Polls open 7:00 AM – 7:00 PM</div>
+          </div>
+        </div>
+        <div class="vg-info-link">
+          <Icon name="lucide:external-link" class="w-4 h-4" />
+          <a href="https://www.bastropvotes.org" target="_blank" rel="noopener noreferrer">bastropvotes.org</a> — Official Bastrop County Elections Website for locations & sample ballots
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ BALLOT — MAY 2 ═══ -->
+    <section class="vg-section vg-section-alt">
+      <div class="vg-container">
+        <h2 class="vg-section-title">
+          <Icon name="lucide:vote" class="w-5 h-5" /> May 2 Ballot — BCC Recommendations
+        </h2>
+        <p class="vg-section-desc">Candidates endorsed by Bastrop County Conservatives are marked with a red checkmark. These candidates were vetted against our <a href="/about#values">15 core conservative values</a>.</p>
+
+        <div class="vg-ballot">
+          {races.map((race) => (
+            <div class="vg-race">
+              <div class="vg-race-header">
+                <span class="vg-race-office">{race.office}</span>
+                <span class="vg-race-type">{race.type}</span>
+              </div>
+              <div class="vg-candidates">
+                {race.candidates.map((c) => (
+                  <div class={`vg-candidate ${c.endorsed ? 'vg-endorsed' : ''}`}>
+                    <div class="vg-candidate-check">
+                      {c.endorsed ? (
+                        <div class="vg-check-yes">
+                          <Icon name="lucide:check" class="w-5 h-5" />
+                        </div>
+                      ) : (
+                        <div class="vg-check-empty"></div>
+                      )}
+                    </div>
+                    <div class="vg-candidate-info">
+                      <span class="vg-candidate-name">{c.name}</span>
+                      {c.note && <span class={`vg-candidate-note ${c.endorsed ? 'vg-note-endorsed' : ''}`}>{c.note}</span>}
+                    </div>
+                    {c.url && (
+                      <a href={c.url} target="_blank" rel="noopener noreferrer" class="vg-candidate-link no-print">
+                        <Icon name="lucide:external-link" class="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RUNOFF — MAY 26 ═══ -->
+    <section class="vg-section">
+      <div class="vg-container">
+        <h2 class="vg-section-title">
+          <Icon name="lucide:swords" class="w-5 h-5" /> May 26 Republican Primary Runoff
+        </h2>
+        <p class="vg-section-desc">These races will be on the May 26 runoff ballot. Early voting: May 16–22. You must have voted in the Republican primary on March 3, or not voted in any primary, to participate.</p>
+
+        <div class="vg-ballot">
+          {runoffRaces.map((race) => (
+            <div class="vg-race">
+              <div class="vg-race-header">
+                <span class="vg-race-office">{race.office}</span>
+                <span class="vg-race-type">{race.date}</span>
+              </div>
+              <div class="vg-candidates">
+                {race.candidates.map((c) => (
+                  <div class={`vg-candidate ${c.endorsed ? 'vg-endorsed' : ''}`}>
+                    <div class="vg-candidate-check">
+                      {c.endorsed ? (
+                        <div class="vg-check-yes">
+                          <Icon name="lucide:check" class="w-5 h-5" />
+                        </div>
+                      ) : (
+                        <div class="vg-check-empty"></div>
+                      )}
+                    </div>
+                    <div class="vg-candidate-info">
+                      <span class="vg-candidate-name">{c.name}</span>
+                      {c.note && <span class={`vg-candidate-note ${c.endorsed ? 'vg-note-endorsed' : ''}`}>{c.note}</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ WHAT TO BRING ═══ -->
+    <section class="vg-section vg-section-alt">
+      <div class="vg-container">
+        <h2 class="vg-section-title">
+          <Icon name="lucide:shield-check" class="w-5 h-5" /> What to Bring — Acceptable Photo ID
+        </h2>
+        <p class="vg-section-desc">Texas law requires voters to present one of the following forms of photo identification at the polls. The ID can be expired up to 4 years (no expiration limit for voters 70+).</p>
+
+        <div class="vg-id-grid">
+          {whatToBring.map((id) => (
+            <div class="vg-id-card">
+              <Icon name={id.icon} class="w-5 h-5 vg-id-icon" />
+              <span class="vg-id-text">{id.item}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="vg-id-note">
+          <Icon name="lucide:info" class="w-4 h-4" />
+          <span>Don't have an acceptable ID? You can still vote by signing a Reasonable Impediment Declaration. Visit <a href="https://www.votetexas.gov/voter-id" target="_blank" rel="noopener noreferrer">votetexas.gov</a> for details.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER CTA ═══ -->
+    <section class="vg-cta no-print">
+      <div class="vg-container">
+        <div class="vg-cta-inner">
+          <h2 class="vg-cta-title">Share This Voter Guide</h2>
+          <p class="vg-cta-desc">Forward this page to a friend, print copies for your precinct or church group, or share on social media. The more conservatives who show up on May 2, the stronger our community stays.</p>
+          <div class="vg-cta-actions">
+            <button onclick="window.print()" class="vg-btn-print">
+              <Icon name="lucide:printer" class="w-5 h-5" /> Print Guide
+            </button>
+            <a href="/membership" class="vg-btn-secondary">Join BCC</a>
+            <a href="/war-room" class="vg-btn-secondary">View War Room</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="vg-disclaimer">
+      Pol. Adv. Paid for by Bastrop County Conservatives PAC. Not authorized by any candidate or candidate's committee. — bastropcc.com
+    </div>
+  </div>
+
+  <style is:global>
+    /* ═══ HEADER OVERRIDE — DARK MODE ═══ */
+    header { background: #1a2b4a !important; border-bottom-color: rgba(255,255,255,0.1) !important; }
+    header .bg-slate-50 { background: rgba(255,255,255,0.05) !important; border-bottom-color: rgba(255,255,255,0.1) !important; }
+    header .bg-white, header nav .bg-white { background: transparent !important; }
+    header .border-bcc-gray-200 { border-color: rgba(255,255,255,0.1) !important; }
+    header a.text-bcc-navy, header button.text-bcc-navy, header span.text-bcc-navy { color: #fff !important; }
+    header .text-bcc-gray-200 { color: rgba(255,255,255,0.3) !important; }
+    header a:hover.text-bcc-navy, header a.hover\:text-bcc-red:hover { color: #c9a84c !important; }
+    header .drop-shadow-sm { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)) !important; }
+    header .bg-white\/50 { background: transparent !important; }
+    header div[class*="shadow-xl"] { background: #1e3355 !important; border-color: rgba(255,255,255,0.15) !important; }
+    header div[class*="shadow-xl"] a { color: #fff !important; }
+    header div[class*="shadow-xl"] a:hover { color: #c9a84c !important; background: rgba(255,255,255,0.05) !important; }
+
+    /* ═══════════════════════════════════════════
+       VOTER GUIDE — CLEAN, PRINTABLE DESIGN
+    ═══════════════════════════════════════════ */
+    .voter-guide {
+      --vg-red: #c41e3a;
+      --vg-navy: #1a2b4a;
+      --vg-gold: #c9a84c;
+      --vg-bg: #faf9f6;
+      --vg-surface: #ffffff;
+      --vg-border: #e2e0db;
+      --vg-text: #2d2d2d;
+      --vg-dim: #6b7280;
+      --vg-green: #16a34a;
+
+      background: var(--vg-bg);
+      color: var(--vg-text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      margin: -2rem -1rem;
+      padding: 0;
+    }
+    @media (min-width: 640px) { .voter-guide { margin: -2rem -1.5rem; } }
+    @media (min-width: 1024px) { .voter-guide { margin: -2rem; } }
+
+    .vg-container { max-width: 800px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Print-only header */
+    .vg-print-header { display: none; }
+
+    /* ═══ HERO ═══ */
+    .vg-hero {
+      background: linear-gradient(135deg, var(--vg-navy) 0%, #1e3355 50%, #243b5e 100%);
+      padding: 3.5rem 0;
+      text-align: center;
+      color: #fff;
+    }
+    .vg-hero-badge {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--vg-gold);
+      border: 1px solid var(--vg-gold);
+      padding: 4px 16px;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .vg-hero-title {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin: 0 0 1rem;
+      color: #ffffff !important;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      letter-spacing: 0.01em;
+    }
+    .vg-hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.9);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+    .vg-hero-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+    .vg-btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--vg-red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .vg-btn-print:hover { background: #a31830; transform: translateY(-1px); }
+    .vg-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .vg-btn-secondary:hover { border-color: var(--vg-gold); color: var(--vg-gold); }
+
+    /* ═══ SECTIONS ═══ */
+    .vg-section { padding: 2.5rem 0; }
+    .vg-section-alt { background: #fff; border-top: 1px solid var(--vg-border); border-bottom: 1px solid var(--vg-border); }
+    .vg-section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--vg-navy);
+      margin: 0 0 0.5rem;
+    }
+    .vg-section-desc {
+      font-size: 0.85rem;
+      color: var(--vg-dim);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .vg-section-desc a { color: var(--vg-red); text-decoration: underline; }
+
+    /* ═══ KEY DATES ═══ */
+    .vg-dates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .vg-date-card {
+      background: #fff;
+      border: 1px solid var(--vg-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .vg-date-warn { border-color: #f59e0b; background: #fffbeb; }
+    .vg-date-primary { border-color: var(--vg-red); border-width: 2px; background: #fef2f2; }
+    .vg-date-label {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--vg-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .vg-date-value {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--vg-navy);
+    }
+    .vg-date-note {
+      font-size: 0.75rem;
+      color: var(--vg-dim);
+      margin-top: 0.3rem;
+    }
+    .vg-info-link {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--vg-dim);
+    }
+    .vg-info-link a { color: var(--vg-red); font-weight: 600; }
+
+    /* ═══ BALLOT ═══ */
+    .vg-ballot {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 2px solid var(--vg-navy);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .vg-race { border-bottom: 1px solid var(--vg-border); }
+    .vg-race:last-child { border-bottom: none; }
+    .vg-race-header {
+      background: var(--vg-navy);
+      color: #fff;
+      padding: 0.6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .vg-race-office {
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+    }
+    .vg-race-type {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+      text-transform: uppercase;
+    }
+    .vg-candidates { background: #fff; }
+    .vg-candidate {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid #f3f4f6;
+      transition: background 0.15s;
+    }
+    .vg-candidate:last-child { border-bottom: none; }
+    .vg-endorsed { background: #fef2f2; }
+    .vg-candidate-check { flex-shrink: 0; }
+    .vg-check-yes {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--vg-red);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .vg-check-empty {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #d1d5db;
+    }
+    .vg-candidate-info { flex: 1; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .vg-candidate-name { font-weight: 700; font-size: 1rem; color: var(--vg-text); }
+    .vg-candidate-note {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--vg-dim);
+      background: #f3f4f6;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .vg-note-endorsed { background: var(--vg-red); color: #fff; }
+    .vg-candidate-link {
+      color: var(--vg-dim);
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+    .vg-candidate-link:hover { color: var(--vg-red); }
+
+    /* ═══ ID GRID ═══ */
+    .vg-id-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .vg-id-card {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #fff;
+      border: 1px solid var(--vg-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+    }
+    .vg-id-icon { color: var(--vg-green); flex-shrink: 0; }
+    .vg-id-text { font-size: 0.85rem; color: var(--vg-text); }
+    .vg-id-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--vg-dim);
+      background: #f9fafb;
+      border: 1px solid var(--vg-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      line-height: 1.5;
+    }
+    .vg-id-note a { color: var(--vg-red); font-weight: 600; }
+
+    /* ═══ CTA ═══ */
+    .vg-cta {
+      background: linear-gradient(135deg, var(--vg-navy) 0%, #243b5e 100%);
+      padding: 3rem 0;
+      color: #fff;
+    }
+    .vg-cta-inner { text-align: center; }
+    .vg-cta-title {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+    }
+    .vg-cta-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 550px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+    .vg-cta-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ═══ DISCLAIMER ═══ */
+    .vg-disclaimer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--vg-dim);
+      padding: 1.5rem 1rem;
+      border-top: 1px solid var(--vg-border);
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════════
+       PRINT STYLES
+    ═══════════════════════════════════════════ */
+    @media print {
+      body, html { background: #fff !important; }
+      .voter-guide { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+      .vg-container { max-width: 100% !important; padding: 0 0.5in !important; }
+
+      /* Show print header */
+      .vg-print-header {
+        display: block !important;
+        text-align: center;
+        padding: 0.3in 0 0.2in;
+        border-bottom: 3px solid var(--vg-navy);
+        margin-bottom: 0.2in;
+      }
+      .vg-print-logo {
+        font-family: monospace;
+        font-size: 10pt;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: var(--vg-red);
+      }
+      .vg-print-title {
+        font-family: 'Georgia', serif;
+        font-size: 24pt;
+        font-weight: 800;
+        color: var(--vg-navy);
+        margin: 4px 0;
+      }
+      .vg-print-sub {
+        font-size: 10pt;
+        color: var(--vg-dim);
+      }
+
+      /* Hide screen-only elements */
+      .vg-hero, .vg-cta, .no-print, header, footer, nav { display: none !important; }
+
+      /* Clean print sections */
+      .vg-section, .vg-section-alt {
+        padding: 0.15in 0 !important;
+        border: none !important;
+        background: #fff !important;
+        page-break-inside: avoid;
+      }
+      .vg-section-title { font-size: 14pt !important; margin-bottom: 4px !important; }
+      .vg-section-desc { font-size: 9pt !important; margin-bottom: 8px !important; }
+
+      /* Compact dates */
+      .vg-dates-grid { gap: 8px !important; }
+      .vg-date-card { padding: 8px !important; border: 1px solid #ccc !important; background: #fff !important; }
+      .vg-date-warn { background: #fff !important; }
+      .vg-date-primary { background: #fff !important; border: 2px solid var(--vg-red) !important; }
+
+      /* Clean ballot */
+      .vg-ballot { border: 2px solid #000 !important; border-radius: 0 !important; }
+      .vg-race-header { background: #1a2b4a !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .vg-check-yes { background: var(--vg-red) !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .vg-endorsed { background: #fee2e2 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .vg-note-endorsed { background: var(--vg-red) !important; color: #fff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .vg-candidate { padding: 6px 12px !important; }
+      .vg-candidate-name { font-size: 11pt !important; }
+
+      /* ID grid compact */
+      .vg-id-grid { gap: 4px !important; }
+      .vg-id-card { padding: 4px 8px !important; font-size: 9pt !important; }
+
+      /* Disclaimer */
+      .vg-disclaimer {
+        font-size: 8pt !important;
+        padding: 8px 0 !important;
+        border-top: 1px solid #ccc !important;
+        margin-top: 0.15in;
+      }
+    }
+  </style>
+</BaseLayout>

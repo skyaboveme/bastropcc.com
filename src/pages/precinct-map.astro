@@ -25,7 +25,7 @@ import { Icon } from 'astro-icon/components';
   <!-- Interactive Precinct Map (ArcGIS) -->
   <section class="mb-16 not-prose">
     <SectionHeading title="Bastrop County Precinct Map" />
-    <p class="text-bcc-gray-600 mb-6">Interactive map showing Bastrop County voting precincts, congressional districts, and commissioner precincts. Use the search bar or zoom in to find your precinct number. <strong class="text-bcc-navy">Red boundary = Congressional District</strong>, <strong class="text-bcc-navy">Blue boundaries = Voting Precincts</strong>.</p>
+    <p class="text-bcc-gray-600 mb-6">Interactive map showing Bastrop County voting precincts and congressional district. Use the search bar or zoom in to find your precinct number. <strong class="text-bcc-navy">Red boundary = Congressional District</strong>, <strong class="text-bcc-navy">Blue boundaries = Voting Precincts</strong>.</p>
     
     <div class="w-full rounded-xl border-2 border-bcc-navy/20 shadow-lg overflow-hidden bg-bcc-gray-50">
       <iframe 
@@ -123,8 +123,19 @@ import { Icon } from 'astro-icon/components';
 
   <!-- Precinct Information -->
   <section class="mb-16 not-prose">
-    <SectionHeading title="Commissioner & JP Precincts" />
-    <p class="text-bcc-gray-600 mb-8 max-w-3xl">Bastrop County is divided into four precincts for Commissioners Court, Justice of the Peace, and Constable representation. Your precinct determines who represents you at the county level.</p>
+    <SectionHeading title="Commissioner, Justice of the Peace & Constable Precincts" />
+    <p class="text-bcc-gray-600 mb-6 max-w-3xl">Bastrop County is divided into four precincts for Commissioners Court, Justice of the Peace, and Constable representation. Your precinct determines who represents you at the county level.</p>
+
+    <div class="w-full rounded-xl border-2 border-bcc-navy/20 shadow-lg overflow-hidden bg-bcc-gray-50 mb-8">
+      <iframe 
+        src="https://bascogis.maps.arcgis.com/apps/webappviewer/index.html?id=94f8457fca7048e8b28196ac6aad8c4d"
+        title="Commissioner, Justice of the Peace & Constable Precincts"
+        class="w-full border-0"
+        style="height: 600px;"
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="bg-white border-l-4 border-blue-500 rounded-r-xl p-6 shadow-sm">

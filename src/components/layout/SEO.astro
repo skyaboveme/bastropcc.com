@@ -11,7 +11,7 @@ export interface Props {
 const {
   title = 'Bastrop County Conservatives — Local Action = National Wins',
   description = "Bastrop County Conservatives is an organization focused on promoting core conservative values in our local government. We believe that there is a time when we must fight for what is right, and that time is now.",
-  image = '/images/BCCLogo.jpg',
+  image = '/images/og-default.png',
   article = false,
 } = Astro.props;
 
@@ -39,6 +39,9 @@ const imageUrl = new URL(image, Astro.site || 'https://bastropcc.com');
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="Bastrop County Conservatives" />
 
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={canonicalURL} />

@@ -14,13 +14,14 @@ export default function EventEditor() {
 
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
-    start_datetime: '',
-    end_datetime: '',
+    date: '',
+    time: '',
     location: '',
-    location_url: '',
+    org: '',
     event_url: '',
-    category: 'general',
+    description: '',
+    type: 'political',
+    county: 'bastrop',
     status: 'active',
     is_featured: false
   });
@@ -31,18 +32,16 @@ export default function EventEditor() {
       try {
         const res = await apiClient.get(`/events/${id}`) as any;
         if (res.success) {
-          // Format ISO dates from API for the datetime-local input fields (YYYY-MM-DDThh:mm)
-          const formatForInput = (isoStr: string) => isoStr ? isoStr.substring(0, 16) : '';
-          
           setFormData({
             title: res.data.title || '',
-            description: res.data.description || '',
-            start_datetime: formatForInput(res.data.start_datetime),
-            end_datetime: formatForInput(res.data.end_datetime),
+            date: res.data.date || '',
+            time: res.data.time || '',
             location: res.data.location || '',
-            location_url: res.data.location_url || '',
+            org: res.data.org || '',
             event_url: res.data.event_url || '',
-            category: res.data.category || 'general',
+            description: res.data.description || '',
+            type: res.data.type || 'political',
+            county: res.data.county || 'bastrop',
             status: res.data.status || 'active',
             is_featured: !!res.data.is_featured
           });
@@ -67,13 +66,9 @@ export default function EventEditor() {
     setIsSaving(true);
     setError('');
 
-    // Convert local datetime to ISO for backend (D1 stores UTC, but we assume local inputs)
-    // Actually the standard <input type="datetime-local"> creates a local string. 
-    // Sending it as YYYY-MM-DDTHH:mm is fine, the worker will store it and the frontend parses it.
-    
     // Validate
-    if (!formData.start_datetime) {
-      setError('Start date and time are required');
+    if (!formData.title || !formData.date || !formData.time || !formData.location) {
+      setError('Title, Date, Time, and Location are required.');
       setIsSaving(false);
       return;
     }
@@ -119,46 +114,57 @@ export default function EventEditor() {
             </div>
 
             <div>
-              <label htmlFor="start_datetime" className="block text-sm font-medium text-gray-700">Start Date & Time *</label>
-              <input type="datetime-local" id="start_datetime" name="start_datetime" required value={formData.start_datetime} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
+              <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date *</label>
+              <input type="date" id="date" name="date" required value={formData.date} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
             </div>
 
             <div>
-              <label htmlFor="end_datetime" className="block text-sm font-medium text-gray-700">End Date & Time</label>
-              <input type="datetime-local" id="end_datetime" name="end_datetime" value={formData.end_datetime} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
+              <label htmlFor="time" className="block text-sm font-medium text-gray-700">Time *</label>
+              <input type="text" id="time" name="time" placeholder="e.g. 6:00 PM" required value={formData.time} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location *</label>
+              <input type="text" id="location" name="location" required value={formData.location} onChange={handleChange} placeholder="Full address or venue name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor="org" className="block text-sm font-medium text-gray-700">Hosting Organization</label>
+              <input type="text" id="org" name="org" value={formData.org} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor="event_url" className="block text-sm font-medium text-gray-700">Event URL / Link</label>
+              <input type="url" id="event_url" name="event_url" value={formData.event_url} onChange={handleChange} placeholder="https://" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Additional Details</label>
               <textarea id="description" name="description" rows={4} value={formData.description} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
-              <p className="mt-1 text-xs text-gray-500">Supports markdown formatting (asterisks for bold, etc). Will be rendered correctly on the front end.</p>
             </div>
 
             <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location Name / Address</label>
-              <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} placeholder="e.g. Bastrop City Hall" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
-            </div>
-
-            <div>
-              <label htmlFor="location_url" className="block text-sm font-medium text-gray-700">Location Map URL</label>
-              <input type="url" id="location_url" name="location_url" value={formData.location_url} onChange={handleChange} placeholder="https://maps.google.com/..." className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="event_url" className="block text-sm font-medium text-gray-700">External Event URL (Tickets, RSVP, etc.)</label>
-              <input type="url" id="event_url" name="event_url" value={formData.event_url} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2" />
-            </div>
-
-            <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
-              <select id="category" name="category" value={formData.category} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2 bg-white">
-                <option value="general">General</option>
-                <option value="meeting">Meeting</option>
-                <option value="election">Election</option>
-                <option value="rally">Rally</option>
-                <option value="forum">Forum</option>
-                <option value="fundraiser">Fundraiser</option>
+              <label htmlFor="type" className="block text-sm font-medium text-gray-700">Category: Type</label>
+              <select id="type" name="type" value={formData.type} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2 bg-white">
+                <option value="political">Political</option>
                 <option value="community">Community</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="county" className="block text-sm font-medium text-gray-700">Category: County / Org</label>
+              <select id="county" name="county" value={formData.county} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary border p-2 bg-white">
+                <option value="bastrop">Bastrop County</option>
+                <option value="hays">Hays County</option>
+                <option value="fayette">Fayette County</option>
+                <option value="travis">Travis County</option>
+                <option value="williamson">Williamson County</option>
+                <option value="fredericksburg">Fredericksburg Tea Party</option>
+                <option value="statewide">Statewide / RPT</option>
+                <option value="burleson">Burleson County</option>
+                <option value="cacrc">CACRC</option>
+                <option value="wtp">We The People LT</option>
+                <option value="gawtp">Grassroots America</option>
               </select>
             </div>
 

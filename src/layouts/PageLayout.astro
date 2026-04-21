@@ -9,12 +9,13 @@ export interface Props {
   heading?: string;
   subheading?: string;
   image?: string;
+  ogImage?: string;
 }
 
-const { title, description, heading = title, subheading, image } = Astro.props;
+const { title, description, heading = title, subheading, image, ogImage } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={ogImage}>
   
   <header class="relative border-b-none py-28 md:py-36 min-h-[40vh] flex items-end bg-cover bg-center bg-fixed overflow-hidden bg-slate-200" style={`background-image: url('${image || '/images/hero-bg.jpg'}');`}>
     <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-bcc-navy via-bcc-navy/90 to-bcc-navy/10 z-0"></div>

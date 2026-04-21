@@ -52,15 +52,30 @@ import MobileNav from './MobileNav.astro';
               <div class="absolute left-1/2 -translate-x-1/2 top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                 <div class="bg-white border border-bcc-gray-200 shadow-xl rounded-lg py-2 w-48 flex flex-col relative before:absolute before:inset-x-0 before:-top-4 before:h-4 before:bg-transparent">
                   <a href="/resources" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">All Resources</a>
+                  <a href="/why-conservative" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Why Conservative?</a>
                   <a href="/conservative-orgs" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Conservative Orgs</a>
                   <a href="/bastrop-red-vs-blue" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Bastrop Red vs Blue</a>
+                  <a href="/war-room" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">War Room</a>
                   <a href="/videos" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Videos</a>
                   <a href="/blog" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Blog</a>
                 </div>
               </div>
             </li>
             <li aria-hidden="true"><span class="text-bcc-gray-200">|</span></li>
-            <li><a href="/voter-info" class="font-heading uppercase text-base xl:text-lg text-bcc-navy hover:text-bcc-red transition-colors font-bold tracking-wide">Voter Info</a></li>
+            <li class="relative group">
+              <button class="font-heading uppercase text-base xl:text-lg text-bcc-navy group-hover:text-bcc-red transition-colors font-bold tracking-wide flex items-center gap-1 cursor-pointer">
+                Voter Info
+                <Icon name="lucide:chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </button>
+              <div class="absolute left-1/2 -translate-x-1/2 top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                <div class="bg-white border border-bcc-gray-200 shadow-xl rounded-lg py-2 w-48 flex flex-col relative before:absolute before:inset-x-0 before:-top-4 before:h-4 before:bg-transparent">
+                  <a href="/voter-info" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Voter Info</a>
+                  <a href="/voter-guide" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-red hover:bg-red-50 transition-colors text-center block">★ Voter Guide</a>
+                  <a href="/endorsements" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Endorsements</a>
+                  <a href="/elected-officials" class="px-4 py-2 font-heading uppercase text-sm font-bold text-bcc-navy hover:bg-bcc-gray-50 hover:text-bcc-red transition-colors text-center block">Elected Officials</a>
+                </div>
+              </div>
+            </li>
           </ul>
         </div>
         

@@ -82,11 +82,11 @@ export default function EventList() {
                 <tr key={event.id} className="hover:bg-gray-50">
                   <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 max-w-sm">
                     <div className="font-medium text-gray-900 truncate">{event.title}</div>
-                    <div className="text-gray-500 text-xs mt-0.5">{event.category} {event.is_featured ? '• Featured' : ''}</div>
+                    <div className="text-gray-500 text-xs mt-0.5 capitalize">{event.type} • {event.county} {event.is_featured ? '• Featured' : ''}</div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 flex items-center">
                     <Calendar className="w-4 h-4 mr-1.5 text-gray-400" />
-                    {format(parseISO(event.start_datetime), 'MMM d, yyyy h:mm a')}
+                    {event.date} at {event.time}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-500 max-w-[200px] truncate">
                     {event.location ? (

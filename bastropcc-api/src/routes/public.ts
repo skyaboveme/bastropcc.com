@@ -37,7 +37,7 @@ router.get('/blog/:slug', async (c) => {
 // Public Events (Active and Upcoming)
 router.get('/events', async (c) => {
   const { results } = await c.env.DB.prepare(
-    `SELECT id, title, description, start_datetime, end_datetime, location, location_url, event_url, category, is_featured 
+    `SELECT id, title, description, start_datetime, end_datetime, date, time, org, county, type, location, location_url, event_url, category, is_featured 
      FROM events 
      WHERE status = 'active' AND start_datetime >= datetime("now") 
      ORDER BY start_datetime ASC`

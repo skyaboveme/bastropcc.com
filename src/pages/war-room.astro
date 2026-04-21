@@ -1,0 +1,1003 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+// ── DATA ──────────────────────────────────────────────────────────
+const presidentialData = [
+  { year: "2000", r: 56.3, d: 38.1, winner: "Bush", rVotes: 10310, dVotes: 6973 },
+  { year: "2004", r: 56.7, d: 41.8, winner: "Bush", rVotes: 13290, dVotes: 9794 },
+  { year: "2008", r: 53.5, d: 45.3, winner: "McCain", rVotes: 13797, dVotes: 11678 },
+  { year: "2012", r: 57.3, d: 40.3, winner: "Romney", rVotes: 14019, dVotes: 9860 },
+  { year: "2016", r: 57.8, d: 37.4, winner: "Trump", rVotes: 16314, dVotes: 10555 },
+  { year: "2020", r: 56.0, d: 42.2, winner: "Trump", rVotes: 19900, dVotes: 15000 },
+  { year: "2024", r: 58.6, d: 40.1, winner: "Trump", rVotes: 23276, dVotes: 15941 },
+];
+
+const popData = [
+  { year: "2010", pop: 74381 },
+  { year: "2015", pop: 82600 },
+  { year: "2019", pop: 84522 },
+  { year: "2020", pop: 97216 },
+  { year: "2022", pop: 105000 },
+  { year: "2023", pop: 111200 },
+  { year: "2024", pop: 114931 },
+  { year: "2026", pop: 122531 },
+];
+
+const turnoutData = [
+  { year: "2016", reg: 45137, voted: 28424, pct: 62.97, type: "Presidential" },
+  { year: "2018", reg: 46416, voted: 27662, pct: 60.0, type: "Midterm" },
+  { year: "2020", reg: 52096, voted: 36612, pct: 70.28, type: "Presidential" },
+  { year: "2022", reg: 55779, voted: 29232, pct: 52.41, type: "Midterm" },
+  { year: "2024", reg: 61423, voted: 39956, pct: 65.04, type: "Presidential" },
+  { year: "2026", reg: 62294, voted: 18606, pct: 29.87, type: "Primary" },
+];
+
+const precinctData = [
+  { label: "Pct 1001 — Bastrop City", value: 4320 },
+  { label: "Pct 1002 — Tahitian Village", value: 3840 },
+  { label: "Pct 3012 — Cedar Creek", value: 3650 },
+  { label: "Pct 2008 — Smithville", value: 3410 },
+  { label: "Pct 4015 — Elgin South", value: 3200 },
+  { label: "Pct 4016 — Elgin North", value: 2980 },
+  { label: "Pct 2011 — Rosanky", value: 2450 },
+  { label: "Pct 3014 — Red Rock", value: 2100 },
+  { label: "Pct 1004 — Camp Swift", value: 1850 },
+  { label: "Pct 2009 — Paige", value: 1540 },
+];
+
+const migrationSources = [
+  { label: "Travis County (Austin)", pct: 38, color: "#ef4444" },
+  { label: "Other TX Counties", pct: 27, color: "#f59e0b" },
+  { label: "Other US States", pct: 22, color: "#3b82f6" },
+  { label: "Natural Increase", pct: 9, color: "#22c55e" },
+  { label: "International", pct: 4, color: "#a855f7" },
+];
+
+const keyDates = [
+  { date: "May 2, 2026", label: "Uniform Election (School Board / City)", status: "upcoming" },
+  { date: "May 26, 2026", label: "Republican Primary Runoff", status: "upcoming" },
+  { date: "Oct 19, 2026", label: "Early Voting Begins", status: "upcoming" },
+  { date: "Oct 30, 2026", label: "Early Voting Ends", status: "upcoming" },
+  { date: "Nov 3, 2026", label: "General Election Day", status: "target" },
+];
+
+const risks = [
+  { level: "HIGH", title: "Austin Overflow — Political Spillover", text: "~38% of in-migrants from Travis County. Travis County votes 70%+ Democrat. These are Austin residents priced out, keeping Austin politics.", accent: "#ef4444", bg: "rgba(239,68,68,0.08)", border: "rgba(239,68,68,0.3)" },
+  { level: "MEDIUM", title: "Tech Worker Influx", text: "Tesla, SpaceX, and The Boring Company are drawing high-income tech workers. This cohort skews socially liberal but economically libertarian.", accent: "#f59e0b", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.3)" },
+  { level: "MEDIUM", title: "Declining Median Age", text: "Median age dropped from 38.4 to 37.5 in five years. Younger populations lean more Democratic nationally. The historic 2-to-1 R lean could compress.", accent: "#f59e0b", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.3)" },
+  { level: "LOW", title: "2026 Base Still Holds", text: "62,294 registered voters. Republican infrastructure dominates existing rolls. New arrivals have lagged registration — protects GOP through 2026.", accent: "#22c55e", bg: "rgba(34,197,94,0.08)", border: "rgba(34,197,94,0.3)" },
+];
+
+const maxPop = 130000;
+const maxPrecinct = Math.max(...precinctData.map(p => p.value));
+---
+
+<BaseLayout
+  title="War Room — Bastrop County Conservative Intelligence Dashboard"
+  description="Real-time electoral intelligence dashboard for Bastrop County. Population growth, voter turnout, partisan trends, precinct analysis, and risk assessment."
+>
+  <div class="war-room">
+    <!-- ═══ HERO / KPI STRIP ═══ -->
+    <section class="wr-hero">
+      <div class="wr-container">
+        <div class="wr-hero-header">
+          <div class="wr-badge">BASTROP COUNTY CONSERVATIVES</div>
+          <h1 class="wr-title">WAR ROOM</h1>
+          <p class="wr-subtitle">Electoral Intelligence Dashboard — Bastrop County, Texas</p>
+        </div>
+
+        <div class="wr-kpi-grid">
+          <div class="wr-kpi">
+            <div class="wr-kpi-value" data-count="122531">0</div>
+            <div class="wr-kpi-label">Population 2026</div>
+            <div class="wr-kpi-sub">+64.7% since 2010</div>
+          </div>
+          <div class="wr-kpi">
+            <div class="wr-kpi-value" data-count="62294">0</div>
+            <div class="wr-kpi-label">Registered Voters</div>
+            <div class="wr-kpi-sub">March 2026 Rolls</div>
+          </div>
+          <div class="wr-kpi wr-kpi-accent">
+            <div class="wr-kpi-value wr-red">R +18.5</div>
+            <div class="wr-kpi-label">Conservative Margin</div>
+            <div class="wr-kpi-sub">2024 Presidential</div>
+          </div>
+          <div class="wr-kpi">
+            <div class="wr-kpi-value wr-gold" id="countdown-days">—</div>
+            <div class="wr-kpi-label">Days to Election</div>
+            <div class="wr-kpi-sub">November 3, 2026</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ COUNTDOWN & KEY DATES ═══ -->
+    <section class="wr-section">
+      <div class="wr-container">
+        <div class="wr-section-header">
+          <span class="wr-section-icon">⏱</span>
+          <h2 class="wr-section-title">ELECTION COUNTDOWN</h2>
+        </div>
+        
+        <div class="wr-countdown-strip" id="countdown-strip">
+          <div class="wr-countdown-unit">
+            <div class="wr-cd-value" id="cd-days">—</div>
+            <div class="wr-cd-label">DAYS</div>
+          </div>
+          <div class="wr-countdown-sep">:</div>
+          <div class="wr-countdown-unit">
+            <div class="wr-cd-value" id="cd-hours">—</div>
+            <div class="wr-cd-label">HOURS</div>
+          </div>
+          <div class="wr-countdown-sep">:</div>
+          <div class="wr-countdown-unit">
+            <div class="wr-cd-value" id="cd-mins">—</div>
+            <div class="wr-cd-label">MINUTES</div>
+          </div>
+          <div class="wr-countdown-sep">:</div>
+          <div class="wr-countdown-unit">
+            <div class="wr-cd-value" id="cd-secs">—</div>
+            <div class="wr-cd-label">SECONDS</div>
+          </div>
+        </div>
+
+        <div class="wr-dates-grid">
+          {keyDates.map(d => (
+            <div class={`wr-date-card ${d.status === 'target' ? 'wr-date-target' : ''}`}>
+              <div class="wr-date-date">{d.date}</div>
+              <div class="wr-date-label">{d.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CONSERVATIVE STRENGTH OVER TIME ═══ -->
+    <section class="wr-section">
+      <div class="wr-container">
+        <div class="wr-section-header">
+          <span class="wr-section-icon">📊</span>
+          <h2 class="wr-section-title">CONSERVATIVE STRENGTH — PRESIDENTIAL RESULTS</h2>
+        </div>
+        <p class="wr-section-desc">Bastrop County presidential results 2000–2024. Republican margin has held between R+8 and R+20 for a quarter century.</p>
+
+        <div class="wr-pres-chart">
+          {presidentialData.map((p, i) => {
+            const margin = (p.r - p.d).toFixed(1);
+            return (
+              <div class="wr-pres-row scroll-reveal opacity-0" style={`animation-delay: ${i * 0.08}s`}>
+                <div class="wr-pres-year">{p.year}</div>
+                <div class="wr-pres-bars">
+                  <div class="wr-pres-bar-r" style={`width: ${p.r}%`}>
+                    <span class="wr-pres-bar-label">{p.r}%</span>
+                  </div>
+                  <div class="wr-pres-bar-d" style={`width: ${p.d}%`}>
+                    <span class="wr-pres-bar-label">{p.d}%</span>
+                  </div>
+                </div>
+                <div class="wr-pres-margin">R +{margin}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ POPULATION GROWTH ═══ -->
+    <section class="wr-section">
+      <div class="wr-container">
+        <div class="wr-section-header">
+          <span class="wr-section-icon">📈</span>
+          <h2 class="wr-section-title">POPULATION GROWTH ENGINE</h2>
+        </div>
+        <p class="wr-section-desc">Bastrop County surged from 74K to 122K in 16 years — a 64.7% increase driven by Austin overflow, Tesla, and SpaceX.</p>
+
+        <div class="wr-pop-chart">
+          {popData.map((d, i) => {
+            const heightPct = (d.pop / maxPop) * 100;
+            const prev = i > 0 ? popData[i-1] : null;
+            const growthPct = prev ? (((d.pop - prev.pop) / prev.pop) * 100).toFixed(1) : null;
+            return (
+              <div class="wr-pop-col scroll-reveal opacity-0" style={`animation-delay: ${i * 0.06}s`}>
+                <div class="wr-pop-value">{(d.pop / 1000).toFixed(1)}K</div>
+                {growthPct && <div class="wr-pop-growth">+{growthPct}%</div>}
+                <div class="wr-pop-bar-wrap">
+                  <div class="wr-pop-bar" style={`height: ${heightPct}%`}></div>
+                </div>
+                <div class="wr-pop-year">{d.year}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div class="wr-stat-row">
+          <div class="wr-stat-card">
+            <div class="wr-stat-val wr-green">3,100+</div>
+            <div class="wr-stat-label">Net arrivals per year</div>
+          </div>
+          <div class="wr-stat-card">
+            <div class="wr-stat-val wr-gold">13th</div>
+            <div class="wr-stat-label">Fastest-growing TX county</div>
+          </div>
+          <div class="wr-stat-card">
+            <div class="wr-stat-val wr-blue">20K</div>
+            <div class="wr-stat-label">City of Bastrop by 2029</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ MIGRATION SOURCES ═══ -->
+    <section class="wr-section">
+      <div class="wr-container">
+        <div class="wr-section-header">
+          <span class="wr-section-icon">🎯</span>
+          <h2 class="wr-section-title">MIGRATION THREAT ASSESSMENT</h2>
+        </div>
+        <p class="wr-section-desc">Where new Bastrop County residents originate. Travis County (Austin) is the single largest source at 38%.</p>
+
+        <div class="wr-migration-grid">
+          <div class="wr-donut-wrap">
+            <svg viewBox="0 0 200 200" class="wr-donut-svg">
+              {(() => {
+                const total = migrationSources.reduce((s, m) => s + m.pct, 0);
+                const r = 80;
+                const cx = 100;
+                const cy = 100;
+                const circumference = 2 * Math.PI * r;
+                let offset = 0;
+                return migrationSources.map(m => {
+                  const pct = m.pct / total;
+                  const dash = `${pct * circumference} ${circumference}`;
+                  const o = -offset;
+                  offset += pct * circumference;
+                  return (
+                    <circle cx={cx} cy={cy} r={r} fill="transparent" stroke={m.color} stroke-width="28" stroke-dasharray={dash} stroke-dashoffset={o} class="wr-donut-slice" />
+                  );
+                });
+              })()}
+              <text x="100" y="94" text-anchor="middle" fill="#c9a84c" font-size="12" font-weight="700" font-family="monospace">MIGRATION</text>
+              <text x="100" y="114" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="monospace">~3,342/yr</text>
+            </svg>
+          </div>
+          <div class="wr-migration-list">
+            {migrationSources.map(m => (
+              <div class="wr-migration-item">
+                <div class="wr-migration-dot" style={`background: ${m.color}`}></div>
+                <div class="wr-migration-label">{m.label}</div>
+                <div class="wr-migration-pct" style={`color: ${m.color}`}>{m.pct}%</div>
+                <div class="wr-migration-bar-bg">
+                  <div class="wr-migration-bar-fill" style={`width: ${m.pct * 2.5}%; background: ${m.color}`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ VOTER TURNOUT TRACKER ═══ -->
+    <section class="wr-section">
+      <div class="wr-container">
+        <div class="wr-section-header">
+          <span class="wr-section-icon">🗳</span>
+          <h2 class="wr-section-title">VOTER TURNOUT TRACKER</h2>
+        </div>
+        <p class="wr-section-desc">Registered voters vs actual turnout. Presidential years spike to 65–70%. Midterms and primaries drop significantly.</p>
+
+        <div class="wr-turnout-chart">
+          {turnoutData.map((t, i) => (
+            <div class="wr-turnout-row scroll-reveal opacity-0" style={`animation-delay: ${i * 0.08}s`}>
+              <div class="wr-turnout-year">
+                <span>{t.year}</span>
+                <span class="wr-turnout-type">{t.type}</span>
+              </div>
+              <div class="wr-turnout-bars">
+                <div class="wr-turnout-reg" style={`width: ${(t.reg / 70000) * 100}%`}>
+                  <span class="wr-turnout-val">{t.reg.toLocaleString()} reg</span>
+                </div>
+                <div class={`wr-turnout-voted ${t.type === 'Presidential' ? 'wr-tb-pres' : t.type === 'Midterm' ? 'wr-tb-mid' : 'wr-tb-pri'}`} style={`width: ${(t.voted / 70000) * 100}%`}>
+                  <span class="wr-turnout-val">{t.voted.toLocaleString()} voted</span>
+                </div>
+              </div>
+              <div class={`wr-turnout-pct ${t.pct >= 65 ? 'wr-green' : t.pct >= 50 ? 'wr-gold' : 'wr-red'}`}>{t.pct.toFixed(1)}%</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PRECINCT POWER MAP ═══ -->
+    <section class="wr-section">
+      <div class="wr-container">
+        <div class="wr-section-header">
+          <span class="wr-section-icon">📍</span>
+          <h2 class="wr-section-title">PRECINCT POWER MAP — TOP 10</h2>
+        </div>
+        <p class="wr-section-desc">Active voter registration by precinct. Bastrop City and Tahitian Village drive the largest concentration of active voters.</p>
+
+        <div class="wr-precinct-chart">
+          {precinctData.map((p, i) => (
+            <div class="wr-precinct-row scroll-reveal opacity-0" style={`animation-delay: ${i * 0.05}s`}>
+              <div class="wr-precinct-label">{p.label}</div>
+              <div class="wr-precinct-bar-bg">
+                <div class="wr-precinct-bar" style={`width: ${(p.value / maxPrecinct) * 100}%`}></div>
+              </div>
+              <div class="wr-precinct-val">{p.value.toLocaleString()}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RISK ASSESSMENT ═══ -->
+    <section class="wr-section">
+      <div class="wr-container">
+        <div class="wr-section-header">
+          <span class="wr-section-icon">⚠</span>
+          <h2 class="wr-section-title">RISK ASSESSMENT — GROWTH IMPACT</h2>
+        </div>
+        <p class="wr-section-desc">Threats to the conservative majority driven by population growth and demographic shifts.</p>
+
+        <div class="wr-risk-grid">
+          {risks.map(r => (
+            <div class="wr-risk-card" style={`background: ${r.bg}; border-color: ${r.border}`}>
+              <div class="wr-risk-badge" style={`color: ${r.accent}; border-color: ${r.accent}`}>{r.level} RISK</div>
+              <div class="wr-risk-title">{r.title}</div>
+              <div class="wr-risk-text">{r.text}</div>
+            </div>
+          ))}
+        </div>
+
+        <div class="wr-verdict">
+          <div class="wr-verdict-badge">STRATEGIC ASSESSMENT</div>
+          <div class="wr-verdict-text"><strong>2026 is still safe.</strong> Existing GOP voter rolls dominate and new arrivals haven't fully mobilized. The real exposure window is <strong>2028–2030</strong>. The time to build infrastructure for new voter outreach — especially moderate tech workers and value-driven transplants — is now.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER CTA ═══ -->
+    <section class="wr-cta">
+      <div class="wr-container" style="text-align: center;">
+        <h2 class="wr-cta-title">Ready to Defend Bastrop County?</h2>
+        <p class="wr-cta-desc">Join Bastrop County Conservatives and help us protect the conservative majority through voter engagement, candidate endorsements, and grassroots mobilization.</p>
+        <div class="wr-cta-buttons">
+          <a href="/membership" class="wr-btn-primary">Become a Member</a>
+          <a href="/bastrop-red-vs-blue" class="wr-btn-secondary">Full Data Analysis →</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <style is:global>
+    /* ═══════════════════════════════════════════
+       WAR ROOM — DARK COMMAND CENTER
+    ═══════════════════════════════════════════ */
+    .war-room {
+      --wr-bg: #0c111b;
+      --wr-surface: #141b2d;
+      --wr-surface-2: #1c2640;
+      --wr-border: #2a3550;
+      --wr-text: #e2e8f0;
+      --wr-dim: #7c8db5;
+      --wr-red: #ef4444;
+      --wr-blue: #3b82f6;
+      --wr-gold: #c9a84c;
+      --wr-green: #22c55e;
+
+      background: var(--wr-bg);
+      color: var(--wr-text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      margin: -2rem -1rem -2rem -1rem;
+      padding: 0;
+    }
+    @media (min-width: 640px) {
+      .war-room { margin: -2rem -1.5rem; }
+    }
+    @media (min-width: 1024px) {
+      .war-room { margin: -2rem; }
+    }
+
+    .wr-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* ═══ HERO ═══ */
+    .wr-hero {
+      background: linear-gradient(135deg, #0c111b 0%, #141b2d 50%, #1a1030 100%);
+      padding: 3rem 0 2.5rem;
+      border-bottom: 1px solid var(--wr-border);
+    }
+    .wr-hero-header { text-align: center; margin-bottom: 2.5rem; }
+    .wr-badge {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--wr-gold);
+      border: 1px solid var(--wr-gold);
+      padding: 4px 14px;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
+    .wr-title {
+      font-family: 'Playfair Display', 'Oswald', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: #fff;
+      margin: 0 0 0.5rem;
+      text-shadow: 0 0 60px rgba(201,168,76,0.15);
+    }
+    .wr-subtitle {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: var(--wr-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* KPI Strip */
+    .wr-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .wr-kpi-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .wr-kpi {
+      background: var(--wr-surface);
+      border: 1px solid var(--wr-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .wr-kpi-accent { border-color: var(--wr-red); }
+    .wr-kpi-value {
+      font-family: monospace;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .wr-kpi-label {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--wr-dim);
+      margin-bottom: 0.2rem;
+    }
+    .wr-kpi-sub {
+      font-size: 0.7rem;
+      color: var(--wr-dim);
+      opacity: 0.7;
+    }
+
+    /* Color utility */
+    .wr-red { color: var(--wr-red) !important; }
+    .wr-blue { color: var(--wr-blue) !important; }
+    .wr-gold { color: var(--wr-gold) !important; }
+    .wr-green { color: var(--wr-green) !important; }
+
+    /* ═══ SECTIONS ═══ */
+    .wr-section {
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--wr-border);
+    }
+    .wr-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .wr-section-icon { font-size: 1.2rem; }
+    .wr-section-title {
+      font-family: monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--wr-gold);
+      margin: 0;
+    }
+    .wr-section-desc {
+      font-size: 0.85rem;
+      color: var(--wr-dim);
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    /* ═══ COUNTDOWN ═══ */
+    .wr-countdown-strip {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .wr-countdown-unit {
+      background: var(--wr-surface);
+      border: 1px solid var(--wr-border);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      min-width: 80px;
+    }
+    .wr-cd-value {
+      font-family: monospace;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--wr-gold);
+      line-height: 1;
+    }
+    .wr-cd-label {
+      font-family: monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      color: var(--wr-dim);
+      margin-top: 0.3rem;
+    }
+    .wr-countdown-sep {
+      font-family: monospace;
+      font-size: 2rem;
+      color: var(--wr-dim);
+      font-weight: 700;
+      opacity: 0.4;
+    }
+    @media (max-width: 500px) {
+      .wr-countdown-unit { padding: 0.75rem 0.6rem; min-width: 60px; }
+      .wr-cd-value { font-size: 1.4rem; }
+      .wr-countdown-sep { font-size: 1.4rem; }
+    }
+
+    .wr-dates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+    .wr-date-card {
+      background: var(--wr-surface);
+      border: 1px solid var(--wr-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+    }
+    .wr-date-target {
+      border-color: var(--wr-red);
+      background: rgba(239,68,68,0.06);
+    }
+    .wr-date-date {
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--wr-gold);
+    }
+    .wr-date-label {
+      font-size: 0.8rem;
+      color: var(--wr-text);
+      margin-top: 0.15rem;
+    }
+
+    /* ═══ PRESIDENTIAL CHART ═══ */
+    .wr-pres-chart { display: flex; flex-direction: column; gap: 0.65rem; }
+    .wr-pres-row {
+      display: grid;
+      grid-template-columns: 50px 1fr 70px;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .wr-pres-year {
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--wr-dim);
+    }
+    .wr-pres-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .wr-pres-bar-r, .wr-pres-bar-d {
+      height: 18px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      transition: width 1s ease-out;
+    }
+    .wr-pres-bar-r { background: var(--wr-red); }
+    .wr-pres-bar-d { background: var(--wr-blue); opacity: 0.7; }
+    .wr-pres-bar-label {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .wr-pres-margin {
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--wr-red);
+      text-align: right;
+    }
+
+    /* ═══ POPULATION CHART ═══ */
+    .wr-pop-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5rem;
+      height: 260px;
+      margin-bottom: 2rem;
+    }
+    .wr-pop-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .wr-pop-value {
+      font-family: monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .wr-pop-growth {
+      font-family: monospace;
+      font-size: 0.55rem;
+      color: var(--wr-green);
+      margin-bottom: 4px;
+    }
+    .wr-pop-bar-wrap {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+    }
+    .wr-pop-bar {
+      width: 100%;
+      background: linear-gradient(to top, var(--wr-red), #f59e0b);
+      border-radius: 4px 4px 0 0;
+      min-height: 4px;
+      transition: height 1s ease-out;
+    }
+    .wr-pop-year {
+      font-family: monospace;
+      font-size: 0.6rem;
+      color: var(--wr-dim);
+      margin-top: 6px;
+    }
+
+    /* ═══ STAT ROW ═══ */
+    .wr-stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    @media (max-width: 600px) {
+      .wr-stat-row { grid-template-columns: 1fr; }
+    }
+    .wr-stat-card {
+      background: var(--wr-surface);
+      border: 1px solid var(--wr-border);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .wr-stat-val {
+      font-family: monospace;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .wr-stat-label {
+      font-family: monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      color: var(--wr-dim);
+      margin-top: 0.25rem;
+    }
+
+    /* ═══ MIGRATION ═══ */
+    .wr-migration-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    @media (max-width: 700px) {
+      .wr-migration-grid { grid-template-columns: 1fr; }
+    }
+    .wr-donut-wrap { display: flex; justify-content: center; }
+    .wr-donut-svg {
+      width: 200px;
+      height: 200px;
+      transform: rotate(-90deg);
+    }
+    .wr-donut-svg text { transform: rotate(90deg); transform-origin: 100px 100px; }
+    .wr-donut-slice { transition: all 0.3s; }
+    .wr-donut-slice:hover { stroke-width: 32; opacity: 0.9; }
+
+    .wr-migration-list { display: flex; flex-direction: column; gap: 0.8rem; }
+    .wr-migration-item {
+      display: grid;
+      grid-template-columns: 12px 1fr 40px 1fr;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    @media (max-width: 500px) {
+      .wr-migration-item { grid-template-columns: 12px 1fr 40px; }
+      .wr-migration-bar-bg { display: none; }
+    }
+    .wr-migration-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .wr-migration-label { font-size: 0.8rem; color: var(--wr-text); }
+    .wr-migration-pct { font-family: monospace; font-size: 0.8rem; font-weight: 700; text-align: right; }
+    .wr-migration-bar-bg { background: var(--wr-surface); height: 6px; border-radius: 3px; overflow: hidden; }
+    .wr-migration-bar-fill { height: 100%; border-radius: 3px; }
+
+    /* ═══ TURNOUT ═══ */
+    .wr-turnout-chart { display: flex; flex-direction: column; gap: 0.75rem; }
+    .wr-turnout-row {
+      display: grid;
+      grid-template-columns: 90px 1fr 55px;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    @media (max-width: 500px) {
+      .wr-turnout-row { grid-template-columns: 55px 1fr 45px; }
+      .wr-turnout-type { display: none; }
+    }
+    .wr-turnout-year { font-family: monospace; font-size: 0.7rem; color: var(--wr-dim); }
+    .wr-turnout-year span { font-weight: 700; color: var(--wr-gold); }
+    .wr-turnout-type { font-size: 0.6rem; color: var(--wr-dim); display: block; }
+    .wr-turnout-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .wr-turnout-reg {
+      height: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding-left: 6px;
+    }
+    .wr-turnout-voted {
+      height: 18px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding-left: 6px;
+    }
+    .wr-tb-pres { background: rgba(59,130,246,0.5); }
+    .wr-tb-mid { background: rgba(245,158,11,0.5); }
+    .wr-tb-pri { background: rgba(168,85,247,0.5); }
+    .wr-turnout-val {
+      font-family: monospace;
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+    .wr-turnout-pct {
+      font-family: monospace;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    /* ═══ PRECINCTS ═══ */
+    .wr-precinct-chart { display: flex; flex-direction: column; gap: 0.5rem; }
+    .wr-precinct-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 55px;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .wr-precinct-row { grid-template-columns: 120px 1fr 45px; }
+    }
+    .wr-precinct-label {
+      font-family: monospace;
+      font-size: 0.65rem;
+      color: var(--wr-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .wr-precinct-bar-bg {
+      background: var(--wr-surface);
+      height: 20px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .wr-precinct-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--wr-gold), #e8b94a);
+      border-radius: 4px;
+      transition: width 0.8s ease-out;
+    }
+    .wr-precinct-val {
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: right;
+    }
+
+    /* ═══ RISK CARDS ═══ */
+    .wr-risk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .wr-risk-card {
+      border: 1px solid;
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .wr-risk-badge {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border: 1px solid;
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 4px;
+      margin-bottom: 0.6rem;
+    }
+    .wr-risk-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .wr-risk-text {
+      font-size: 0.8rem;
+      color: var(--wr-dim);
+      line-height: 1.5;
+    }
+
+    .wr-verdict {
+      background: rgba(34,197,94,0.06);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .wr-verdict-badge {
+      font-family: monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--wr-green);
+      margin-bottom: 0.5rem;
+    }
+    .wr-verdict-text {
+      font-size: 0.85rem;
+      color: var(--wr-text);
+      line-height: 1.6;
+    }
+    .wr-verdict-text strong { color: #fff; }
+
+    /* ═══ CTA ═══ */
+    .wr-cta {
+      padding: 4rem 0;
+      background: linear-gradient(135deg, #141b2d 0%, #1a1030 100%);
+    }
+    .wr-cta-title {
+      font-family: 'Playfair Display', 'Oswald', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 0.75rem;
+    }
+    .wr-cta-desc {
+      color: var(--wr-dim);
+      font-size: 0.9rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .wr-cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .wr-btn-primary {
+      display: inline-block;
+      background: var(--wr-red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .wr-btn-primary:hover { background: #dc2626; transform: translateY(-1px); }
+    .wr-btn-secondary {
+      display: inline-block;
+      border: 1px solid var(--wr-border);
+      color: var(--wr-text);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .wr-btn-secondary:hover { border-color: var(--wr-gold); color: var(--wr-gold); }
+
+    /* ═══ ANIMATIONS ═══ */
+    @keyframes wrFadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .war-room .scroll-reveal.animate-fade-in-up {
+      animation: wrFadeUp 0.5s ease forwards;
+    }
+  </style>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ── COUNTDOWN TIMER ──
+      const target = new Date('2026-11-03T07:00:00-06:00').getTime();
+      function updateCountdown() {
+        const now = Date.now();
+        const diff = target - now;
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '0';
+          document.getElementById('cd-hours').textContent = '0';
+          document.getElementById('cd-mins').textContent = '0';
+          document.getElementById('cd-secs').textContent = '0';
+          document.getElementById('countdown-days').textContent = '0';
+          return;
+        }
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cd-days').textContent = days;
+        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+        document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+        document.getElementById('countdown-days').textContent = days;
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      // ── ANIMATED COUNTERS ──
+      const counters = document.querySelectorAll('[data-count]');
+      const animateCounter = (el) => {
+        const target = parseInt(el.getAttribute('data-count'));
+        const duration = 1800;
+        const start = performance.now();
+        const tick = (now) => {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.floor(eased * target).toLocaleString();
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      counters.forEach(c => counterObserver.observe(c));
+    });
+  </script>
+</BaseLayout>

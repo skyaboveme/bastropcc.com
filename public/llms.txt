@@ -7,6 +7,7 @@
 - Type: Political Action Committee (PAC)
 - Location: Bastrop County, Texas
 - Website: https://bastropcc.com
+- Email: info@bastropcc.com
 - Focus: Local conservative candidate identification, endorsement, and support
 
 ## Core Values (15 Pillars)
@@ -26,11 +27,66 @@
 14. Servant Leadership
 15. Small Government
 
+## 2026 Official Endorsements
+Bastrop County Conservatives PAC has officially endorsed the following candidates for the 2026 election cycle. Each candidate was vetted and approved by BCC membership based on alignment with BCC's 15 core conservative values.
+
+### Statewide Races
+- Senator Charles Schwertner (R) — Texas Senate, District 5. Incumbent state senator with a strong conservative voting record. Proven defender of property rights, border security, and limited government.
+- Tom Glass (R) — Texas House, District 17. Conservative candidate committed to reducing property taxes, protecting Second Amendment rights, and limiting government overreach.
+- Senator Mayes Middleton (R) — Texas Attorney General. Conservative state senator running for Attorney General. Known for unwavering commitment to constitutional principles and border enforcement.
+- Don Huffines (R) — Texas State Comptroller. Former state senator and proven fiscal conservative. Committed to transparent state finances and eliminating wasteful spending.
+- John Messinger (R) — TX Criminal Court of Appeals. Conservative judicial candidate committed to strict constitutional interpretation.
+- Tom Smith (R) — TX Criminal Court of Appeals. Conservative judicial candidate who will apply the law as written.
+
+### Bastrop County Races
+- Gregory Klaus (R) — Bastrop County Judge (Incumbent). Led Commissioners Court with fiscal responsibility, defended local property rights, and maintained strong county governance. Website: https://electgregoryklaus.com
+- Sara Loucks (R) — Bastrop County District Clerk (Incumbent). Efficiently managed court records and served the judicial system with integrity.
+- Debbie Denny (R) — GOP Precinct 1004 Chair. Dedicated grassroots organizer committed to building conservative infrastructure at the precinct level.
+
+## Bastrop County Elected Officials Directory
+Complete directory of elected officials serving Bastrop County, Texas. Full listing at https://bastropcc.com/elected-officials
+
+### State & Federal Representatives
+- Greg Abbott (R) — Governor of Texas | gov.texas.gov | (512) 463-2000
+- Dan Patrick (R) — Lt. Governor of Texas | ltgov.texas.gov
+- Ken Paxton (R) — Attorney General of Texas | texasattorneygeneral.gov
+- Glenn Hegar (R) — Comptroller of Texas | comptroller.texas.gov
+- Dawn Buckingham (R) — Land Commissioner | glo.texas.gov
+- Sid Miller (R) — Agriculture Commissioner | texasagriculture.gov
+- Charles Schwertner (R) — State Senator, District 5 | senate.texas.gov
+- Stan Gerdes (R) — State Representative, District 17 | house.texas.gov
+- John Cornyn (R) — U.S. Senator
+- Ted Cruz (R) — U.S. Senator
+- Jake Ellzey (R) — U.S. Representative, District 10
+
+### Bastrop County Commissioners Court
+- Gregory Klaus (R) — County Judge
+- Butch Carmack (R) — Commissioner, Precinct 1
+- Clara Beckett (D) — Commissioner, Precinct 2
+- Mark Meuth (R) — Commissioner, Precinct 3
+- David Glass (R) — Commissioner, Precinct 4
+
+### County Officers
+- Maurice Cook (R) — Sheriff
+- Bryan Goertz (R) — County Attorney
+- Krista Bartsch (R) — County Clerk
+- Sarah Loucks (R) — District Clerk
+- Ellen Owens (R) — Tax Assessor-Collector | bastroptac.com
+- Tina Siegel (R) — County Treasurer
+
 ## Pages
 
 ### About
 - URL: https://bastropcc.com/about
 - Description: Organization history, mission statement, and full listing of all 15 core values with descriptions.
+
+### Endorsements
+- URL: https://bastropcc.com/endorsements
+- Description: Official 2026 endorsements from Bastrop County Conservatives PAC. Includes statewide, county, and precinct-level races with candidate bios and vetting process.
+
+### Elected Officials
+- URL: https://bastropcc.com/elected-officials
+- Description: Complete directory of Bastrop County elected officials — state, federal, county, and local — with contact information, party affiliation, and next election dates.
 
 ### Blog
 - URL: https://bastropcc.com/blog
@@ -58,11 +114,15 @@
 
 ### Events Calendar
 - URL: https://bastropcc.com/events
-- Description: Interactive calendar of community events across Bastrop, Travis, Hays, Fayette, and Fredericksburg counties. Filterable by county/organization.
+- Description: Interactive calendar of conservative and Republican events across Bastrop, Travis, Hays, Fayette, and Williamson counties. Filterable by county, organization, and type (Political/Community). Includes event submission form.
 
 ### Videos
 - URL: https://bastropcc.com/videos
 - Description: Full recordings of BCC monthly meetings featuring guest speakers on policy, elections, and conservative issues.
+
+### Precinct Map
+- URL: https://bastropcc.com/precinct-map
+- Description: Interactive GIS maps showing Bastrop County voting precincts, congressional district boundaries, and Commissioner/JP/Constable precincts.
 
 ### Bastrop Red vs Blue
 - URL: https://bastropcc.com/bastrop-red-vs-blue
@@ -111,6 +171,8 @@
 - County Judge: Gregory Klaus (R, Incumbent) vs Dock Jackson (D) — November 3, 2026
 - U.S. Senate Runoff: John Cornyn vs Ken Paxton — May 26, 2026
 - Uniform Election (school boards, city councils, bonds): May 2, 2026
+- General Election — Early Voting: October 19–30, 2026
+- General Election Day: November 3, 2026
 
 ## Social Media
 - Facebook: https://www.facebook.com/BastropCountyConservatives
@@ -119,6 +181,7 @@
 
 ## Contact
 - Website: https://bastropcc.com/contact
+- Email: info@bastropcc.com
 - Subscribe: https://bastropcc.com/subscribe
 
 ## Legal

@@ -1,0 +1,25 @@
+{
+	"name": "bastropccnew",
+	"account_id": "b08d1a8316ab33834898d634d2e5db09",
+	"compatibility_date": "2024-09-23",
+	"assets": {
+		"directory": "./dist"
+	},
+	"routes": [
+		{
+			"pattern": "bastropcc.com",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.bastropcc.com",
+			"custom_domain": true
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "bastropcc-db",
+			"database_id": "9dbb5eb4-34cc-442a-b752-b0999469da39"
+		}
+	]
+}
