@@ -21,7 +21,11 @@ const { title, description, heading = title, subheading, image, ogImage, noindex
   
   <header
     class="relative border-b-none py-28 md:py-36 min-h-[40vh] flex items-end overflow-hidden bg-slate-200"
-    style={image ? `background-image: url('${image}'); background-size: cover; background-position: center;` : undefined}
+    style={`background-image: ${
+      image
+        ? `linear-gradient(135deg, rgba(26, 43, 74, 0.92), rgba(179, 27, 27, 0.75)), url('${image}')`
+        : 'linear-gradient(135deg, rgba(26, 43, 74, 1), rgba(179, 27, 27, 0.85))'
+    }; background-size: cover; background-position: center;`}
   >
     <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-bcc-navy via-bcc-navy/90 to-bcc-navy/10 z-0"></div>
     <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10 transform translate-y-4">
