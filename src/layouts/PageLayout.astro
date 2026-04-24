@@ -24,7 +24,7 @@ const { title, description, heading = title, subheading, image, ogImage, noindex
     style={`background-image: ${
       image
         ? `linear-gradient(135deg, rgba(26, 43, 74, 0.92), rgba(179, 27, 27, 0.75)), url('${image}')`
-        : 'linear-gradient(135deg, rgba(26, 43, 74, 1), rgba(179, 27, 27, 0.85))'
+        : `linear-gradient(135deg, rgba(26, 43, 74, 0.75), rgba(179, 27, 27, 0.55)), url('/images/hero-bg.jpg')`
     }; background-size: cover; background-position: center;`}
   >
     <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-bcc-navy via-bcc-navy/90 to-bcc-navy/10 z-0"></div>
