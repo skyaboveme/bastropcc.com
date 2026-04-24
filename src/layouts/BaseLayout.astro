@@ -10,9 +10,11 @@ export interface Props {
   description?: string;
   image?: string;
   article?: boolean;
+  noindex?: boolean;
+  robots?: string;
 }
 
-const { title, description, image, article } = Astro.props;
+const { title, description, image, article, noindex, robots } = Astro.props;
 ---
 
 <html lang="en" class="scroll-smooth">
@@ -32,7 +34,14 @@ const { title, description, image, article } = Astro.props;
       gtag('js', new Date());
       gtag('config', 'G-7X9LE8V7C9');
     </script>
-    <SEO title={title} description={description} image={image} article={article} />
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      article={article}
+      noindex={noindex}
+      robots={robots}
+    />
   </head>
   <body class="flex flex-col min-h-screen pb-16 md:pb-0">
     <!-- Google Tag Manager (noscript) -->

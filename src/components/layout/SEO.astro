@@ -6,28 +6,37 @@ export interface Props {
   description?: string;
   image?: string;
   article?: boolean;
+  noindex?: boolean;
+  robots?: string;
 }
 
 const {
   title = 'Bastrop County Conservatives — Local Action = National Wins',
   description = "Bastrop County Conservatives is an organization focused on promoting core conservative values in our local government. We believe that there is a time when we must fight for what is right, and that time is now.",
-  image = '/images/og-default.png',
+  image = 'https://bastropcc.com/images/og-default.jpg',
   article = false,
+  noindex = false,
+  robots,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://bastropcc.com');
 const imageUrl = new URL(image, Astro.site || 'https://bastropcc.com');
+const robotsContent =
+  robots ??
+  (noindex
+    ? 'noindex, nofollow'
+    : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
-<meta name="robots" content="index, follow" />
+<meta name="robots" content={robotsContent} />
 <meta name="theme-color" content="#1a2b4a" />
 <meta name="geo.region" content="US-TX" />
 <meta name="geo.placename" content="Bastrop County, Texas" />
 
-<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="canonical" href={canonicalURL} />
 
 <title>{title}</title>

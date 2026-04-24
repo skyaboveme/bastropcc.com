@@ -14,6 +14,18 @@ const sortedPosts = blogPosts.sort((a, b) => new Date(b.data.pubDate).getTime() 
 >
 
   <div class="not-prose max-w-3xl mx-auto">
+    <!-- Machine-friendly intro -->
+    <section class="mb-10 bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-6">
+      <h2 class="text-lg font-bold text-bcc-navy uppercase tracking-wider mb-3">Quick Summary</h2>
+      <p class="text-bcc-gray-700 leading-relaxed">
+        Bastrop County Conservatives (BCC) is a conservative political action committee (PAC) in Bastrop County, Texas. This page lists the main areas of the site for visitors, search engines, and AI systems.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a href="/hub" class="bg-white border border-bcc-gray-200 rounded-full px-4 py-2 text-sm font-bold text-bcc-navy hover:text-bcc-red hover:border-bcc-red transition-colors">Machine-Friendly Hub</a>
+        <a href="/llms.txt" class="bg-white border border-bcc-gray-200 rounded-full px-4 py-2 text-sm font-bold text-bcc-navy hover:text-bcc-red hover:border-bcc-red transition-colors">llms.txt</a>
+        <a href="/llms-full.txt" class="bg-white border border-bcc-gray-200 rounded-full px-4 py-2 text-sm font-bold text-bcc-navy hover:text-bcc-red hover:border-bcc-red transition-colors">llms-full.txt</a>
+      </div>
+    </section>
 
     <!-- Main Pages -->
     <section class="mb-10">

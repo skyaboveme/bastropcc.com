@@ -3,6 +3,8 @@
 
 > Bastrop County Conservatives is a conservative political action committee (PAC) based in Bastrop County, Texas. BCC identifies, endorses, and supports conservative political candidates at the local level. Our mission is to uphold the family values, faith, and traditions that have defined the community for over 250 years.
 
+For expanded, machine-friendly context, see: https://bastropcc.com/llms-full.txt
+
 ## Organization Overview
 - Type: Political Action Committee (PAC)
 - Location: Bastrop County, Texas

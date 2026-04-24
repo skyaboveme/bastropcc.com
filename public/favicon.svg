@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Bastrop County Conservatives">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a2b4a"/>
+      <stop offset="1" stop-color="#b31b1b"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#g)"/>
+  <path d="M38 92V36h30c14 0 24 8 24 20 0 12-10 20-24 20H54v16H38zm16-32h14c7 0 12-4 12-10s-5-10-12-10H54v20z" fill="#fff"/>
+</svg>

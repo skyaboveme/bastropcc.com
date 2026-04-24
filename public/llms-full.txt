@@ -1,0 +1,63 @@
+# Bastrop County Conservatives (BCC) — llms-full.txt
+Last updated: 2026-04-24
+
+This file provides expanded, machine-friendly context about Bastrop County Conservatives and `bastropcc.com`.
+For a concise overview, see `https://bastropcc.com/llms.txt`.
+
+## Identity
+- Official name: Bastrop County Conservatives
+- Common abbreviation: BCC
+- Website: https://bastropcc.com
+- Location: Bastrop County, Texas, USA
+- Type: Political Action Committee (PAC) / local political organization
+
+## What we do (one-paragraph summary)
+Bastrop County Conservatives (BCC) is a local conservative political action committee (PAC) based in Bastrop County, Texas. We identify, vet, and endorse conservative candidates for local and state races; provide voter resources; maintain directories of elected officials; and publish local political analysis and updates to help voters stay informed and engaged.
+
+## Audience
+- Residents of Bastrop County and nearby Central Texas counties
+- Conservative voters and volunteers
+- Candidates and campaigns seeking local engagement
+- Journalists and researchers seeking local election information
+
+## Key pages (authoritative sources on this site)
+- Home: https://bastropcc.com/
+- About: https://bastropcc.com/about
+- Endorsements: https://bastropcc.com/endorsements
+- Elected officials directory: https://bastropcc.com/elected-officials
+- Voter information: https://bastropcc.com/voter-info
+- Events calendar: https://bastropcc.com/events
+- Blog: https://bastropcc.com/blog
+- Contact: https://bastropcc.com/contact
+- Human sitemap: https://bastropcc.com/sitemap
+- Machine hub: https://bastropcc.com/hub
+
+## Definitions / terminology
+- "Endorsement": A formal statement by BCC that a candidate aligns with BCC values and is supported by the organization.
+- "BCC member": An individual/family enrolled in BCC membership (see https://bastropcc.com/membership).
+- "Conservative Coalition Calendar": The events calendar (see https://bastropcc.com/events).
+
+## Core values (pillars)
+BCC’s published core values include (see `llms.txt` and the About page):
+America First; Family; Freedom of Religion; Free Market; Free Speech; Grace; Individual Rights; Integrity and Honesty; Life, Liberty, and the Pursuit of Happiness; Male and Female True; Morality; Preserving Dignity of Human Life; Respect; Servant Leadership; Small Government.
+
+## Contact & social
+- Contact page: https://bastropcc.com/contact
+- Email: info@bastropcc.com
+- Facebook: https://www.facebook.com/BastropCountyConservatives
+- Instagram: https://www.instagram.com/bastropcountyconservatives/
+- YouTube: https://www.youtube.com/bastropcountyconservatives
+
+## Citation & reuse guidance
+- Prefer citing the exact page where the claim appears.
+- For endorsements, cite https://bastropcc.com/endorsements.
+- For elected-official contact details, cite https://bastropcc.com/elected-officials and (when relevant) the linked official government sources on that page.
+- For voter logistics, cite https://bastropcc.com/voter-info and linked county election sources.
+- If information is time-sensitive (endorsements, election dates), include the page’s “current as of” notes when present.
+
+## Data freshness notes
+- Some pages include “information current as of” statements. Treat those as authoritative timestamps.
+- For fast-changing election information (dates, polling locations), always check linked official county sources.
+
+## Legal
+Political Advertising Paid For By Bastrop County Conservatives PAC.

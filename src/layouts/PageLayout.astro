@@ -10,21 +10,29 @@ export interface Props {
   subheading?: string;
   image?: string;
   ogImage?: string;
+  noindex?: boolean;
+  robots?: string;
 }
 
-const { title, description, heading = title, subheading, image, ogImage } = Astro.props;
+const { title, description, heading = title, subheading, image, ogImage, noindex, robots } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} image={ogImage}>
+<BaseLayout title={title} description={description} image={ogImage} noindex={noindex} robots={robots}>
   
-  <header class="relative border-b-none py-28 md:py-36 min-h-[40vh] flex items-end bg-cover bg-center bg-fixed overflow-hidden bg-slate-200" style={`background-image: url('${image || '/images/hero-bg.jpg'}');`}>
+  <header
+    class="relative border-b-none py-28 md:py-36 min-h-[40vh] flex items-end overflow-hidden bg-slate-200"
+    style={image ? `background-image: url('${image}'); background-size: cover; background-position: center;` : undefined}
+  >
     <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-bcc-navy via-bcc-navy/90 to-bcc-navy/10 z-0"></div>
     <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10 transform translate-y-4">
       <h1 class="font-heading uppercase text-5xl md:text-7xl font-bold text-white tracking-widest drop-shadow-xl">{heading}</h1>
       {subheading && <p class="text-xl md:text-2xl text-white/90 mt-4 max-w-2xl font-serif italic">{subheading}</p>}
     </div>
     <!-- Skyline Cutout -->
-    <div class="absolute bottom-[-1px] left-0 w-full h-16 md:h-24 bg-repeat-x bg-bottom z-20" style="background-image: url('/Assets/skyline.svg'); background-size: 1500px 100%;"></div>
+    <div
+      class="absolute bottom-[-1px] left-0 w-full h-16 md:h-24 bg-repeat-x bg-bottom z-20"
+      style={`background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1500' height='120' viewBox='0 0 1500 120'%3E%3Cpath fill='%23ffffff' d='M0 120V80l40-10 30 15 25-25 35 20 20-30 30 10 25-18 35 28 20-35 35 22 25-30 35 26 30-26 25 22 20-14 35 18 25-22 30 14 25-20 40 24 30-40 35 30 25-18 30 10 25-14 35 18 20-30 35 24 25-18 35 18 30-24 25 18 20-10 35 20 25-30 35 20 30-26 25 18 20-10 35 20 25-30 35 20 30-26 25 18 40-20v60H0z'/%3E%3C/svg%3E"); background-size: 1500px 100%;`}
+    ></div>
   </header>
 
   <section class="max-w-4xl mx-auto px-4 py-16 md:py-24 prose prose-lg prose-bcc prose-headings:font-serif prose-headings:text-bcc-navy prose-a:text-bcc-red hover:prose-a:text-bcc-red-dark">

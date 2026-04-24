@@ -1,5 +1,5 @@
 ---
-title: "The $1.44 Billion Bet on Bastrop County: What the EdgeConneX Data Center Really Means for Our Community"
+title: "The $5 Billion Bet on Bastrop County: What the EdgeConneX Data Center Really Means for Our Community"
 description: "EdgeConneX is building a $440 million data center in Cedar Creek, the first of four planned buildings on a 140-acre campus. Here is what it means for Bastrop County, the benefits, the costs, the tax abatements, and the honest answers to the hardest questions."
 pubDate: 2026-04-20
 author: "BastropCC Editorial"
@@ -11,7 +11,7 @@ canonical: "https://bastropcc.com/blog/bastrop-data-center-edgeconnex-aus02"
 
 At the corner of FM 535 and Wolf Lane in Cedar Creek, something historic is taking shape. EdgeConneX, one of the largest data center developers in the world, is building AUS02, a $440 million, 578,000-square-foot facility set to come online in June 2026. And that is only the beginning.
 
-AUS02 is the first of four buildings planned for a 140-acre campus, a full build-out that represents a potential $1.44 billion investment in Bastrop County. When complete, the campus will deliver 96 megawatts of capacity in its first phase alone, with an additional 48 MW and two more 96 MW buildings in future phases, powering the cloud services and artificial intelligence workloads that have become the backbone of the modern economy.
+AUS02 is the first of four buildings planned for a 140-acre campus, a full build-out that represents a potential $5 billion investment in Bastrop County. When complete, the campus will deliver 96 megawatts of capacity in its first phase alone, with an additional 48 MW and two more 96 MW buildings in future phases, powering the cloud services and artificial intelligence workloads that have become the backbone of the modern economy.
 
 This is the kind of generational opportunity that most rural counties never get. It also comes with legitimate tradeoffs that deserve honest examination. Before the noise of social media takes over the conversation, Bastrop County residents deserve the full picture, the good, the bad, and the gray areas in between.
 
@@ -61,7 +61,7 @@ This is the single most important detail that usually gets buried in the enthusi
 
 In December 2024, the Bastrop County Commissioners Court unanimously approved a **10-year property tax abatement** for EdgeConneX. The terms: a **75 percent reduction** on new county taxes assessed above the property's 2024 base value, applied to each of the four planned buildings individually.
 
-What does that mean in practice? For the first 10 years, Bastrop County will collect only 25 cents on every dollar of property tax that this campus would otherwise generate. On a $1.44 billion campus, the difference between the full tax revenue and the abated amount is enormous.
+What does that mean in practice? For the first 10 years, Bastrop County will collect only 25 cents on every dollar of property tax that this campus would otherwise generate. On a $5 billion campus, the difference between the full tax revenue and the abated amount is enormous.
 
 Proponents argue the abatement is necessary to win the project, that without it, EdgeConneX would build in another county or another state. That may be true. Texas is engaged in a fierce national competition for data center investment, and neighboring states offer aggressive incentives. But residents should understand what this means: the "billions in tax revenue" figure often cited in promotional materials is the **unabated** number. The actual revenue Bastrop County will collect during the first decade is a fraction of that.
 
@@ -175,7 +175,7 @@ But virtuous cycles only remain virtuous if the community insists on transparenc
 AUS02 is more than a building. It is a bet, one that could pay off enormously for Bastrop County, or one that could deliver less than promised if the details are not nailed down.
 
 **Here is what is genuinely positive:**
-- A potential $1.44 billion in long-term property value on the tax rolls
+- A potential $5 billion in long-term property value on the tax rolls
 - Revenue for schools without adding a single new student
 - Hundreds of construction jobs now, and approximately 60 permanent positions
 - Modern closed-loop cooling technology that represents a real advance over the water-hungry facilities of a decade ago
