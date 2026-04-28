@@ -25,7 +25,7 @@ Compare the math on two different growth paths:
 
 **A 1,000-home subdivision** at roughly $300 million in combined property value adds an estimated 1,500 new students to the Bastrop or Smithville ISDs, sharply increases daily traffic, puts new strain on emergency services, and pressures the county's water infrastructure.
 
-**A $1 billion data center campus**, by contrast, adds zero new students, generates minimal daily vehicle traffic, operates its own on-site security and fire suppression systems, and typically funds its own utility upgrades.
+**A $5 billion data center campus**, by contrast, adds zero new students, generates minimal daily vehicle traffic, operates its own on-site security and fire suppression systems, and typically funds its own utility upgrades.
 
 On paper, a data center campus is one of the most tax-efficient commercial assets any county can host. It generates property tax revenue while requiring almost none of the public services that residential growth demands.
 
