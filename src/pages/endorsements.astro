@@ -4,6 +4,8 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import { Icon } from 'astro-icon/components';
 import { generateEndorsementsSchema, generateBreadcrumbSchema } from '../utils/schema';
 
+const LAST_UPDATED = '2026-04-27';
+
 const endorsedCandidates = [
   { name: 'Senator Charles Schwertner', jobTitle: 'Texas State Senator, District 5', description: 'Incumbent state senator with a strong conservative voting record. Proven defender of property rights, border security, and limited government.', url: 'https://senate.texas.gov' },
   { name: 'Tom Glass', jobTitle: 'Texas State Representative Candidate, District 17', description: 'Conservative candidate committed to reducing property taxes, protecting Second Amendment rights, and limiting government overreach.' },
@@ -27,6 +29,17 @@ const endorsedCandidates = [
   heading="Official Endorsements"
   subheading="Bastrop County Conservatives vets candidates and endorses those who align with our 15 Core Values. Here's who earned our support."
 >
+
+  <div class="not-prose max-w-3xl mx-auto mb-10">
+    <div class="bg-white border border-bcc-gray-200 rounded-2xl p-6 shadow-sm">
+      <p class="text-bcc-gray-700 leading-relaxed">
+        This page is the authoritative list of Bastrop County Conservatives (BCC) endorsements. For citations, link to this page and include the relevant election cycle and the “Last updated” date below.
+      </p>
+      <p class="text-sm text-bcc-gray-500 mt-3 italic">
+        Last updated: {LAST_UPDATED}
+      </p>
+    </div>
+  </div>
 
   <!-- Endorsement Process -->
   <div class="bg-bcc-cream -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-xl border border-bcc-gray-200 not-prose mb-16">

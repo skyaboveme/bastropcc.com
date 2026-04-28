@@ -2,6 +2,40 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { Icon } from 'astro-icon/components';
+import { generateFAQSchema } from '../utils/schema';
+
+const faqItems = [
+  {
+    question: 'What is Bastrop County Conservatives (BCC)?',
+    answer:
+      'Bastrop County Conservatives is a Political Action Committee (PAC) dedicated to identifying, vetting, and supporting conservative candidates in Bastrop County, Texas. We are a grassroots organization of liberty-minded citizens who believe in family, faith, and freedom.',
+  },
+  {
+    question: 'Is BCC affiliated with the Republican Party?',
+    answer:
+      'BCC is an independent PAC. While we share many values with the Republican Party and primarily endorse Republican candidates, we are not a subsidiary of the Bastrop County Republican Party or the Texas GOP. We make our endorsement decisions independently based on our 15 Core Values.',
+  },
+  {
+    question: 'How does the BCC endorsement process work?',
+    answer:
+      'Our endorsement process includes candidate questionnaires and interviews, review of relevant records (especially for incumbents), and a membership meeting where candidates are presented. Attending members then collectively determine the course of action BCC will take with respect to each candidate.',
+  },
+  {
+    question: 'Who has BCC endorsed?',
+    answer:
+      'Current endorsements and past endorsement results are listed on the Endorsements page at https://bastropcc.com/endorsements.',
+  },
+  {
+    question: 'How much does membership cost?',
+    answer:
+      'BCC membership tiers and pricing are listed on https://bastropcc.com/membership.',
+  },
+  {
+    question: 'How do I register to vote in Bastrop County?',
+    answer:
+      'You can register to vote by completing a voter registration application and submitting it to the Bastrop County Elections Office. See official guidance at https://www.votetexas.gov/register-to-vote/.',
+  },
+];
 ---
 
 <PageLayout 
@@ -164,24 +198,6 @@ import { Icon } from 'astro-icon/components';
     </div>
   </div>
 
-</PageLayout>
+  <script type="application/ld+json" set:html={generateFAQSchema(faqItems)} />
 
-<script>
-  // FAQ Schema.org structured data for SEO
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "What is Bastrop County Conservatives (BCC)?", "acceptedAnswer": { "@type": "Answer", "text": "Bastrop County Conservatives is a Political Action Committee (PAC) dedicated to identifying, vetting, and supporting conservative candidates in Bastrop County, Texas." }},
-      { "@type": "Question", "name": "How does the BCC endorsement process work?", "acceptedAnswer": { "@type": "Answer", "text": "Our endorsement process has three stages: candidate vetting through questionnaires and interviews, member discussion at meetings, and a democratic vote by the full BCC membership." }},
-      { "@type": "Question", "name": "How much does membership cost?", "acceptedAnswer": { "@type": "Answer", "text": "BCC offers four membership tiers: Bronze ($10/month), Silver ($15/month), Gold ($20/month), and Platinum ($40/month)." }},
-      { "@type": "Question", "name": "How are membership dues used?", "acceptedAnswer": { "@type": "Answer", "text": "Dues directly fund vetting and supporting conservative candidates, organizing voter outreach events, producing educational materials, hosting candidate forums, and maintaining communications infrastructure." }},
-      { "@type": "Question", "name": "How do I register to vote in Bastrop County?", "acceptedAnswer": { "@type": "Answer", "text": "You can register to vote by completing a voter registration application at votetexas.gov and submitting it to the Bastrop County Elections Office." }},
-      { "@type": "Question", "name": "Where do I vote on Election Day?", "acceptedAnswer": { "@type": "Answer", "text": "Bastrop County uses Vote Centers, so you can vote at any open polling location on Election Day. Hours are 7:00 AM to 7:00 PM." }}
-    ]
-  };
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
-  script.textContent = JSON.stringify(faqSchema);
-  document.head.appendChild(script);
-</script>
+</PageLayout>

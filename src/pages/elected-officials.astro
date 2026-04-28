@@ -4,6 +4,8 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import { Icon } from 'astro-icon/components';
 import { generateElectedOfficialsSchema, generateBreadcrumbSchema } from '../utils/schema';
 
+const LAST_UPDATED = '2026-04-27';
+
 const officials = [
   // State & Federal
   { name: 'Greg Abbott', jobTitle: 'Governor of Texas', affiliation: 'Republican', url: 'https://gov.texas.gov', worksFor: 'State of Texas' },
@@ -34,6 +36,17 @@ const officials = [
   heading="Who Represents You"
   subheading="Your complete guide to Bastrop County's elected officials — who they are, how to reach them, and when they're up for re-election."
 >
+
+  <div class="not-prose max-w-3xl mx-auto mb-10">
+    <div class="bg-white border border-bcc-gray-200 rounded-2xl p-6 shadow-sm">
+      <p class="text-bcc-gray-700 leading-relaxed">
+        This directory is designed to be a citation-friendly reference for who represents Bastrop County residents. For time-sensitive details (phone numbers, offices, and election dates), prefer the linked official sources on this page when available.
+      </p>
+      <p class="text-sm text-bcc-gray-500 mt-3 italic">
+        Last updated: {LAST_UPDATED}
+      </p>
+    </div>
+  </div>
 
   <!-- Quick Jump Nav -->
   <div class="not-prose mb-16 flex flex-wrap justify-center gap-3">

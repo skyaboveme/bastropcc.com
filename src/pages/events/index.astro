@@ -1,5 +1,49 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { generateEventsListSchema } from '../../utils/schema';
+
+type PublicEvent = {
+  title: string;
+  date: string;
+  location: string;
+  description?: string;
+  event_url?: string;
+  org?: string;
+};
+
+const LAST_UPDATED = '2026-04-27';
+
+async function fetchPublicEvents(): Promise<PublicEvent[]> {
+  try {
+    const res = await fetch('https://bastropcc-api.communications-b08.workers.dev/api/v1/public/events');
+    const json = await res.json();
+    if (!json?.success || !Array.isArray(json?.data)) return [];
+    return json.data as PublicEvent[];
+  } catch {
+    return [];
+  }
+}
+
+const apiEvents = await fetchPublicEvents();
+const now = new Date();
+const upcoming = apiEvents
+  .filter((e) => {
+    const d = new Date(`${e.date}T00:00:00`);
+    return Number.isFinite(d.valueOf()) && d >= new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  })
+  .sort((a, b) => a.date.localeCompare(b.date))
+  .slice(0, 25);
+
+const eventsSchema = generateEventsListSchema(
+  upcoming.map((e) => ({
+    name: e.title,
+    startDate: new Date(`${e.date}T00:00:00`).toISOString(),
+    location: e.location,
+    description: e.description || '',
+    url: e.event_url || undefined,
+    organizer: e.org || 'Bastrop County Conservatives',
+  }))
+);
 ---
 
 <PageLayout 
@@ -8,6 +52,17 @@ import PageLayout from '../../layouts/PageLayout.astro';
   heading="Bastrop County Events"
   subheading="Community & Political Events Calendar"
 >
+  <div class="not-prose max-w-3xl mx-auto mb-8">
+    <div class="bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-6">
+      <p class="text-bcc-gray-700 leading-relaxed">
+        This page lists upcoming community and political events across Bastrop County and nearby communities. For citations, prefer linking directly to the event source (shown in each event) and include the date.
+      </p>
+      <p class="text-sm text-bcc-gray-500 mt-3 italic">
+        Last updated: {LAST_UPDATED}
+      </p>
+    </div>
+  </div>
+
   <div class="calendar-wrapper">
     <div class="controls" id="controls">
       <div class="month-nav">
@@ -526,5 +581,9 @@ import PageLayout from '../../layouts/PageLayout.astro';
     window.closeModal = function() { document.getElementById('modalOverlay').classList.remove('show'); };
     window.showDayEvents = function(dateStr) { const d = new Date(dateStr + 'T00:00:00'); currentDate = new Date(d.getFullYear(), d.getMonth(), 1); setView('list'); };
   </script>
+
+  {upcoming.length > 0 && (
+    <script type="application/ld+json" set:html={eventsSchema} />
+  )}
 
 </PageLayout>

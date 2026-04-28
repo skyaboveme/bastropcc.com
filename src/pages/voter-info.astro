@@ -4,6 +4,8 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import Button from '../components/ui/Button.astro';
 import { Icon } from 'astro-icon/components';
 
+const LAST_UPDATED = '2026-04-27';
+
 const resources = [
   {
     title: "Bastrop County Elections Website",
@@ -58,9 +60,14 @@ const resources = [
 >
   
   <div class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
-    <p class="text-xl text-bcc-navy font-medium leading-relaxed max-w-3xl">
-      A well-informed and active electorate is the foundation of a free republic. We've compiled the essential resources you need to register, research, and cast your ballot effectively in Bastrop County.
-    </p>
+    <div class="max-w-3xl">
+      <p class="text-xl text-bcc-navy font-medium leading-relaxed">
+        A well-informed and active electorate is the foundation of a free republic. We've compiled the essential resources you need to register, research, and cast your ballot effectively in Bastrop County.
+      </p>
+      <p class="text-sm text-bcc-gray-500 mt-3 italic not-prose">
+        Last updated: {LAST_UPDATED}
+      </p>
+    </div>
     <div class="shrink-0 not-prose text-center md:text-right">
       <Button href="/endorsements" variant="primary">View BCC Endorsements</Button>
     </div>
