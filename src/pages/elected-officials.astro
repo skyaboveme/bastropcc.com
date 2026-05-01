@@ -37,17 +37,6 @@ const officials = [
   subheading="Your complete guide to Bastrop County's elected officials — who they are, how to reach them, and when they're up for re-election."
 >
 
-  <div class="not-prose max-w-3xl mx-auto mb-10">
-    <div class="bg-white border border-bcc-gray-200 rounded-2xl p-6 shadow-sm">
-      <p class="text-bcc-gray-700 leading-relaxed">
-        This directory is designed to be a citation-friendly reference for who represents Bastrop County residents. For time-sensitive details (phone numbers, offices, and election dates), prefer the linked official sources on this page when available.
-      </p>
-      <p class="text-sm text-bcc-gray-500 mt-3 italic">
-        Last updated: {LAST_UPDATED}
-      </p>
-    </div>
-  </div>
-
   <!-- Quick Jump Nav -->
   <div class="not-prose mb-16 flex flex-wrap justify-center gap-3">
     <a href="#state-federal" class="bg-bcc-navy text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-bcc-red transition-colors">State & Federal</a>
@@ -516,5 +505,16 @@ const officials = [
     { name: 'Home', url: 'https://bastropcc.com' },
     { name: 'Elected Officials', url: 'https://bastropcc.com/elected-officials' }
   ])} />
+
+  <div class="not-prose max-w-3xl mx-auto mt-16">
+    <div class="bg-white border border-bcc-gray-200 rounded-2xl p-6 shadow-sm">
+      <p class="text-bcc-gray-700 leading-relaxed">
+        This directory is designed to be a citation-friendly reference for who represents Bastrop County residents. For time-sensitive details (phone numbers, offices, and election dates), prefer the linked official sources on this page when available.
+      </p>
+      <p class="text-sm text-bcc-gray-500 mt-3 italic">
+        Last updated: {LAST_UPDATED}
+      </p>
+    </div>
+  </div>
 
 </PageLayout>

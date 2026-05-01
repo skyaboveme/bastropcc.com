@@ -52,17 +52,6 @@ const eventsSchema = generateEventsListSchema(
   heading="Bastrop County Events"
   subheading="Community & Political Events Calendar"
 >
-  <div class="not-prose max-w-3xl mx-auto mb-8">
-    <div class="bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-6">
-      <p class="text-bcc-gray-700 leading-relaxed">
-        This page lists upcoming community and political events across Bastrop County and nearby communities. For citations, prefer linking directly to the event source (shown in each event) and include the date.
-      </p>
-      <p class="text-sm text-bcc-gray-500 mt-3 italic">
-        Last updated: {LAST_UPDATED}
-      </p>
-    </div>
-  </div>
-
   <div class="calendar-wrapper">
     <div class="controls" id="controls">
       <div class="month-nav">
@@ -581,6 +570,17 @@ const eventsSchema = generateEventsListSchema(
     window.closeModal = function() { document.getElementById('modalOverlay').classList.remove('show'); };
     window.showDayEvents = function(dateStr) { const d = new Date(dateStr + 'T00:00:00'); currentDate = new Date(d.getFullYear(), d.getMonth(), 1); setView('list'); };
   </script>
+
+  <div class="not-prose max-w-3xl mx-auto mt-10">
+    <div class="bg-bcc-cream border border-bcc-gray-200 rounded-2xl p-6">
+      <p class="text-bcc-gray-700 leading-relaxed">
+        This page lists upcoming community and political events across Bastrop County and nearby communities. For citations, prefer linking directly to the event source (shown in each event) and include the date.
+      </p>
+      <p class="text-sm text-bcc-gray-500 mt-3 italic">
+        Last updated: {LAST_UPDATED}
+      </p>
+    </div>
+  </div>
 
   {upcoming.length > 0 && (
     <script type="application/ld+json" set:html={eventsSchema} />
