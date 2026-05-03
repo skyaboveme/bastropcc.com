@@ -9,48 +9,40 @@ import { Icon } from 'astro-icon/components';
     </button>
     
     <div class="text-center mb-8">
-      <h2 class="text-3xl md:text-4xl font-serif font-bold text-bcc-navy uppercase tracking-wide">Election Day is May 2nd</h2>
-      <p class="text-bcc-gray-600 mt-2 font-medium">Early voting April 20th to April 28th</p>
+      <p class="text-bcc-red font-bold uppercase tracking-widest text-sm md:text-base mb-2">Congratulations</p>
+      <h2 class="text-3xl md:text-4xl font-serif font-bold text-bcc-navy uppercase tracking-wide">To Our Election Winners!</h2>
+      <p class="text-bcc-gray-600 mt-3 font-medium max-w-2xl mx-auto">Congratulations to Wini Griffin, Daña Tovar, and Ishmael Harris on winning their election. Thank you for stepping up to serve Bastrop County.</p>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       
-      <!-- Card 1 -->
+      <!-- Winner 1 -->
       <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-gray-100 group">
-        <div class="bg-[#b91c1c] text-white text-center py-2 text-xs font-bold uppercase tracking-wider">Official Endorsement</div>
+        <div class="bg-[#b91c1c] text-white text-center py-2 text-xs font-bold uppercase tracking-wider">Election Winner</div>
         <div class="px-6 py-8 flex flex-col items-center text-center flex-grow">
           <h3 class="text-2xl font-bold text-[#1e293b] uppercase mb-2 group-hover:text-[#b91c1c] transition-colors">Wini Griffin</h3>
-          <p class="text-gray-500 font-medium mb-8">for Smithville City Council<br/>Place 4</p>
+          <p class="text-gray-500 font-medium mb-8">Smithville City Council<br/>Place 4</p>
           <a href="https://voteforwini.com" target="_blank" rel="noopener noreferrer" class="mt-auto w-full bg-[#1e293b] text-white font-bold py-3 rounded-md hover:bg-[#b91c1c] shadow-sm transition-colors text-sm">Visit Website</a>
         </div>
       </div>
       
-      <!-- Card 2 -->
+      <!-- Winner 2 -->
       <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-gray-100 group">
-        <div class="bg-[#b91c1c] text-white text-center py-2 text-xs font-bold uppercase tracking-wider">Official Endorsement</div>
+        <div class="bg-[#b91c1c] text-white text-center py-2 text-xs font-bold uppercase tracking-wider">Election Winner</div>
         <div class="px-6 py-8 flex flex-col items-center text-center flex-grow">
           <h3 class="text-2xl font-bold text-[#1e293b] uppercase mb-2 group-hover:text-[#b91c1c] transition-colors">Daña Tovar</h3>
-          <p class="text-gray-500 font-medium mb-8">for Smithville City Council<br/>Place 5</p>
+          <p class="text-gray-500 font-medium mb-8">Smithville City Council<br/>Place 5</p>
           <a href="https://electdanatovar.com" target="_blank" rel="noopener noreferrer" class="mt-auto w-full bg-[#1e293b] text-white font-bold py-3 rounded-md hover:bg-[#b91c1c] shadow-sm transition-colors text-sm">Visit Website</a>
         </div>
       </div>
       
-      <!-- Card 3 -->
+      <!-- Winner 3 -->
       <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-gray-100 group">
-        <div class="bg-[#b91c1c] text-white text-center py-2 text-xs font-bold uppercase tracking-wider">Official Endorsement</div>
+        <div class="bg-[#b91c1c] text-white text-center py-2 text-xs font-bold uppercase tracking-wider">Election Winner</div>
         <div class="px-6 py-8 flex flex-col items-center text-center flex-grow">
           <h3 class="text-2xl font-bold text-[#1e293b] uppercase mb-2 group-hover:text-[#b91c1c] transition-colors">Ishmael Harris</h3>
-          <p class="text-gray-500 font-medium mb-8">for Bastrop Mayor</p>
+          <p class="text-gray-500 font-medium mb-8">Bastrop Mayor</p>
           <a href="https://www.ishmaelharrisformayor.com" target="_blank" rel="noopener noreferrer" class="mt-auto w-full bg-[#1e293b] text-white font-bold py-3 rounded-md hover:bg-[#b91c1c] shadow-sm transition-colors text-sm">Visit Website</a>
-        </div>
-      </div>
-      <!-- Card 4 -->
-      <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-gray-100 group">
-        <div class="bg-[#b91c1c] text-white text-center py-2 text-xs font-bold uppercase tracking-wider">Official Endorsement</div>
-        <div class="px-6 py-8 flex flex-col items-center text-center flex-grow">
-          <h3 class="text-2xl font-bold text-[#1e293b] uppercase mb-2 group-hover:text-[#b91c1c] transition-colors">Chuck Swain</h3>
-          <p class="text-gray-500 font-medium mb-8">for Elgin City Council</p>
-          <a href="https://www.elgintexas.gov/directory.aspx?EID=74" target="_blank" rel="noopener noreferrer" class="mt-auto w-full bg-[#1e293b] text-white font-bold py-3 rounded-md hover:bg-[#b91c1c] shadow-sm transition-colors text-sm">Visit Website</a>
         </div>
       </div>
       
@@ -69,7 +61,7 @@ import { Icon } from 'astro-icon/components';
     
     // Ensure popup displays once per user by using sessionStorage (once per visit)
     // Or localStorage if you want it once ever. Let's use sessionStorage so it only shows once per browser session.
-    const hasSeenPopup = sessionStorage.getItem('hasSeenEndorsementPopup2026');
+    const hasSeenPopup = sessionStorage.getItem('hasSeenWinnersPopup2026');
     
     if (!hasSeenPopup) {
       // 1 second delay allows the page to settle before asking for attention
@@ -87,7 +79,7 @@ import { Icon } from 'astro-icon/components';
         setTimeout(() => {
           popup.classList.add('hidden');
         }, 300);
-        sessionStorage.setItem('hasSeenEndorsementPopup2026', 'true');
+        sessionStorage.setItem('hasSeenWinnersPopup2026', 'true');
       };
       
       closeBtn.addEventListener('click', closePopup);
