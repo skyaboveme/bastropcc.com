@@ -148,6 +148,7 @@ We encourage residents to review opposition materials directly so they can form 
 - [Data Center Watch Report: $64B Blocked/Delayed Projects](https://datacenterwatch.org/report)
 - [MacArthur Foundation: Grant Record for MediaJustice](https://macfound.org/grantee/center-for-media-justice-10115159/)
 - [Climate Justice Alliance: Funders & Donors Page](https://climatejusticealliance.org/funders/)
+- [CodePink: "The Dark Side of the Data Center Boom"](https://www.codepink.org/the_dark_side_of_the_data_center_boom)
 
 **Additional News & Reports:**
 - Texas Tribune: "Texans are demanding their local governments push pause on data centers" (February 2026)
