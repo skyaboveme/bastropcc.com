@@ -69,8 +69,13 @@ const eventsSchema = generateEventsListSchema(
     <div class="calendar-container">
       <div class="filter-section" id="filterSection">
         <div class="type-filter-row" id="typeFilterRow">
-          <span class="filter-row-label">Filter:</span>
+          <span class="filter-row-label">Type:</span>
           <div class="type-pills" id="typePills"></div>
+        </div>
+        <div class="org-filter-row" id="orgFilterRow">
+          <span class="filter-row-label">Organizers:</span>
+          <div class="org-pills" id="orgPills"></div>
+          <button type="button" class="org-toggle" id="orgToggle" aria-expanded="false">Show all</button>
         </div>
       </div>
 
@@ -205,6 +210,36 @@ const eventsSchema = generateEventsListSchema(
     .calendar-wrapper .type-pill:hover { background: var(--navy-mid); }
     .calendar-wrapper .type-pill.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
     .calendar-wrapper .type-pill.active:hover { border-color: var(--navy); color: var(--navy); }
+
+    .calendar-wrapper .org-filter-row {
+      display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.5rem;
+      justify-content: center; margin-top: 0.6rem; padding-top: 0.6rem;
+      border-top: 1px dashed var(--border);
+    }
+    .calendar-wrapper .org-filter-row .filter-row-label { padding-top: 4px; }
+    .calendar-wrapper .org-pills {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center;
+      flex: 1 1 auto; max-height: 38px; overflow: hidden; transition: max-height 0.25s ease;
+    }
+    .calendar-wrapper .org-pills.expanded { max-height: 360px; }
+    .calendar-wrapper .org-pill {
+      display: inline-flex; align-items: center; font-size: 0.68rem; padding: 4px 10px;
+      border-radius: 12px; border: 1px solid var(--navy); background: var(--navy); color: var(--white);
+      cursor: pointer; font-weight: 600; transition: all 0.15s; white-space: nowrap;
+    }
+    .calendar-wrapper .org-pill:hover { background: var(--navy-mid); }
+    .calendar-wrapper .org-pill.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
+    .calendar-wrapper .org-pill.active:hover { border-color: var(--navy); color: var(--navy); }
+    .calendar-wrapper .org-pill.all-orgs { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+    .calendar-wrapper .org-pill.all-orgs:hover { background: #b89640; border-color: #b89640; }
+    .calendar-wrapper .org-pill.all-orgs.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
+    .calendar-wrapper .org-toggle {
+      background: transparent; border: 1px solid var(--border); color: var(--navy);
+      font-size: 0.65rem; padding: 4px 10px; border-radius: 12px; cursor: pointer;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      transition: all 0.15s; white-space: nowrap; align-self: flex-start;
+    }
+    .calendar-wrapper .org-toggle:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
     .calendar-wrapper .type-badge { display: inline-block; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-left: 6px; vertical-align: middle; }
     .calendar-wrapper .type-badge.political { background: #fde8e8; color: #991b1b; }
     .calendar-wrapper .type-badge.community { background: #e8f5e9; color: #1b5e20; }
@@ -436,6 +471,9 @@ const eventsSchema = generateEventsListSchema(
     let currentView = 'upcoming';
     const UPCOMING_DAYS = 60;
     let activeTypeFilters = new Set(['political', 'community']);
+    let activeOrgFilters = new Set();
+    let knownOrgs = [];
+    let orgFiltersInitialized = false;
 
     async function loadAPIEvents() {
       try {
@@ -443,7 +481,6 @@ const eventsSchema = generateEventsListSchema(
         const data = await res.json();
         if (data.success && data.data) {
           const apiEvents = data.data.map(ev => ({ ...ev, url: ev.event_url, desc: ev.description }));
-          // Merge: dedup by title+date
           const existingKeys = new Set(EVENTS.map(e => e.title + '|' + e.date));
           apiEvents.forEach(ev => { if (!existingKeys.has(ev.title + '|' + ev.date)) EVENTS.push(ev); });
         }
@@ -452,14 +489,26 @@ const eventsSchema = generateEventsListSchema(
 
     function init() {
       buildTypeFilters();
-      loadAPIEvents().then(() => render());
+      buildOrgFilters();
+      loadAPIEvents().then(() => { buildOrgFilters(); render(); });
       render(); // render seeds immediately
       document.getElementById('prevMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); render(); });
       document.getElementById('nextMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); render(); });
       document.getElementById('modalOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+      const orgToggle = document.getElementById('orgToggle');
+      if (orgToggle) orgToggle.addEventListener('click', toggleOrgPillsExpanded);
     }
     document.addEventListener('DOMContentLoaded', init);
+
+    function toggleOrgPillsExpanded() {
+      const pills = document.getElementById('orgPills');
+      const btn = document.getElementById('orgToggle');
+      if (!pills || !btn) return;
+      const expanded = pills.classList.toggle('expanded');
+      btn.textContent = expanded ? 'Show less' : 'Show all';
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
 
     function buildTypeFilters() {
       const typePills = document.getElementById('typePills');
@@ -482,6 +531,54 @@ const eventsSchema = generateEventsListSchema(
         if (activeTypeFilters.has(filter)) { activeTypeFilters.delete(filter); btn.classList.remove('active'); }
         else { activeTypeFilters.add(filter); btn.classList.add('active'); }
         allBtn.classList.toggle('active', activeTypeFilters.size === Object.keys(EVENT_TYPES).length);
+      }
+      render();
+    };
+
+    function escapeAttr(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function buildOrgFilters() {
+      const orgPills = document.getElementById('orgPills');
+      if (!orgPills) return;
+      const prevKnown = new Set(knownOrgs);
+      const orgSet = new Set();
+      EVENTS.forEach(e => { orgSet.add((e.org && String(e.org).trim()) || 'Other'); });
+      knownOrgs = Array.from(orgSet).sort((a, b) => a.localeCompare(b));
+      if (!orgFiltersInitialized) {
+        activeOrgFilters = new Set(knownOrgs);
+        orgFiltersInitialized = true;
+      } else {
+        // Auto-activate orgs we hadn't seen before so newly arrived API events aren't hidden.
+        knownOrgs.forEach(o => { if (!prevKnown.has(o)) activeOrgFilters.add(o); });
+      }
+      const allActive = knownOrgs.every(o => activeOrgFilters.has(o));
+      const html = '<button class="org-pill all-orgs' + (allActive ? ' active' : '') + '" data-org-filter="__all__">All Orgs</button>' +
+        knownOrgs.map(org => {
+          const active = activeOrgFilters.has(org);
+          return '<button class="org-pill' + (active ? ' active' : '') + '" data-org-filter="' + escapeAttr(org) + '">' + escapeAttr(org) + '</button>';
+        }).join('');
+      orgPills.innerHTML = html;
+      orgPills.querySelectorAll('.org-pill').forEach(btn => btn.addEventListener('click', () => toggleOrgFilter(btn)));
+    }
+
+    window.toggleOrgFilter = function(btn) {
+      const filter = btn.dataset.orgFilter;
+      if (filter === '__all__') {
+        const allActive = knownOrgs.every(o => activeOrgFilters.has(o));
+        if (allActive) {
+          activeOrgFilters.clear();
+          document.querySelectorAll('.org-pill').forEach(p => p.classList.remove('active'));
+        } else {
+          activeOrgFilters = new Set(knownOrgs);
+          document.querySelectorAll('.org-pill').forEach(p => p.classList.add('active'));
+        }
+      } else {
+        if (activeOrgFilters.has(filter)) { activeOrgFilters.delete(filter); btn.classList.remove('active'); }
+        else { activeOrgFilters.add(filter); btn.classList.add('active'); }
+        const allBtn = document.querySelector('[data-org-filter="__all__"]');
+        if (allBtn) allBtn.classList.toggle('active', knownOrgs.every(o => activeOrgFilters.has(o)));
       }
       render();
     };
@@ -515,7 +612,13 @@ const eventsSchema = generateEventsListSchema(
       }
     }
 
-    function getFilteredEvents() { return EVENTS.filter(e => activeTypeFilters.has(e.type)); }
+    function getFilteredEvents() {
+      return EVENTS.filter(e => {
+        if (!activeTypeFilters.has(e.type)) return false;
+        const org = (e.org && String(e.org).trim()) || 'Other';
+        return activeOrgFilters.has(org);
+      });
+    }
 
     function renderCalendar(year, month) {
       const grid = document.getElementById('calGrid');
