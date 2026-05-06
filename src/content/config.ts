@@ -18,9 +18,13 @@ const eventsCollection = defineCollection({
     title: z.string(),
     date: z.string(), // ISO date string YYYY-MM-DD
     time: z.string().optional(),
+    endTime: z.string().optional(),
     location: z.string(),
     description: z.string(),
     link: z.string().optional(),
+    org: z.string().optional(),
+    type: z.enum(['political', 'community']).optional(),
+    featured: z.boolean().optional(),
   }),
 });
 

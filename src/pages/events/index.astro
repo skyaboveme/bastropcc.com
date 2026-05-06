@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
 import { generateEventsListSchema } from '../../utils/schema';
 
 type PublicEvent = {
@@ -11,7 +12,21 @@ type PublicEvent = {
   org?: string;
 };
 
-const LAST_UPDATED = '2026-04-27';
+const LAST_UPDATED = '2026-05-06';
+
+const collectionEntries = await getCollection('events');
+const JSON_EVENTS = collectionEntries.map((e) => ({
+  title: e.data.title,
+  date: e.data.date,
+  time: e.data.time || '',
+  endTime: e.data.endTime || '',
+  location: e.data.location || '',
+  desc: e.data.description || '',
+  url: e.data.link || '',
+  org: e.data.org || 'Other',
+  type: (e.data.type as 'political' | 'community') || 'community',
+  featured: e.data.featured === true,
+}));
 
 async function fetchPublicEvents(): Promise<PublicEvent[]> {
   try {
@@ -26,16 +41,17 @@ async function fetchPublicEvents(): Promise<PublicEvent[]> {
 
 const apiEvents = await fetchPublicEvents();
 const now = new Date();
-const upcoming = apiEvents
+const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const upcomingForSchema = apiEvents
   .filter((e) => {
     const d = new Date(`${e.date}T00:00:00`);
-    return Number.isFinite(d.valueOf()) && d >= new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Number.isFinite(d.valueOf()) && d >= todayMidnight;
   })
   .sort((a, b) => a.date.localeCompare(b.date))
   .slice(0, 25);
 
 const eventsSchema = generateEventsListSchema(
-  upcoming.map((e) => ({
+  upcomingForSchema.map((e) => ({
     name: e.title,
     startDate: new Date(`${e.date}T00:00:00`).toISOString(),
     location: e.location,
@@ -46,88 +62,76 @@ const eventsSchema = generateEventsListSchema(
 );
 ---
 
-<PageLayout 
+<PageLayout
   title="Bastrop County Events Calendar — Community & Political Events"
   description="Your central calendar for Bastrop County events — community festivals, live music, political meetings, and more. Sourced from Visit Bastrop, Bastrop Chamber, and local organizations."
   heading="Bastrop County Events"
   subheading="Community & Political Events Calendar"
 >
-  <div class="calendar-wrapper">
-    <div class="controls" id="controls">
-      <div class="month-nav hidden" id="monthNav">
-        <button id="prevMonth" aria-label="Previous month">‹</button>
-        <span class="current-month" id="currentMonth"></span>
-        <button id="nextMonth" aria-label="Next month">›</button>
+  <div class="cal-mag">
+    <section class="hero-event" id="heroEvent" aria-label="Featured upcoming event">
+      <div class="hero-skeleton">
+        <div class="hero-skel-date"></div>
+        <div class="hero-skel-title"></div>
+        <div class="hero-skel-meta"></div>
       </div>
-      <div class="upcoming-label show" id="upcomingLabel">Next 60 Days</div>
-      <div class="view-toggle">
-        <button class="active" id="btnUpcoming" onclick="setView('upcoming')">Upcoming</button>
-        <button id="btnCalendar" onclick="setView('calendar')">Month</button>
-      </div>
-    </div>
+    </section>
 
-    <div class="calendar-container">
-      <div class="filter-section" id="filterSection">
-        <div class="search-row">
+    <div class="filter-bar" id="filterBar">
+      <div class="search-row">
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">🔍</span>
           <label for="eventSearch" class="visually-hidden">Search events</label>
-          <div class="search-wrap">
-            <span class="search-icon" aria-hidden="true">🔍</span>
-            <input
-              type="search"
-              id="eventSearch"
-              class="event-search-input"
-              placeholder="Search events by title, organizer, location, or description…"
-              autocomplete="off"
-              spellcheck="false"
-            />
-            <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden>✕</button>
-          </div>
-          <span class="search-result-count" id="searchResultCount" aria-live="polite"></span>
+          <input
+            type="search"
+            id="eventSearch"
+            class="event-search"
+            placeholder="Search by title, organizer, location, or description…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden>✕</button>
         </div>
-        <div class="type-filter-row" id="typeFilterRow">
-          <span class="filter-row-label">Type:</span>
-          <div class="type-pills" id="typePills"></div>
-        </div>
-        <div class="org-filter-row" id="orgFilterRow">
-          <span class="filter-row-label">Organizers:</span>
-          <div class="org-pills" id="orgPills"></div>
-          <button type="button" class="org-toggle" id="orgToggle" aria-expanded="false">Show all</button>
-        </div>
+        <span class="result-count" id="resultCount" aria-live="polite"></span>
       </div>
-
-      <div class="cal-grid-wrap" id="calGridWrap">
-        <div class="cal-grid" id="calGrid"></div>
+      <div class="chip-row">
+        <span class="chip-label">Type</span>
+        <div class="chips" id="typeChips"></div>
       </div>
-      <div class="list-view" id="listView"></div>
+      <div class="chip-row">
+        <span class="chip-label">Organizer</span>
+        <div class="chips org-chips" id="orgChips"></div>
+      </div>
     </div>
-    
-    <!-- Submit Event Form -->
-    <div class="submit-event-section" id="submit-event">
-      <h3 class="submit-title">Submit an Event</h3>
+
+    <div class="event-list" id="eventList" role="list" aria-label="Upcoming events">
+      <div class="loading-row">Loading events…</div>
+    </div>
+
+    <section class="submit-section" id="submit-event" aria-labelledby="submit-title">
+      <h3 class="submit-title" id="submit-title">Submit an Event</h3>
       <p class="submit-desc">Have an event to share with Bastrop County? Submit it below and our team will review it for the calendar.</p>
-      
       <form action="https://formsubmit.co/info@bastropcc.com" method="POST" id="event-submit-form" class="submit-form">
-        <input type="hidden" name="_subject" value="BCC Website - New Event Submission">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://bastropcc.com/event-submitted">
-        <input type="text" name="_honey" style="display:none">
-        
+        <input type="hidden" name="_subject" value="BCC Website - New Event Submission" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://bastropcc.com/event-submitted" />
+        <input type="text" name="_honey" style="display:none" />
         <div class="form-grid">
           <div class="form-full">
             <label for="event_title">Event Title <span class="req">*</span></label>
-            <input type="text" id="event_title" name="EVENT_TITLE" required>
+            <input type="text" id="event_title" name="EVENT_TITLE" required />
           </div>
           <div>
             <label for="event_date">Date <span class="req">*</span></label>
-            <input type="date" id="event_date" name="EVENT_DATE" required>
+            <input type="date" id="event_date" name="EVENT_DATE" required />
           </div>
           <div>
             <label for="event_time">Time <span class="req">*</span></label>
-            <input type="text" id="event_time" name="EVENT_TIME" placeholder="e.g. 6:00 PM" required>
+            <input type="text" id="event_time" name="EVENT_TIME" placeholder="e.g. 6:00 PM" required />
           </div>
           <div class="form-full">
             <label for="event_location">Location <span class="req">*</span></label>
-            <input type="text" id="event_location" name="EVENT_LOCATION" placeholder="Full address or venue name" required>
+            <input type="text" id="event_location" name="EVENT_LOCATION" placeholder="Full address or venue name" required />
           </div>
           <div>
             <label for="event_type">Event Type</label>
@@ -138,330 +142,374 @@ const eventsSchema = generateEventsListSchema(
           </div>
           <div>
             <label for="event_org">Hosting Organization</label>
-            <input type="text" id="event_org" name="EVENT_ORG">
+            <input type="text" id="event_org" name="EVENT_ORG" />
           </div>
           <div class="form-full">
             <label for="event_url">Event URL / Link</label>
-            <input type="url" id="event_url" name="EVENT_URL" placeholder="https://">
+            <input type="url" id="event_url" name="EVENT_URL" placeholder="https://" />
           </div>
           <div class="form-full">
             <label for="event_desc">Additional Details</label>
             <textarea id="event_desc" name="EVENT_DESC" rows="3"></textarea>
           </div>
         </div>
-        
         <div class="form-actions">
           <button type="submit" class="submit-btn">Submit Event</button>
         </div>
       </form>
-    </div>
+    </section>
 
     <div class="cal-footer">
       <p>Maintained by <a href="https://bastropcc.com">Bastrop County Conservatives</a> · Events sourced from partner organizations across Bastrop County</p>
-      <p class="mt-3 text-xs text-bcc-gray-500">BCC reserves the right to deny any individual(s) attendance at any meeting or event.</p>
+      <p class="footer-note">BCC reserves the right to deny any individual(s) attendance at any meeting or event.</p>
     </div>
 
-    <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal" id="modal"></div>
     </div>
   </div>
 
   <style is:global>
-    .calendar-wrapper {
+    .cal-mag {
       --navy: #1a2b4a; --navy-mid: #243656; --gold: #c9a84c;
       --red: #b91c1c; --cream: #faf8f4; --white: #ffffff;
       --border: #e5e2db; --text: #1a2b4a; --text-dim: #6b7280;
-      --radius: 8px; --shadow: 0 2px 12px rgba(0,0,0,0.08);
-      font-family: 'Inter', -apple-system, sans-serif;
+      --radius: 10px; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; width: 100%;
+      max-width: 1080px; margin: 0 auto;
     }
-    .calendar-wrapper .controls {
-      display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-      gap: 1rem; padding: 1rem 1.5rem; background: var(--cream);
-      border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.5rem;
+    .cal-mag .visually-hidden {
+      position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
-    .calendar-wrapper .month-nav { display: flex; align-items: center; gap: 0.75rem; }
-    .calendar-wrapper .month-nav button {
-      background: var(--white); border: 1px solid var(--border); color: var(--navy);
-      width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem;
-      display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-weight: 700;
+
+    /* HERO */
+    .cal-mag .hero-event {
+      position: relative; background: linear-gradient(135deg, #1a2b4a 0%, #243656 100%);
+      color: var(--white); border-radius: 14px; padding: 2.25rem 2rem; margin-bottom: 1.75rem;
+      overflow: hidden; box-shadow: 0 8px 28px rgba(26, 43, 74, 0.18);
+      border: 1px solid rgba(201, 168, 76, 0.25);
     }
-    .calendar-wrapper .month-nav button:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
-    .calendar-wrapper .month-nav .current-month {
-      font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700; font-size: 1.25rem;
-      min-width: 200px; text-align: center; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em;
+    .cal-mag .hero-event::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--red) 100%);
     }
-    .calendar-wrapper .month-nav.hidden { display: none; }
-    .calendar-wrapper .upcoming-label {
-      display: none; font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700; font-size: 1.25rem;
-      text-align: center; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em; padding: 0 0.5rem;
+    .cal-mag .hero-event::after {
+      content: ''; position: absolute; right: -60px; top: -60px; width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.12) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .calendar-wrapper .upcoming-label.show { display: inline-block; }
-    .calendar-wrapper .view-toggle {
-      display: flex; background: var(--white); border-radius: 20px; overflow: hidden; border: 1px solid var(--border);
+    .cal-mag .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 0.65rem;
+      letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700;
+      background: var(--gold); color: var(--navy); padding: 4px 12px; border-radius: 12px;
+      margin-bottom: 1rem; position: relative; z-index: 1;
     }
-    .calendar-wrapper .view-toggle button {
-      background: transparent; border: none; color: var(--text-dim); padding: 7px 18px; cursor: pointer;
-      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; transition: all 0.2s;
+    .cal-mag .hero-grid {
+      display: grid; grid-template-columns: 110px 1fr; gap: 1.5rem; align-items: start;
+      position: relative; z-index: 1;
     }
-    .calendar-wrapper .view-toggle button.active { background: var(--navy); color: var(--white); }
-    .calendar-wrapper .filter-section {
-      margin-bottom: 1.25rem; background: var(--cream); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 0.75rem 1rem;
+    .cal-mag .hero-date {
+      text-align: center; padding: 0.75rem 0.5rem; background: rgba(255,255,255,0.08);
+      border-radius: 10px; border: 1px solid rgba(201, 168, 76, 0.35);
     }
-    .calendar-wrapper .visually-hidden {
-      position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    .cal-mag .hero-date .h-month {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      font-weight: 700; color: var(--gold); margin-bottom: 0.15rem;
     }
-    .calendar-wrapper .search-row {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem;
-      margin-bottom: 0.6rem; padding-bottom: 0.6rem; border-bottom: 1px dashed var(--border);
+    .cal-mag .hero-date .h-day {
+      font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700;
+      font-size: 3rem; line-height: 1; color: var(--white);
     }
-    .calendar-wrapper .search-wrap {
-      position: relative; flex: 1 1 320px; display: flex; align-items: center;
+    .cal-mag .hero-date .h-weekday {
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.7); margin-top: 0.3rem; font-weight: 600;
     }
-    .calendar-wrapper .search-icon {
-      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    .cal-mag .hero-body { min-width: 0; }
+    .cal-mag .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem;
+    }
+    .cal-mag .hero-meta .badge {
+      font-size: 0.65rem; padding: 3px 10px; border-radius: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .cal-mag .hero-meta .badge.org { background: rgba(255,255,255,0.15); color: var(--white); }
+    .cal-mag .hero-meta .badge.political { background: #fde8e8; color: #991b1b; }
+    .cal-mag .hero-meta .badge.community { background: #d1fae5; color: #065f46; }
+    .cal-mag .hero-event h2 {
+      font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700;
+      font-size: clamp(1.4rem, 2.4vw, 1.85rem); margin: 0 0 0.55rem; color: var(--white);
+      line-height: 1.18; text-transform: none; letter-spacing: -0.005em;
+    }
+    .cal-mag .hero-where-when {
+      font-size: 0.95rem; color: rgba(255,255,255,0.92); margin-bottom: 0.75rem;
+    }
+    .cal-mag .hero-where-when strong { color: var(--gold); font-weight: 700; }
+    .cal-mag .hero-desc {
+      color: rgba(255,255,255,0.85); font-size: 0.95rem; margin-bottom: 1.1rem;
+      display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .cal-mag .hero-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .cal-mag .hero-actions a, .cal-mag .hero-actions button {
+      display: inline-block; padding: 9px 18px; border-radius: 6px; font-size: 0.78rem;
+      font-weight: 700; text-decoration: none; transition: all 0.2s; text-transform: uppercase;
+      letter-spacing: 0.04em; cursor: pointer; border: 1px solid transparent; font-family: inherit;
+    }
+    .cal-mag .hero-actions .btn-primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+    .cal-mag .hero-actions .btn-primary:hover { background: #b89640; border-color: #b89640; }
+    .cal-mag .hero-actions .btn-ghost {
+      background: transparent; color: var(--white); border-color: rgba(255,255,255,0.35);
+    }
+    .cal-mag .hero-actions .btn-ghost:hover { background: rgba(255,255,255,0.12); border-color: var(--white); }
+
+    .cal-mag .hero-skeleton .hero-skel-date,
+    .cal-mag .hero-skeleton .hero-skel-title,
+    .cal-mag .hero-skeleton .hero-skel-meta {
+      height: 16px; background: rgba(255,255,255,0.15); border-radius: 4px; margin-bottom: 10px;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    .cal-mag .hero-skeleton .hero-skel-date { width: 80px; height: 60px; }
+    .cal-mag .hero-skeleton .hero-skel-title { width: 70%; height: 28px; }
+    .cal-mag .hero-skeleton .hero-skel-meta { width: 50%; }
+    @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+    /* FILTER BAR */
+    .cal-mag .filter-bar {
+      background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem 1.1rem; margin-bottom: 1.5rem;
+    }
+    .cal-mag .search-row {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;
+    }
+    .cal-mag .search-wrap { position: relative; flex: 1 1 320px; display: flex; }
+    .cal-mag .search-icon {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
       color: var(--text-dim); font-size: 0.85rem; pointer-events: none;
     }
-    .calendar-wrapper .event-search-input {
-      width: 100%; padding: 9px 38px 9px 36px; border: 1px solid var(--border); border-radius: 20px;
-      background: var(--white); font-size: 0.88rem; color: var(--text); font-family: inherit;
+    .cal-mag .event-search {
+      width: 100%; padding: 10px 38px 10px 38px; border: 1px solid var(--border); border-radius: 22px;
+      background: var(--white); font-size: 0.9rem; color: var(--text); font-family: inherit;
       transition: border-color 0.15s, box-shadow 0.15s; box-sizing: border-box;
     }
-    .calendar-wrapper .event-search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
-    .calendar-wrapper .event-search-input::placeholder { color: var(--text-dim); }
-    .calendar-wrapper .event-search-input:focus {
+    .cal-mag .event-search::-webkit-search-cancel-button { -webkit-appearance: none; }
+    .cal-mag .event-search:focus {
       outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(26, 43, 74, 0.12);
     }
-    .calendar-wrapper .search-clear {
+    .cal-mag .search-clear {
       position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
       background: var(--cream); border: 1px solid var(--border); color: var(--text-dim);
-      width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.7rem;
+      width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 0.7rem;
       display: flex; align-items: center; justify-content: center; transition: all 0.15s; padding: 0;
     }
-    .calendar-wrapper .search-clear:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
-    .calendar-wrapper .search-clear[hidden] { display: none; }
-    .calendar-wrapper .search-result-count {
+    .cal-mag .search-clear:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .cal-mag .search-clear[hidden] { display: none; }
+    .cal-mag .result-count {
       font-size: 0.72rem; color: var(--text-dim); font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
     }
-    .calendar-wrapper .search-result-count.has-query { color: var(--navy); }
-    .calendar-wrapper .search-result-count em {
-      font-style: normal; color: var(--red); font-weight: 700;
+    .cal-mag .result-count.has-query { color: var(--navy); }
+    .cal-mag .result-count em { font-style: normal; color: var(--red); font-weight: 700; }
+
+    .cal-mag .chip-row {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+      padding-top: 0.6rem; margin-top: 0.4rem; border-top: 1px dashed var(--border);
     }
-    @media (max-width: 700px) {
-      .calendar-wrapper .search-wrap { flex-basis: 100%; }
-      .calendar-wrapper .event-search-input { font-size: 0.82rem; padding: 8px 34px 8px 32px; }
-      .calendar-wrapper .search-result-count { width: 100%; text-align: center; }
+    .cal-mag .chip-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-dim); white-space: nowrap; min-width: 70px;
     }
-    .calendar-wrapper .type-filter-row {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; justify-content: center;
-    }
-    .calendar-wrapper .filter-row-label {
-      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--text-dim); margin-right: 0.25rem; white-space: nowrap;
-    }
-    .calendar-wrapper .type-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-    .calendar-wrapper .type-pill {
-      display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; padding: 5px 14px;
+    .cal-mag .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; flex: 1 1 auto; }
+    .cal-mag .chip {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; padding: 5px 12px;
       border-radius: 14px; border: 1px solid var(--navy); background: var(--navy); color: var(--white);
-      cursor: pointer; font-weight: 600; transition: all 0.2s; white-space: nowrap;
-    }
-    .calendar-wrapper .type-pill .pill-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .calendar-wrapper .type-pill:hover { background: var(--navy-mid); }
-    .calendar-wrapper .type-pill.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
-    .calendar-wrapper .type-pill.active:hover { border-color: var(--navy); color: var(--navy); }
-
-    .calendar-wrapper .org-filter-row {
-      display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.5rem;
-      justify-content: center; margin-top: 0.6rem; padding-top: 0.6rem;
-      border-top: 1px dashed var(--border);
-    }
-    .calendar-wrapper .org-filter-row .filter-row-label { padding-top: 4px; }
-    .calendar-wrapper .org-pills {
-      display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center;
-      flex: 1 1 auto; max-height: 38px; overflow: hidden; transition: max-height 0.25s ease;
-    }
-    .calendar-wrapper .org-pills.expanded { max-height: 360px; }
-    .calendar-wrapper .org-pill {
-      display: inline-flex; align-items: center; font-size: 0.68rem; padding: 4px 10px;
-      border-radius: 12px; border: 1px solid var(--navy); background: var(--navy); color: var(--white);
       cursor: pointer; font-weight: 600; transition: all 0.15s; white-space: nowrap;
+      font-family: inherit;
     }
-    .calendar-wrapper .org-pill:hover { background: var(--navy-mid); }
-    .calendar-wrapper .org-pill.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
-    .calendar-wrapper .org-pill.active:hover { border-color: var(--navy); color: var(--navy); }
-    .calendar-wrapper .org-pill.all-orgs { background: var(--gold); border-color: var(--gold); color: var(--navy); }
-    .calendar-wrapper .org-pill.all-orgs:hover { background: #b89640; border-color: #b89640; }
-    .calendar-wrapper .org-pill.all-orgs.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
-    .calendar-wrapper .org-toggle {
-      background: transparent; border: 1px solid var(--border); color: var(--navy);
-      font-size: 0.65rem; padding: 4px 10px; border-radius: 12px; cursor: pointer;
-      font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-      transition: all 0.15s; white-space: nowrap; align-self: flex-start;
-    }
-    .calendar-wrapper .org-toggle:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
-    .calendar-wrapper .type-badge { display: inline-block; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-left: 6px; vertical-align: middle; }
-    .calendar-wrapper .type-badge.political { background: #fde8e8; color: #991b1b; }
-    .calendar-wrapper .type-badge.community { background: #e8f5e9; color: #1b5e20; }
+    .cal-mag .chip:hover { background: var(--navy-mid); }
+    .cal-mag .chip.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
+    .cal-mag .chip.active:hover { border-color: var(--navy); color: var(--navy); }
+    .cal-mag .chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .cal-mag .chip.all-chip { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+    .cal-mag .chip.all-chip:hover { background: #b89640; border-color: #b89640; }
+    .cal-mag .chip.all-chip.active { background: var(--white); border-color: var(--border); color: var(--text-dim); }
+    .cal-mag .org-chips .chip { font-size: 0.68rem; padding: 4px 10px; }
 
-    /* Source Strip */
-    .calendar-wrapper .source-strip {
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem;
-      padding: 0.6rem 1rem; margin-bottom: 1.25rem; background: var(--white);
-      border: 1px solid var(--border); border-radius: var(--radius);
+    /* EVENT LIST (magazine) */
+    .cal-mag .event-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .cal-mag .loading-row { padding: 2rem; text-align: center; color: var(--text-dim); }
+    .cal-mag .month-divider {
+      display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0 0.6rem; font-family: 'Playfair Display', 'Oswald', serif;
     }
-    .calendar-wrapper .source-strip .source-label {
-      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim);
+    .cal-mag .month-divider:first-child { margin-top: 0; }
+    .cal-mag .month-divider .month-name {
+      font-size: 1.1rem; font-weight: 700; color: var(--navy);
+      text-transform: uppercase; letter-spacing: 0.12em;
     }
-    .calendar-wrapper .source-strip .source-links { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .calendar-wrapper .source-strip .source-links a {
-      font-size: 0.7rem; padding: 3px 10px; border-radius: 12px; background: var(--cream);
-      border: 1px solid var(--border); color: var(--navy); text-decoration: none; font-weight: 600; transition: all 0.2s;
+    .cal-mag .month-divider .month-line {
+      flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
     }
-    .calendar-wrapper .source-strip .source-links a:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .cal-mag .event-row {
+      display: grid; grid-template-columns: 80px 1fr; gap: 1rem; padding: 0.85rem 1rem;
+      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      animation: fadeSlide 0.3s ease both;
+      text-align: left;
+    }
+    .cal-mag .event-row:hover {
+      border-color: var(--navy); box-shadow: 0 4px 14px rgba(26, 43, 74, 0.08);
+      transform: translateY(-1px);
+    }
+    .cal-mag .event-row.is-political { border-left: 4px solid var(--red); }
+    .cal-mag .event-row.is-community { border-left: 4px solid #059669; }
+    .cal-mag .ev-date {
+      text-align: center; padding-top: 2px; border-right: 1px dashed var(--border); padding-right: 0.5rem;
+    }
+    .cal-mag .ev-date .ev-weekday {
+      font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--text-dim); font-weight: 700; display: block;
+    }
+    .cal-mag .ev-date .ev-day {
+      font-family: 'Playfair Display', 'Oswald', serif; font-weight: 800;
+      font-size: 1.85rem; color: var(--navy); line-height: 1;
+    }
+    .cal-mag .ev-date .ev-mon {
+      font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--text-dim); font-weight: 600; margin-top: 2px;
+    }
+    .cal-mag .ev-body { min-width: 0; }
+    .cal-mag .ev-meta {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.3rem; align-items: center;
+    }
+    .cal-mag .ev-meta .badge {
+      font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .cal-mag .ev-meta .badge.political { background: #fde8e8; color: #991b1b; }
+    .cal-mag .ev-meta .badge.community { background: #d1fae5; color: #065f46; }
+    .cal-mag .ev-meta .badge.org { background: var(--cream); border: 1px solid var(--border); color: var(--text-dim); }
+    .cal-mag .ev-meta .badge.featured { background: var(--gold); color: var(--navy); }
+    .cal-mag .ev-body h3 {
+      font-family: 'Inter', sans-serif; font-size: 1.02rem; font-weight: 700;
+      color: var(--navy); margin: 0 0 0.2rem; line-height: 1.3; letter-spacing: 0;
+      text-transform: none;
+    }
+    .cal-mag .ev-body .ev-where-when {
+      font-size: 0.82rem; color: var(--text-dim); display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .cal-mag .ev-body .ev-where-when .ev-time { color: var(--red); font-weight: 700; }
 
-    /* Calendar Grid */
-    .calendar-wrapper .calendar-container { max-width: 1100px; margin: 0 auto; }
-    .calendar-wrapper .cal-grid {
-      display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; background: var(--white);
-      border-radius: var(--radius); overflow: hidden; border: 2px solid var(--navy);
+    .cal-mag .empty-state {
+      padding: 3rem 1rem; text-align: center; color: var(--text-dim);
+      background: var(--cream); border: 1px dashed var(--border); border-radius: var(--radius);
     }
-    .calendar-wrapper .cal-header {
-      background: var(--navy); padding: 12px 4px; text-align: center; font-size: 0.72rem;
-      font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--white);
-      border-right: 1px solid rgba(255,255,255,0.15);
-    }
-    .calendar-wrapper .cal-header:last-child { border-right: none; }
-    .calendar-wrapper .cal-day {
-      background: var(--white); min-height: 110px; padding: 8px; position: relative;
-      transition: background 0.15s; cursor: default; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    }
-    .calendar-wrapper .cal-grid > div:not(.cal-header):nth-child(7n + 7) { border-right: none; }
-    .calendar-wrapper .cal-day:hover { background: var(--cream); }
-    .calendar-wrapper .cal-day.other-month { background: #f9f8f6; opacity: 0.45; }
-    .calendar-wrapper .cal-day.today { box-shadow: inset 0 0 0 2px var(--red); background: #fef7f7; }
-    .calendar-wrapper .cal-day .day-num { font-size: 0.8rem; font-weight: 600; color: var(--text-dim); margin-bottom: 4px; display: block; }
-    .calendar-wrapper .cal-day.today .day-num { color: var(--red); font-weight: 800; }
-    .calendar-wrapper .cal-event {
-      font-size: 0.65rem; padding: 3px 5px; border-radius: 3px; margin-bottom: 3px; cursor: pointer;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; line-height: 1.4; transition: filter 0.15s;
-    }
-    .calendar-wrapper .cal-event:hover { filter: brightness(1.15); }
-    .calendar-wrapper .cal-event.type-political { background: #b91c1c; color: #fff; }
-    .calendar-wrapper .cal-event.type-community { background: #059669; color: #fff; }
-    .calendar-wrapper .cal-more { font-size: 0.65rem; color: var(--red); font-weight: 700; cursor: pointer; padding: 1px 4px; }
+    .cal-mag .empty-state strong { display: block; font-size: 1.05rem; color: var(--navy); margin-bottom: 0.4rem; }
 
-    /* List View */
-    .calendar-wrapper .list-view { display: none; }
-    .calendar-wrapper .list-view.active { display: block; }
-    .calendar-wrapper .cal-grid-wrap { display: block; }
-    .calendar-wrapper .cal-grid-wrap.hidden { display: none; }
-    .calendar-wrapper .list-month-group { margin-bottom: 2rem; }
-    .calendar-wrapper .list-month-label {
-      font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700; font-size: 1.2rem; color: var(--navy);
-      border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 0.8rem;
-      text-transform: uppercase; letter-spacing: 0.04em;
-    }
-    .calendar-wrapper .list-event {
-      display: grid; grid-template-columns: 70px 1fr; gap: 1rem; padding: 0.8rem 0.5rem;
-      border-bottom: 1px solid var(--border); transition: background 0.15s; cursor: pointer;
-      border-radius: var(--radius); text-align: left; animation: fadeSlide 0.3s ease both;
-    }
-    .calendar-wrapper .list-event:hover { background: var(--cream); }
-    .calendar-wrapper .list-date { text-align: center; padding-top: 2px; }
-    .calendar-wrapper .list-date .day { font-family: 'Playfair Display', 'Oswald', serif; font-weight: 800; font-size: 1.6rem; color: var(--navy); line-height: 1; }
-    .calendar-wrapper .list-date .weekday { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); font-weight: 700; display: block; }
-    .calendar-wrapper .list-info h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem; margin-top: 0; text-transform: none; letter-spacing: 0; }
-    .calendar-wrapper .list-info .org-badge {
-      display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px;
-      font-weight: 700; margin-right: 6px; margin-bottom: 4px; vertical-align: middle;
-    }
-    .calendar-wrapper .list-info .time-loc { font-size: 0.85rem; color: var(--text-dim); }
-    .calendar-wrapper .list-info .time-loc strong { color: var(--red); font-weight: 700; }
-
-    /* Modal */
-    .calendar-wrapper .modal-overlay {
+    /* MODAL */
+    .cal-mag .modal-overlay {
       display: none; position: fixed; inset: 0; background: rgba(26, 43, 74, 0.65); z-index: 1000;
       backdrop-filter: blur(6px); justify-content: center; align-items: center; padding: 1.5rem;
     }
-    .calendar-wrapper .modal-overlay.show { display: flex; }
-    .calendar-wrapper .modal {
-      background: var(--white); border: 1px solid var(--border); border-radius: 12px; max-width: 520px;
-      width: 100%; padding: 2rem; position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.15);
-      max-height: 80vh; overflow-y: auto; text-align: left; animation: fadeSlide 0.25s ease both;
+    .cal-mag .modal-overlay.show { display: flex; }
+    .cal-mag .modal {
+      background: var(--white); border: 1px solid var(--border); border-radius: 12px; max-width: 540px;
+      width: 100%; padding: 2rem; position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      max-height: 85vh; overflow-y: auto; text-align: left; animation: fadeSlide 0.25s ease both;
     }
-    .calendar-wrapper .modal-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: var(--text-dim); font-size: 1.4rem; cursor: pointer; }
-    .calendar-wrapper .modal-close:hover { color: var(--red); }
-    .calendar-wrapper .modal h2 { font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700; font-size: 1.3rem; color: var(--navy); margin-bottom: 0.5rem; padding-right: 2rem; line-height: 1.3; text-transform: none; letter-spacing: 0; }
-    .calendar-wrapper .modal .modal-org { display: inline-block; font-size: 0.75rem; padding: 3px 10px; border-radius: 12px; font-weight: 700; margin-bottom: 1rem; }
-    .calendar-wrapper .modal .detail-row { display: flex; gap: 0.6rem; align-items: flex-start; margin-bottom: 0.6rem; font-size: 0.95rem; }
-    .calendar-wrapper .modal .detail-row .icon { width: 20px; text-align: center; flex-shrink: 0; font-size: 0.95rem; margin-top: 1px; }
-    .calendar-wrapper .modal .detail-row .detail-text { color: var(--text); }
-    .calendar-wrapper .modal .detail-row .detail-text a { color: var(--red); text-decoration: underline; text-underline-offset: 2px; }
-    .calendar-wrapper .modal .detail-row .detail-text a:hover { color: var(--navy); }
-    .calendar-wrapper .modal-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
-    .calendar-wrapper .modal-actions a { display: inline-block; padding: 9px 18px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
-    .calendar-wrapper .modal-actions .btn-primary { background: var(--red); color: var(--white); }
-    .calendar-wrapper .modal-actions .btn-primary:hover { background: #991b1b; }
-    .calendar-wrapper .modal-actions .btn-secondary { background: var(--cream); border: 1px solid var(--border); color: var(--navy); }
-    .calendar-wrapper .modal-actions .btn-secondary:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .cal-mag .modal-close {
+      position: absolute; top: 12px; right: 14px; background: none; border: none;
+      color: var(--text-dim); font-size: 1.4rem; cursor: pointer;
+    }
+    .cal-mag .modal-close:hover { color: var(--red); }
+    .cal-mag .modal h2 {
+      font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700; font-size: 1.35rem;
+      color: var(--navy); margin-bottom: 0.5rem; padding-right: 2rem; line-height: 1.25;
+      text-transform: none; letter-spacing: 0;
+    }
+    .cal-mag .modal .modal-meta { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+    .cal-mag .modal .modal-meta .badge {
+      font-size: 0.7rem; padding: 3px 10px; border-radius: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .cal-mag .modal .modal-meta .badge.org { background: var(--cream); border: 1px solid var(--border); color: var(--navy); }
+    .cal-mag .modal .modal-meta .badge.political { background: #fde8e8; color: #991b1b; }
+    .cal-mag .modal .modal-meta .badge.community { background: #d1fae5; color: #065f46; }
+    .cal-mag .modal .detail-row {
+      display: flex; gap: 0.6rem; align-items: flex-start; margin-bottom: 0.6rem; font-size: 0.95rem;
+    }
+    .cal-mag .modal .detail-row .icon {
+      width: 20px; text-align: center; flex-shrink: 0; font-size: 0.95rem; margin-top: 1px;
+    }
+    .cal-mag .modal .detail-row .detail-text { color: var(--text); }
+    .cal-mag .modal .detail-row .detail-text a { color: var(--red); text-decoration: underline; text-underline-offset: 2px; }
+    .cal-mag .modal .detail-row .detail-text a:hover { color: var(--navy); }
+    .cal-mag .modal-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .cal-mag .modal-actions a, .cal-mag .modal-actions button {
+      display: inline-block; padding: 9px 18px; border-radius: 6px; font-size: 0.78rem;
+      font-weight: 700; text-decoration: none; transition: all 0.2s; text-transform: uppercase;
+      letter-spacing: 0.04em; cursor: pointer; border: 1px solid transparent; font-family: inherit;
+    }
+    .cal-mag .modal-actions .btn-primary { background: var(--red); color: var(--white); }
+    .cal-mag .modal-actions .btn-primary:hover { background: #991b1b; }
+    .cal-mag .modal-actions .btn-secondary { background: var(--cream); border-color: var(--border); color: var(--navy); }
+    .cal-mag .modal-actions .btn-secondary:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
 
-    /* Submit Form */
-    .calendar-wrapper .submit-event-section {
-      max-width: 700px; margin: 3rem auto 0; background: var(--white); padding: 2rem;
-      border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow);
+    /* SUBMIT FORM */
+    .cal-mag .submit-section {
+      margin: 3rem auto 0; background: var(--white); padding: 2rem; border-radius: 12px;
+      border: 1px solid var(--border); box-shadow: var(--shadow);
     }
-    .calendar-wrapper .submit-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5rem; color: var(--navy); margin: 0 0 0.5rem; }
-    .calendar-wrapper .submit-desc { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem; }
-    .calendar-wrapper .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .calendar-wrapper .form-full { grid-column: 1 / -1; }
-    .calendar-wrapper .submit-form label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-    .calendar-wrapper .submit-form .req { color: var(--red); }
-    .calendar-wrapper .submit-form input, .calendar-wrapper .submit-form select, .calendar-wrapper .submit-form textarea {
+    .cal-mag .submit-title {
+      font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5rem;
+      color: var(--navy); margin: 0 0 0.5rem;
+    }
+    .cal-mag .submit-desc { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 1.5rem; }
+    .cal-mag .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .cal-mag .form-full { grid-column: 1 / -1; }
+    .cal-mag .submit-form label {
+      display: block; font-size: 0.85rem; font-weight: 600; color: var(--navy); margin-bottom: 4px;
+    }
+    .cal-mag .submit-form .req { color: var(--red); }
+    .cal-mag .submit-form input, .cal-mag .submit-form select, .cal-mag .submit-form textarea {
       width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px;
       font-size: 0.9rem; background: var(--cream); transition: border-color 0.2s; box-sizing: border-box;
+      font-family: inherit;
     }
-    .calendar-wrapper .submit-form input:focus, .calendar-wrapper .submit-form select:focus, .calendar-wrapper .submit-form textarea:focus { border-color: var(--navy); outline: none; }
-    .calendar-wrapper .form-actions { margin-top: 1rem; }
-    .calendar-wrapper .submit-btn {
+    .cal-mag .submit-form input:focus,
+    .cal-mag .submit-form select:focus,
+    .cal-mag .submit-form textarea:focus { border-color: var(--navy); outline: none; }
+    .cal-mag .form-actions { margin-top: 1rem; }
+    .cal-mag .submit-btn {
       background: var(--red); color: var(--white); border: none; padding: 10px 32px; border-radius: 6px;
-      font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background 0.2s;
+      font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background 0.2s; font-family: inherit;
     }
-    .calendar-wrapper .submit-btn:hover { background: #991b1b; }
+    .cal-mag .submit-btn:hover { background: #991b1b; }
 
-    /* Footer */
-    .calendar-wrapper .cal-footer { text-align: center; padding: 2rem 1.5rem; border-top: 2px solid var(--border); margin-top: 2rem; }
-    .calendar-wrapper .cal-footer p { font-size: 0.85rem; color: var(--text-dim); }
-    .calendar-wrapper .cal-footer a { color: var(--red); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-    .calendar-wrapper .cal-footer a:hover { color: var(--navy); }
+    /* FOOTER */
+    .cal-mag .cal-footer { text-align: center; padding: 2rem 1.5rem; border-top: 2px solid var(--border); margin-top: 2rem; }
+    .cal-mag .cal-footer p { font-size: 0.85rem; color: var(--text-dim); }
+    .cal-mag .cal-footer p.footer-note { font-size: 0.75rem; margin-top: 0.6rem; font-style: italic; }
+    .cal-mag .cal-footer a { color: var(--red); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+    .cal-mag .cal-footer a:hover { color: var(--navy); }
 
-    /* Responsive */
-    @media (max-width: 700px) {
-      .calendar-wrapper .cal-day { min-height: 70px; padding: 3px; }
-      .calendar-wrapper .cal-day .day-num { font-size: 0.7rem; }
-      .calendar-wrapper .cal-event { font-size: 0.5rem; padding: 1px 3px; }
-      .calendar-wrapper .cal-header { font-size: 0.55rem; padding: 6px 2px; }
-      .calendar-wrapper .controls { padding: 0.7rem 0.8rem; }
-      .calendar-wrapper .hide-on-mobile { display: none !important; }
-      .calendar-wrapper .month-nav .current-month { min-width: 0; font-size: 1rem; }
-      .calendar-wrapper .upcoming-label { font-size: 1rem; }
-      .calendar-wrapper .form-grid { grid-template-columns: 1fr; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 720px) {
+      .cal-mag .hero-event { padding: 1.5rem 1.25rem; }
+      .cal-mag .hero-grid { grid-template-columns: 80px 1fr; gap: 1rem; }
+      .cal-mag .hero-date .h-day { font-size: 2.4rem; }
+      .cal-mag .event-row { grid-template-columns: 64px 1fr; padding: 0.7rem 0.75rem; gap: 0.75rem; }
+      .cal-mag .ev-date .ev-day { font-size: 1.55rem; }
+      .cal-mag .form-grid { grid-template-columns: 1fr; }
+      .cal-mag .filter-bar { padding: 0.85rem 0.75rem; }
+      .cal-mag .chip-label { min-width: 0; }
+      .cal-mag .submit-section { padding: 1.5rem 1.25rem; }
     }
-    @media (max-width: 480px) {
-      .calendar-wrapper .cal-day { min-height: 55px; }
-      .calendar-wrapper .cal-event { display: none; }
-      .calendar-wrapper .cal-day.has-events::after {
-        content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
-        width: 5px; height: 5px; border-radius: 50%; background: var(--red);
-      }
-    }
-    @keyframes fadeSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 
-  <script is:inline>
-    // ═══ SEEDED EVENTS ═══
+  <script is:inline define:vars={{ JSON_EVENTS_DATA: JSON_EVENTS }}>
+    // ─── Static seed data (preserved from original calendar) ───
     const SEED_EVENTS = [
       // Community Events — Visit Bastrop / Chamber
       { title:"RENT (The Musical)", date:"2026-04-25", time:"7:30 PM", location:"Bastrop Opera House, 711 Spring St, Bastrop", type:"community", org:"Bastrop Opera House", desc:"Tony Award-winning rock musical. Runs April 10 – May 3.", url:"https://www.visitbastrop.com/events/" },
@@ -482,7 +530,7 @@ const eventsSchema = generateEventsListSchema(
       { title:"First Friday Art Walk", date:"2026-05-02", time:"5:00 PM - 8:00 PM", location:"Downtown Bastrop", type:"community", org:"Bastrop Art Gallery", desc:"Monthly art walk featuring local artists and live music on Main Street.", url:"https://www.visitbastrop.com/events/" },
       { title:"Bastrop Farmers Market", date:"2026-04-26", time:"9:00 AM - 1:00 PM", location:"Bastrop Convention Center Parking Lot", type:"community", org:"Bastrop Farmers Market", desc:"Weekly farmers market every Saturday.", url:"https://www.visitbastrop.com/events/" },
       { title:"Bastrop Farmers Market", date:"2026-05-03", time:"9:00 AM - 1:00 PM", location:"Bastrop Convention Center Parking Lot", type:"community", org:"Bastrop Farmers Market", desc:"Weekly farmers market every Saturday.", url:"https://www.visitbastrop.com/events/" },
-      // Community Events — City of Elgin (elgintexas.gov)
+      // Community Events — City of Elgin
       { title:"Elgin Sip Shop & Stroll", date:"2026-05-08", time:"5:00 PM - 8:00 PM", location:"Historic Downtown Elgin, TX", type:"community", org:"City of Elgin", desc:"2nd Thursday monthly. Local shopping, wine, art, and live music in Historic Downtown Elgin.", url:"https://www.elgintexas.gov/185/Annual-Community-Events" },
       { title:"Elgin Sip Shop & Stroll", date:"2026-06-11", time:"5:00 PM - 8:00 PM", location:"Historic Downtown Elgin, TX", type:"community", org:"City of Elgin", desc:"2nd Thursday monthly. Local shopping, wine, art, and live music in Historic Downtown Elgin.", url:"https://www.elgintexas.gov/185/Annual-Community-Events" },
       { title:"Elgin Art Walk", date:"2026-05-01", time:"All Day", location:"Downtown Elgin, TX", type:"community", org:"City of Elgin", desc:"Annual Art Walk — 1st Friday and Saturday in May. May 1-2, 2026.", url:"https://www.elgintexas.gov/185/Annual-Community-Events" },
@@ -498,17 +546,17 @@ const eventsSchema = generateEventsListSchema(
       { title:"Hogeye Festival", date:"2026-10-24", time:"All Day", location:"Elgin, TX", type:"community", org:"City of Elgin", desc:"Major local festival — 4th weekend in October.", url:"https://www.elgintexas.gov/185/Annual-Community-Events" },
       { title:"Hogeye Festival", date:"2026-10-25", time:"All Day", location:"Elgin, TX", type:"community", org:"City of Elgin", desc:"Hogeye Festival — Day 2.", url:"https://www.elgintexas.gov/185/Annual-Community-Events" },
       { title:"Elgin Holiday by the Tracks & Lighted Parade", date:"2026-12-05", time:"All Day", location:"Downtown Elgin, TX", type:"community", org:"City of Elgin", desc:"Holiday celebration and lighted parade — 1st Saturday of December.", url:"https://www.elgintexas.gov/185/Annual-Community-Events" },
-      // Community Events — Smithville Chamber (business.smithvilletx.org)
+      // Community Events — Smithville Chamber
       { title:"Music in the Park", date:"2026-04-23", time:"6:00 PM", location:"Railroad Park, Smithville, TX", type:"community", org:"Smithville Chamber", desc:"Live music at Railroad Park in downtown Smithville.", url:"https://business.smithvilletx.org/events/details/music-in-the-park-12029" },
       { title:"Bastrop County Historical Society Meeting", date:"2026-04-23", time:"6:30 PM", location:"Smithville, TX", type:"community", org:"Smithville Chamber", desc:"Quarterly meeting featuring speaker Stephen Hardin. Arts, Culture & Community.", url:"https://business.smithvilletx.org/events/details/bastrop-county-historical-society-quarterly-meeting-stephen-hardin-11986" },
       { title:"Ribbon Cutting: A Place to Call Home", date:"2026-04-23", time:"TBD", location:"Smithville, TX", type:"community", org:"Smithville Chamber", desc:"Grand opening ribbon cutting ceremony.", url:"https://business.smithvilletx.org/events/details/ribbon-cutting-a-place-to-call-home-12752" },
       { title:"FBC Men's Ministry Breakfast & Golf", date:"2026-04-25", time:"8:00 AM", location:"First Baptist Church, Smithville, TX", type:"community", org:"Smithville Chamber", desc:"Men's Ministry breakfast, fellowship, and golfing fun.", url:"https://business.smithvilletx.org/events/details/fbc-men-s-ministry-breakfast-fellowship-golfing-fun-12750" },
       { title:"Smithville Jamboree", date:"2026-04-24", time:"All Day", location:"Smithville, TX", type:"community", org:"Smithville Chamber", desc:"Annual Smithville Jamboree festival and celebration.", url:"https://www.jamboreesmithville.com/" },
-      // Political Events — BCRP (bastropctygop.com)
+      // Political — BCRP
       { title:"BCRP April Monthly Informational Meeting", date:"2026-04-26", time:"6:00 PM", location:"BCRP Meeting Space, 443 Hwy 71 West, Bastrop, TX 78602", type:"political", org:"Bastrop County GOP", desc:"Doors open at 6 PM, discussion begins at 6:30 PM. Monthly informational meeting of the Bastrop County Republican Party.", url:"https://www.bastropctygop.com/events/monthly-meeting-april-2026/" },
       { title:"BCRP 4th Annual Golf Classic", date:"2026-04-10", time:"12:00 PM", location:"ColoVista Golf Club, 100 Country Club Dr, Bastrop, TX", type:"political", org:"Bastrop County GOP", desc:"Four Man Scramble. Check-in 11 AM, Shotgun Start 12 PM. Individual $85 / Foursome $340. Flagship fundraiser for the Bastrop County Republican Party.", url:"https://www.bastropctygop.com/events/golf-classic/" },
       { title:"Smithville Jamboree Parade — BCRP Float", date:"2026-04-10", time:"10:00 AM", location:"Smithville Recreation Center, 106 Royston St, Smithville, TX", type:"political", org:"Bastrop County GOP", desc:"Meet at 10 AM to decorate the trailer, ride on the parade float at 1:15 PM. Wear patriotic attire!", url:"https://www.bastropctygop.com/events/smithville-jamboree-parade/" },
-      // Political Events — BCC / County / RPT
+      // Political — BCC / County / RPT
       { title:"BCC Monthly Membership Meeting", date:"2026-05-08", time:"6:00 PM - 8:00 PM", location:"Casa Chapala, 100 Main St, Bastrop", type:"political", org:"BastropCC", desc:"Monthly meeting featuring guest speakers, legislative updates, and fellowship.", url:"https://bastropcc.com/membership" },
       { title:"Bastrop County Commissioners Court", date:"2026-04-28", time:"9:00 AM", location:"Bastrop County Courthouse, 804 Pecan St", type:"political", org:"Bastrop County", desc:"Regular meeting of the Bastrop County Commissioners Court. Open to the public.", url:"https://www.co.bastrop.tx.us" },
       { title:"Bastrop County Commissioners Court", date:"2026-05-12", time:"9:00 AM", location:"Bastrop County Courthouse, 804 Pecan St", type:"political", org:"Bastrop County", desc:"Regular meeting of the Bastrop County Commissioners Court. Open to the public.", url:"https://www.co.bastrop.tx.us" },
@@ -524,44 +572,85 @@ const eventsSchema = generateEventsListSchema(
       { title:"Juneteenth — Smithville City Offices Closed", date:"2026-06-19", time:"All Day", location:"Smithville, TX", type:"community", org:"City of Smithville", desc:"Smithville city offices closed in observance of Juneteenth.", url:"https://ci.smithville.tx.us/" },
     ];
 
-    let EVENTS = [...SEED_EVENTS];
-    const EVENT_TYPES = { political: { label: 'Political', color: '#991b1b' }, community: { label: 'Community', color: '#059669' } };
+    const EVENT_TYPES = {
+      political: { label: 'Political', color: '#b91c1c', icon: '★' },
+      community: { label: 'Community', color: '#059669', icon: '⌂' }
+    };
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-    let currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-    let currentView = 'upcoming';
-    const UPCOMING_DAYS = 60;
+    let EVENTS = [];
     let activeTypeFilters = new Set(['political', 'community']);
     let activeOrgFilters = new Set();
     let knownOrgs = [];
     let orgFiltersInitialized = false;
     let searchQuery = '';
     let searchTokens = [];
+    let searchDebounceId = null;
+
+    function eventKey(e) { return (e.title || '') + '|' + (e.date || ''); }
+
+    function ingestEvents() {
+      const merged = [];
+      const seen = new Set();
+      const push = (ev) => {
+        const key = eventKey(ev);
+        if (!ev.title || !ev.date || seen.has(key)) return;
+        seen.add(key);
+        merged.push({
+          title: ev.title,
+          date: ev.date,
+          time: ev.time || '',
+          endTime: ev.endTime || '',
+          location: ev.location || '',
+          type: ev.type === 'political' ? 'political' : 'community',
+          org: (ev.org && String(ev.org).trim()) || 'Other',
+          desc: ev.desc || ev.description || '',
+          url: ev.url || ev.link || '',
+          featured: ev.featured === true
+        });
+      };
+      // Order: JSON files first (most curated), then SEED, then API.
+      // Dedup keeps the first entry, so JSON wins over SEED for the same key.
+      (Array.isArray(JSON_EVENTS_DATA) ? JSON_EVENTS_DATA : []).forEach(push);
+      SEED_EVENTS.forEach(push);
+      EVENTS = merged.sort((a, b) => a.date.localeCompare(b.date));
+    }
 
     async function loadAPIEvents() {
       try {
         const res = await fetch('https://bastropcc-api.communications-b08.workers.dev/api/v1/public/events');
         const data = await res.json();
-        if (data.success && data.data) {
-          const apiEvents = data.data.map(ev => ({ ...ev, url: ev.event_url, desc: ev.description }));
-          const existingKeys = new Set(EVENTS.map(e => e.title + '|' + e.date));
-          apiEvents.forEach(ev => { if (!existingKeys.has(ev.title + '|' + ev.date)) EVENTS.push(ev); });
-        }
-      } catch (err) { console.error('API fetch error:', err); }
+        if (!data || !data.success || !Array.isArray(data.data)) return;
+        const seen = new Set(EVENTS.map(eventKey));
+        data.data.forEach((ev) => {
+          const norm = {
+            title: ev.title,
+            date: ev.date,
+            time: ev.time || '',
+            endTime: ev.endTime || '',
+            location: ev.location || '',
+            type: ev.type === 'political' ? 'political' : 'community',
+            org: (ev.org && String(ev.org).trim()) || 'Other',
+            desc: ev.description || ev.desc || '',
+            url: ev.event_url || ev.url || '',
+            featured: ev.featured === true
+          };
+          if (!norm.title || !norm.date) return;
+          const k = eventKey(norm);
+          if (!seen.has(k)) { seen.add(k); EVENTS.push(norm); }
+        });
+        EVENTS.sort((a, b) => a.date.localeCompare(b.date));
+      } catch (err) { /* network failure silent */ }
     }
 
     function init() {
-      buildTypeFilters();
-      buildOrgFilters();
-      loadAPIEvents().then(() => { buildOrgFilters(); render(); });
-      render(); // render seeds immediately
-      document.getElementById('prevMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); render(); });
-      document.getElementById('nextMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); render(); });
-      document.getElementById('modalOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-      const orgToggle = document.getElementById('orgToggle');
-      if (orgToggle) orgToggle.addEventListener('click', toggleOrgPillsExpanded);
+      ingestEvents();
+      buildTypeChips();
+      buildOrgChips();
+      render();
+      loadAPIEvents().then(() => { buildOrgChips(); render(); });
       const searchInput = document.getElementById('eventSearch');
       const searchClear = document.getElementById('searchClear');
       if (searchInput) {
@@ -571,19 +660,80 @@ const eventsSchema = generateEventsListSchema(
         });
       }
       if (searchClear) searchClear.addEventListener('click', clearSearch);
-    }
-    document.addEventListener('DOMContentLoaded', init);
-
-    function toggleOrgPillsExpanded() {
-      const pills = document.getElementById('orgPills');
-      const btn = document.getElementById('orgToggle');
-      if (!pills || !btn) return;
-      const expanded = pills.classList.toggle('expanded');
-      btn.textContent = expanded ? 'Show less' : 'Show all';
-      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      const overlay = document.getElementById('modalOverlay');
+      if (overlay) overlay.addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
 
-    let searchDebounceId = null;
+    function escapeAttr(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function escHtml(s) { return escapeAttr(s); }
+
+    function buildTypeChips() {
+      const root = document.getElementById('typeChips');
+      if (!root) return;
+      let html = '<button type="button" class="chip all-chip active" data-type="__all__">All</button>';
+      Object.entries(EVENT_TYPES).forEach(([key, val]) => {
+        html += '<button type="button" class="chip active" data-type="' + key + '">' +
+          '<span class="dot" style="background:' + val.color + '"></span>' + val.icon + ' ' + val.label +
+          '</button>';
+      });
+      root.innerHTML = html;
+      root.querySelectorAll('.chip').forEach((btn) => btn.addEventListener('click', () => toggleType(btn)));
+    }
+
+    function toggleType(btn) {
+      const t = btn.dataset.type;
+      if (t === '__all__') {
+        const allActive = activeTypeFilters.size === Object.keys(EVENT_TYPES).length;
+        if (allActive) { activeTypeFilters.clear(); document.querySelectorAll('#typeChips .chip').forEach((c) => c.classList.remove('active')); }
+        else { activeTypeFilters = new Set(Object.keys(EVENT_TYPES)); document.querySelectorAll('#typeChips .chip').forEach((c) => c.classList.add('active')); }
+      } else {
+        if (activeTypeFilters.has(t)) { activeTypeFilters.delete(t); btn.classList.remove('active'); }
+        else { activeTypeFilters.add(t); btn.classList.add('active'); }
+        const allBtn = document.querySelector('#typeChips [data-type="__all__"]');
+        if (allBtn) allBtn.classList.toggle('active', activeTypeFilters.size === Object.keys(EVENT_TYPES).length);
+      }
+      render();
+    }
+
+    function buildOrgChips() {
+      const root = document.getElementById('orgChips');
+      if (!root) return;
+      const prevKnown = new Set(knownOrgs);
+      const set = new Set();
+      EVENTS.forEach((e) => set.add(e.org || 'Other'));
+      knownOrgs = Array.from(set).sort((a, b) => a.localeCompare(b));
+      if (!orgFiltersInitialized) { activeOrgFilters = new Set(knownOrgs); orgFiltersInitialized = true; }
+      else { knownOrgs.forEach((o) => { if (!prevKnown.has(o)) activeOrgFilters.add(o); }); }
+      const allActive = knownOrgs.every((o) => activeOrgFilters.has(o));
+      let html = '<button type="button" class="chip all-chip' + (allActive ? ' active' : '') + '" data-org="__all__">All</button>';
+      knownOrgs.forEach((o) => {
+        const a = activeOrgFilters.has(o);
+        html += '<button type="button" class="chip' + (a ? ' active' : '') + '" data-org="' + escapeAttr(o) + '">' + escHtml(o) + '</button>';
+      });
+      root.innerHTML = html;
+      root.querySelectorAll('.chip').forEach((btn) => btn.addEventListener('click', () => toggleOrg(btn)));
+    }
+
+    function toggleOrg(btn) {
+      const o = btn.dataset.org;
+      if (o === '__all__') {
+        const allActive = knownOrgs.every((x) => activeOrgFilters.has(x));
+        if (allActive) { activeOrgFilters.clear(); document.querySelectorAll('#orgChips .chip').forEach((c) => c.classList.remove('active')); }
+        else { activeOrgFilters = new Set(knownOrgs); document.querySelectorAll('#orgChips .chip').forEach((c) => c.classList.add('active')); }
+      } else {
+        if (activeOrgFilters.has(o)) { activeOrgFilters.delete(o); btn.classList.remove('active'); }
+        else { activeOrgFilters.add(o); btn.classList.add('active'); }
+        const allBtn = document.querySelector('#orgChips [data-org="__all__"]');
+        if (allBtn) allBtn.classList.toggle('active', knownOrgs.every((x) => activeOrgFilters.has(x)));
+      }
+      render();
+    }
+
     function onSearchInput(e) {
       const val = e.target.value;
       const clearBtn = document.getElementById('searchClear');
@@ -601,220 +751,157 @@ const eventsSchema = generateEventsListSchema(
       const clearBtn = document.getElementById('searchClear');
       if (input) input.value = '';
       if (clearBtn) clearBtn.hidden = true;
-      searchQuery = '';
-      searchTokens = [];
+      searchQuery = ''; searchTokens = [];
       render();
       if (input) input.focus();
     }
 
     function eventMatchesSearch(ev) {
       if (searchTokens.length === 0) return true;
-      const haystack = (
-        (ev.title || '') + ' ' +
-        (ev.org || '') + ' ' +
-        (ev.location || '') + ' ' +
-        (ev.desc || '') + ' ' +
-        (ev.type || '')
-      ).toLowerCase();
+      const hay = ((ev.title || '') + ' ' + (ev.org || '') + ' ' + (ev.location || '') + ' ' + (ev.desc || '') + ' ' + (ev.type || '')).toLowerCase();
       for (let i = 0; i < searchTokens.length; i++) {
-        if (haystack.indexOf(searchTokens[i]) === -1) return false;
+        if (hay.indexOf(searchTokens[i]) === -1) return false;
       }
       return true;
     }
 
-    function updateSearchCount(count) {
-      const el = document.getElementById('searchResultCount');
+    function getFilteredEvents() {
+      return EVENTS.filter((e) => {
+        if (!activeTypeFilters.has(e.type)) return false;
+        if (!activeOrgFilters.has(e.org || 'Other')) return false;
+        return eventMatchesSearch(e);
+      });
+    }
+
+    function getUpcoming(filteredOnly) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      const list = filteredOnly ? getFilteredEvents() : EVENTS;
+      return list.filter((e) => {
+        const d = new Date(e.date + 'T00:00:00');
+        return Number.isFinite(d.valueOf()) && d >= today;
+      });
+    }
+
+    function pickHero() {
+      const all = getUpcoming(false);
+      const featured = all.find((e) => e.featured);
+      return featured || all[0] || null;
+    }
+
+    function updateResultCount(count) {
+      const el = document.getElementById('resultCount');
       if (!el) return;
       if (!searchQuery) { el.textContent = ''; el.classList.remove('has-query'); return; }
       el.classList.add('has-query');
       el.innerHTML = '<em>' + count + '</em> match' + (count === 1 ? '' : 'es');
     }
 
-    function buildTypeFilters() {
-      const typePills = document.getElementById('typePills');
-      if (!typePills) return;
-      typePills.innerHTML = '<button class="type-pill active" data-type-filter="all">All Events</button>' +
-        Object.entries(EVENT_TYPES).map(([key, val]) =>
-          '<button class="type-pill active" data-type-filter="' + key + '"><span class="pill-dot" style="background:' + val.color + '"></span>' + val.label + '</button>'
-        ).join('');
-      typePills.querySelectorAll('.type-pill').forEach(btn => btn.addEventListener('click', () => toggleTypeFilter(btn)));
-    }
-
-    window.toggleTypeFilter = function(btn) {
-      const filter = btn.dataset.typeFilter;
-      if (filter === 'all') {
-        const allActive = activeTypeFilters.size === Object.keys(EVENT_TYPES).length;
-        if (allActive) { activeTypeFilters.clear(); document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active')); }
-        else { activeTypeFilters = new Set(Object.keys(EVENT_TYPES)); document.querySelectorAll('.type-pill').forEach(p => p.classList.add('active')); }
-      } else {
-        const allBtn = document.querySelector('[data-type-filter="all"]');
-        if (activeTypeFilters.has(filter)) { activeTypeFilters.delete(filter); btn.classList.remove('active'); }
-        else { activeTypeFilters.add(filter); btn.classList.add('active'); }
-        allBtn.classList.toggle('active', activeTypeFilters.size === Object.keys(EVENT_TYPES).length);
-      }
-      render();
-    };
-
-    function escapeAttr(s) {
-      return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    function buildOrgFilters() {
-      const orgPills = document.getElementById('orgPills');
-      if (!orgPills) return;
-      const prevKnown = new Set(knownOrgs);
-      const orgSet = new Set();
-      EVENTS.forEach(e => { orgSet.add((e.org && String(e.org).trim()) || 'Other'); });
-      knownOrgs = Array.from(orgSet).sort((a, b) => a.localeCompare(b));
-      if (!orgFiltersInitialized) {
-        activeOrgFilters = new Set(knownOrgs);
-        orgFiltersInitialized = true;
-      } else {
-        // Auto-activate orgs we hadn't seen before so newly arrived API events aren't hidden.
-        knownOrgs.forEach(o => { if (!prevKnown.has(o)) activeOrgFilters.add(o); });
-      }
-      const allActive = knownOrgs.every(o => activeOrgFilters.has(o));
-      const html = '<button class="org-pill all-orgs' + (allActive ? ' active' : '') + '" data-org-filter="__all__">All Orgs</button>' +
-        knownOrgs.map(org => {
-          const active = activeOrgFilters.has(org);
-          return '<button class="org-pill' + (active ? ' active' : '') + '" data-org-filter="' + escapeAttr(org) + '">' + escapeAttr(org) + '</button>';
-        }).join('');
-      orgPills.innerHTML = html;
-      orgPills.querySelectorAll('.org-pill').forEach(btn => btn.addEventListener('click', () => toggleOrgFilter(btn)));
-    }
-
-    window.toggleOrgFilter = function(btn) {
-      const filter = btn.dataset.orgFilter;
-      if (filter === '__all__') {
-        const allActive = knownOrgs.every(o => activeOrgFilters.has(o));
-        if (allActive) {
-          activeOrgFilters.clear();
-          document.querySelectorAll('.org-pill').forEach(p => p.classList.remove('active'));
-        } else {
-          activeOrgFilters = new Set(knownOrgs);
-          document.querySelectorAll('.org-pill').forEach(p => p.classList.add('active'));
-        }
-      } else {
-        if (activeOrgFilters.has(filter)) { activeOrgFilters.delete(filter); btn.classList.remove('active'); }
-        else { activeOrgFilters.add(filter); btn.classList.add('active'); }
-        const allBtn = document.querySelector('[data-org-filter="__all__"]');
-        if (allBtn) allBtn.classList.toggle('active', knownOrgs.every(o => activeOrgFilters.has(o)));
-      }
-      render();
-    };
-
-    window.setView = function(view) {
-      currentView = view;
-      document.getElementById('btnUpcoming').classList.toggle('active', view === 'upcoming');
-      document.getElementById('btnCalendar').classList.toggle('active', view === 'calendar');
-      const monthNav = document.getElementById('monthNav');
-      const upcomingLabel = document.getElementById('upcomingLabel');
-      if (view === 'calendar') {
-        monthNav.classList.remove('hidden');
-        upcomingLabel.classList.remove('show');
-      } else {
-        monthNav.classList.add('hidden');
-        upcomingLabel.classList.add('show');
-      }
-      render();
-    };
-
-    function render() {
-      updateSearchCount(getFilteredEvents().length);
-      const calWrap = document.getElementById('calGridWrap'), listView = document.getElementById('listView');
-      if (currentView === 'calendar') {
-        const year = currentDate.getFullYear(), month = currentDate.getMonth();
-        document.getElementById('currentMonth').textContent = MONTHS[month] + ' ' + year;
-        calWrap.classList.remove('hidden'); listView.classList.remove('active');
-        renderCalendar(year, month);
-      } else {
-        calWrap.classList.add('hidden'); listView.classList.add('active');
-        renderUpcoming();
-      }
-    }
-
-    function getFilteredEvents() {
-      return EVENTS.filter(e => {
-        if (!activeTypeFilters.has(e.type)) return false;
-        const org = (e.org && String(e.org).trim()) || 'Other';
-        if (!activeOrgFilters.has(org)) return false;
-        return eventMatchesSearch(e);
-      });
-    }
-
-    function renderCalendar(year, month) {
-      const grid = document.getElementById('calGrid');
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const daysInPrev = new Date(year, month, 0).getDate();
-      const today = new Date();
-      let html = DAYS_SHORT.map(d => '<div class="cal-header">' + d + '</div>').join('');
-      const filtered = getFilteredEvents();
-      const eventsByDate = {};
-      filtered.forEach(e => { if (!eventsByDate[e.date]) eventsByDate[e.date] = []; eventsByDate[e.date].push(e); });
-      for (let i = firstDay - 1; i >= 0; i--) html += '<div class="cal-day other-month"><span class="day-num">' + (daysInPrev - i) + '</span></div>';
-      for (let d = 1; d <= daysInMonth; d++) {
-        const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-        const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
-        const dayEvents = eventsByDate[dateStr] || [];
-        html += '<div class="cal-day' + (isToday ? ' today' : '') + (dayEvents.length ? ' has-events' : '') + '">';
-        html += '<span class="day-num">' + d + '</span>';
-        dayEvents.slice(0, 3).forEach(ev => { html += '<div class="cal-event type-' + ev.type + '" onclick="openModal(' + EVENTS.indexOf(ev) + ')" title="' + ev.title + '">' + ev.title + '</div>'; });
-        if (dayEvents.length > 3) html += '<div class="cal-more" onclick="showDayEvents(\'' + dateStr + '\')">+' + (dayEvents.length - 3) + ' more</div>';
-        html += '</div>';
-      }
-      const totalCells = firstDay + daysInMonth, remaining = (7 - (totalCells % 7)) % 7;
-      for (let i = 1; i <= remaining; i++) html += '<div class="cal-day other-month"><span class="day-num">' + i + '</span></div>';
-      grid.innerHTML = html;
-    }
-
-    function renderUpcoming() {
-      const listView = document.getElementById('listView');
-      const today = new Date(); today.setHours(0, 0, 0, 0);
-      const endDate = new Date(today); endDate.setDate(endDate.getDate() + UPCOMING_DAYS);
-      const filtered = getFilteredEvents().filter(e => {
-        const d = new Date(e.date + 'T00:00:00');
-        return Number.isFinite(d.valueOf()) && d >= today && d <= endDate;
-      }).sort((a, b) => a.date.localeCompare(b.date));
-      if (filtered.length === 0) {
-        const headline = searchQuery
-          ? 'No upcoming events match "' + searchQuery.replace(/</g, '&lt;') + '"'
-          : 'No events in the next ' + UPCOMING_DAYS + ' days';
-        const sub = searchQuery
-          ? 'Try a shorter or different search term, clear filters, or switch to Month view to browse further out.'
-          : 'Try adjusting your filters or switch to Month view to browse further out.';
-        listView.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-dim);"><p style="font-size:1.1rem;margin-bottom:0.5rem;">' + headline + '</p><p style="font-size:0.85rem;">' + sub + '</p></div>';
+    function renderHero() {
+      const root = document.getElementById('heroEvent');
+      if (!root) return;
+      const ev = pickHero();
+      if (!ev) {
+        root.innerHTML = '<div class="hero-tag">Upcoming</div><h2>No upcoming events scheduled</h2><p class="hero-where-when">Check back soon, or submit one below.</p>';
         return;
       }
+      const idx = EVENTS.indexOf(ev);
+      const d = new Date(ev.date + 'T00:00:00');
+      const typeConf = EVENT_TYPES[ev.type] || EVENT_TYPES.community;
+      const gcalUrl = buildGcalUrl(ev);
+      const tagText = ev.featured ? 'Featured Event' : 'Next Up';
+      root.innerHTML =
+        '<div class="hero-tag">★ ' + tagText + '</div>' +
+        '<div class="hero-grid">' +
+          '<div class="hero-date">' +
+            '<div class="h-month">' + MONTHS_SHORT[d.getMonth()] + '</div>' +
+            '<div class="h-day">' + d.getDate() + '</div>' +
+            '<div class="h-weekday">' + DAYS_SHORT[d.getDay()] + '</div>' +
+          '</div>' +
+          '<div class="hero-body">' +
+            '<div class="hero-meta">' +
+              '<span class="badge org">' + escHtml(ev.org) + '</span>' +
+              '<span class="badge ' + ev.type + '">' + typeConf.icon + ' ' + typeConf.label + '</span>' +
+            '</div>' +
+            '<h2>' + escHtml(ev.title) + '</h2>' +
+            '<div class="hero-where-when"><strong>' + escHtml(ev.time || 'TBA') + '</strong>' + (ev.location ? ' · ' + escHtml(ev.location) : '') + '</div>' +
+            (ev.desc ? '<p class="hero-desc">' + escHtml(ev.desc) + '</p>' : '') +
+            '<div class="hero-actions">' +
+              '<button type="button" class="btn-primary" onclick="openModal(' + idx + ')">Details &amp; Calendar Add →</button>' +
+              (ev.url ? '<a href="' + escapeAttr(ev.url) + '" target="_blank" rel="noopener" class="btn-ghost">Visit Website</a>' : '') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function renderList() {
+      const root = document.getElementById('eventList');
+      if (!root) return;
+      const filtered = getFilteredEvents();
+      const upcoming = filtered.filter((e) => {
+        const d = new Date(e.date + 'T00:00:00');
+        const today = new Date(); today.setHours(0,0,0,0);
+        return Number.isFinite(d.valueOf()) && d >= today;
+      });
+      updateResultCount(filtered.length);
+
+      if (upcoming.length === 0) {
+        const headline = searchQuery
+          ? 'No upcoming events match "' + escHtml(searchQuery) + '"'
+          : (filtered.length === 0 ? 'No events match your filters' : 'No upcoming events');
+        const sub = searchQuery
+          ? 'Try a different search term or clear your filters.'
+          : 'Adjust your filters above, or submit an event using the form below.';
+        root.innerHTML = '<div class="empty-state"><strong>' + headline + '</strong><span>' + sub + '</span></div>';
+        return;
+      }
+
       const groups = new Map();
-      filtered.forEach(ev => {
+      upcoming.forEach((ev) => {
         const d = new Date(ev.date + 'T00:00:00');
         const key = d.getFullYear() + '-' + d.getMonth();
         if (!groups.has(key)) groups.set(key, { year: d.getFullYear(), month: d.getMonth(), events: [] });
         groups.get(key).events.push(ev);
       });
+
       let html = '';
       let i = 0;
-      groups.forEach(group => {
-        html += '<div class="list-month-group"><div class="list-month-label">' + MONTHS[group.month] + ' ' + group.year + '</div>';
-        group.events.forEach(ev => {
+      groups.forEach((group) => {
+        html += '<div class="month-divider"><span class="month-name">' + MONTHS[group.month] + ' ' + group.year + '</span><span class="month-line"></span></div>';
+        group.events.forEach((ev) => {
           const d = new Date(ev.date + 'T00:00:00');
+          const idx = EVENTS.indexOf(ev);
           const typeConf = EVENT_TYPES[ev.type] || EVENT_TYPES.community;
-          html += '<div class="list-event" onclick="openModal(' + EVENTS.indexOf(ev) + ')" style="animation-delay:' + (i * 0.03) + 's">' +
-            '<div class="list-date"><div class="weekday">' + DAYS_SHORT[d.getDay()] + '</div><div class="day">' + d.getDate() + '</div></div>' +
-            '<div class="list-info">' +
-            '<span class="org-badge" style="background:' + typeConf.color + ';color:#fff">' + (ev.org || ev.type) + '</span>' +
-            '<span class="type-badge ' + ev.type + '">' + (ev.type === 'political' ? '★ Political' : '⌂ Community') + '</span>' +
-            '<h3>' + ev.title + '</h3>' +
-            '<div class="time-loc"><strong>' + ev.time + '</strong>' + (ev.location ? ' · ' + ev.location.split(',')[0] : '') + '</div>' +
-            '</div></div>';
+          html += '<button type="button" role="listitem" class="event-row is-' + ev.type + '" onclick="openModal(' + idx + ')" style="animation-delay:' + Math.min(i * 0.025, 0.4) + 's">' +
+            '<div class="ev-date">' +
+              '<div class="ev-weekday">' + DAYS_SHORT[d.getDay()] + '</div>' +
+              '<div class="ev-day">' + d.getDate() + '</div>' +
+              '<div class="ev-mon">' + MONTHS_SHORT[d.getMonth()] + '</div>' +
+            '</div>' +
+            '<div class="ev-body">' +
+              '<div class="ev-meta">' +
+                (ev.featured ? '<span class="badge featured">★ Featured</span>' : '') +
+                '<span class="badge ' + ev.type + '">' + typeConf.icon + ' ' + typeConf.label + '</span>' +
+                '<span class="badge org">' + escHtml(ev.org) + '</span>' +
+              '</div>' +
+              '<h3>' + escHtml(ev.title) + '</h3>' +
+              '<div class="ev-where-when">' +
+                '<span class="ev-time">' + escHtml(ev.time || 'TBA') + '</span>' +
+                (ev.location ? '<span class="ev-loc">· ' + escHtml(ev.location.split(',')[0]) + '</span>' : '') +
+              '</div>' +
+            '</div>' +
+          '</button>';
           i++;
         });
-        html += '</div>';
       });
-      listView.innerHTML = html;
+      root.innerHTML = html;
     }
 
+    function render() {
+      renderHero();
+      renderList();
+    }
+
+    // ─── Calendar export helpers (preserved from prior version) ───
     function parseAmPm(str) {
       const m = String(str || '').trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm|noon|midnight)?/i);
       if (!m) return null;
@@ -827,20 +914,15 @@ const eventsSchema = generateEventsListSchema(
       if (suffix === 'am' && h === 12) h = 0;
       return [h, min];
     }
-
     function pad2(n) { return String(n).padStart(2, '0'); }
-
     function fmtGcalDateTime(d) {
       return d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate()) + 'T' + pad2(d.getHours()) + pad2(d.getMinutes()) + '00';
     }
-    function fmtGcalDate(d) {
-      return d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate());
-    }
-
+    function fmtGcalDate(d) { return d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate()); }
     function buildEventTimes(ev) {
       const baseDate = new Date(ev.date + 'T00:00:00');
       const t = String(ev.time || '').trim();
-      const isAllDayLike = !t || /^all\s*day$/i.test(t) || /^tbd$/i.test(t);
+      const isAllDayLike = !t || /^all\s*day$/i.test(t) || /^tbd$/i.test(t) || /^tba$/i.test(t);
       if (isAllDayLike) {
         const next = new Date(baseDate); next.setDate(baseDate.getDate() + 1);
         return { allDay: true, startStr: fmtGcalDate(baseDate), endStr: fmtGcalDate(next) };
@@ -860,7 +942,6 @@ const eventsSchema = generateEventsListSchema(
       if (endDt <= startDt) endDt.setDate(endDt.getDate() + 1);
       return { allDay: false, startStr: fmtGcalDateTime(startDt), endStr: fmtGcalDateTime(endDt), tz: 'America/Chicago' };
     }
-
     function buildGcalUrl(ev) {
       const t = buildEventTimes(ev);
       let url = 'https://www.google.com/calendar/render?action=TEMPLATE' +
@@ -871,7 +952,6 @@ const eventsSchema = generateEventsListSchema(
       if (!t.allDay && t.tz) url += '&ctz=' + encodeURIComponent(t.tz);
       return url;
     }
-
     function escIcs(text) {
       return String(text || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
     }
@@ -889,38 +969,20 @@ const eventsSchema = generateEventsListSchema(
     function slugify(s) {
       return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50);
     }
-
     const VTIMEZONE_CHICAGO_LINES = [
-      'BEGIN:VTIMEZONE',
-      'TZID:America/Chicago',
-      'BEGIN:DAYLIGHT',
-      'DTSTART:20070311T020000',
-      'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
-      'TZNAME:CDT',
-      'TZOFFSETFROM:-0600',
-      'TZOFFSETTO:-0500',
-      'END:DAYLIGHT',
-      'BEGIN:STANDARD',
-      'DTSTART:20071104T020000',
-      'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
-      'TZNAME:CST',
-      'TZOFFSETFROM:-0500',
-      'TZOFFSETTO:-0600',
-      'END:STANDARD',
+      'BEGIN:VTIMEZONE','TZID:America/Chicago',
+      'BEGIN:DAYLIGHT','DTSTART:20070311T020000','RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU','TZNAME:CDT','TZOFFSETFROM:-0600','TZOFFSETTO:-0500','END:DAYLIGHT',
+      'BEGIN:STANDARD','DTSTART:20071104T020000','RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU','TZNAME:CST','TZOFFSETFROM:-0500','TZOFFSETTO:-0600','END:STANDARD',
       'END:VTIMEZONE'
     ];
-
     function buildIcsContent(ev) {
       const t = buildEventTimes(ev);
       const uid = ev.date.replace(/-/g, '') + '-' + slugify(ev.title) + '@bastropcc.com';
       const lines = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Bastrop County Conservatives//Events//EN',
-        'CALSCALE:GREGORIAN',
-        'METHOD:PUBLISH'
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Bastrop County Conservatives//Events//EN',
+        'CALSCALE:GREGORIAN','METHOD:PUBLISH'
       ];
-      if (!t.allDay) VTIMEZONE_CHICAGO_LINES.forEach(function(l) { lines.push(l); });
+      if (!t.allDay) VTIMEZONE_CHICAGO_LINES.forEach((l) => lines.push(l));
       lines.push('BEGIN:VEVENT');
       lines.push('UID:' + uid);
       lines.push('DTSTAMP:' + nowUtcStamp());
@@ -948,10 +1010,8 @@ const eventsSchema = generateEventsListSchema(
       const a = document.createElement('a');
       a.href = url;
       a.download = (ev.date + '-' + slugify(ev.title)) + '.ics';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     };
 
     window.openModal = function(idx) {
@@ -961,23 +1021,31 @@ const eventsSchema = generateEventsListSchema(
       const dateStr = DAYS_SHORT[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
       const gcalUrl = buildGcalUrl(ev);
       document.getElementById('modal').innerHTML =
-        '<button class="modal-close" onclick="closeModal()">✕</button>' +
-        '<h2>' + ev.title + '</h2>' +
-        '<span class="modal-org" style="background:' + typeConf.color + ';color:#fff">' + (ev.org || ev.type) + '</span>' +
-        '<span class="type-badge ' + ev.type + '" style="display:inline-block;margin-left:6px;font-size:0.7rem;padding:3px 10px;border-radius:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;' + (ev.type === 'political' ? 'background:#fde8e8;color:#991b1b;' : 'background:#e8f5e9;color:#1b5e20;') + '">' + (ev.type === 'political' ? '★ Political' : '⌂ Community') + '</span>' +
+        '<button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>' +
+        '<h2 id="modalTitle">' + escHtml(ev.title) + '</h2>' +
+        '<div class="modal-meta">' +
+          '<span class="badge org">' + escHtml(ev.org) + '</span>' +
+          '<span class="badge ' + ev.type + '">' + typeConf.icon + ' ' + typeConf.label + '</span>' +
+          (ev.featured ? '<span class="badge org" style="background:#c9a84c;color:#1a2b4a;border-color:#c9a84c">★ Featured</span>' : '') +
+        '</div>' +
         '<div class="detail-row"><span class="icon">📅</span><span class="detail-text">' + dateStr + '</span></div>' +
-        '<div class="detail-row"><span class="icon">🕐</span><span class="detail-text">' + ev.time + '</span></div>' +
-        (ev.location ? '<div class="detail-row"><span class="icon">📍</span><span class="detail-text">' + ev.location + '</span></div>' : '') +
-        (ev.desc ? '<div class="detail-row"><span class="icon">📋</span><span class="detail-text">' + ev.desc + '</span></div>' : '') +
+        '<div class="detail-row"><span class="icon">🕐</span><span class="detail-text">' + escHtml(ev.time || 'Time TBA') + '</span></div>' +
+        (ev.location ? '<div class="detail-row"><span class="icon">📍</span><span class="detail-text">' + escHtml(ev.location) + '</span></div>' : '') +
+        (ev.desc ? '<div class="detail-row"><span class="icon">📋</span><span class="detail-text">' + escHtml(ev.desc) + '</span></div>' : '') +
         '<div class="modal-actions">' +
-        (ev.url ? '<a href="' + ev.url + '" target="_blank" class="btn-primary">Visit Website →</a>' : '') +
-        '<a href="' + gcalUrl + '" target="_blank" class="btn-secondary">+ Google</a>' +
-        '<a href="javascript:void(0)" onclick="downloadIcs(' + idx + ')" class="btn-secondary">+ Apple/Outlook (.ics)</a>' +
+          (ev.url ? '<a href="' + escapeAttr(ev.url) + '" target="_blank" rel="noopener" class="btn-primary">Visit Website →</a>' : '') +
+          '<a href="' + gcalUrl + '" target="_blank" rel="noopener" class="btn-secondary">+ Google Calendar</a>' +
+          '<button type="button" onclick="downloadIcs(' + idx + ')" class="btn-secondary">+ Apple/Outlook (.ics)</button>' +
         '</div>';
       document.getElementById('modalOverlay').classList.add('show');
     };
-    window.closeModal = function() { document.getElementById('modalOverlay').classList.remove('show'); };
-    window.showDayEvents = function(dateStr) { const d = new Date(dateStr + 'T00:00:00'); currentDate = new Date(d.getFullYear(), d.getMonth(), 1); setView('upcoming'); };
+    window.closeModal = function() {
+      const overlay = document.getElementById('modalOverlay');
+      if (overlay) overlay.classList.remove('show');
+    };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
   </script>
 
   <div class="not-prose max-w-3xl mx-auto mt-10">
@@ -991,8 +1059,7 @@ const eventsSchema = generateEventsListSchema(
     </div>
   </div>
 
-  {upcoming.length > 0 && (
+  {upcomingForSchema.length > 0 && (
     <script type="application/ld+json" set:html={eventsSchema} />
   )}
-
 </PageLayout>

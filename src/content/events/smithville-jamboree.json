@@ -4,5 +4,7 @@
   "time": "1:00 PM",
   "location": "Smithville Main Street",
   "description": "Join us for the Smithville Jamboree Parade on Smithville Main Street.",
+  "org": "Smithville Chamber",
+  "type": "community",
   "link": "https://www.jamboreesmithville.com"
 }
