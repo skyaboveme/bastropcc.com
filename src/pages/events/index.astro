@@ -584,13 +584,69 @@ const eventsSchema = generateEventsListSchema(
       listView.innerHTML = html;
     }
 
+    function parseAmPm(str) {
+      const m = String(str || '').trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm|noon|midnight)?/i);
+      if (!m) return null;
+      let h = parseInt(m[1], 10);
+      const min = parseInt(m[2] || '0', 10);
+      const suffix = (m[3] || '').toLowerCase();
+      if (suffix === 'noon') return [12, 0];
+      if (suffix === 'midnight') return [0, 0];
+      if (suffix === 'pm' && h < 12) h += 12;
+      if (suffix === 'am' && h === 12) h = 0;
+      return [h, min];
+    }
+
+    function pad2(n) { return String(n).padStart(2, '0'); }
+
+    function fmtGcalDateTime(d) {
+      return d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate()) + 'T' + pad2(d.getHours()) + pad2(d.getMinutes()) + '00';
+    }
+    function fmtGcalDate(d) {
+      return d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate());
+    }
+
+    function buildEventTimes(ev) {
+      const baseDate = new Date(ev.date + 'T00:00:00');
+      const t = String(ev.time || '').trim();
+      const isAllDayLike = !t || /^all\s*day$/i.test(t) || /^tbd$/i.test(t);
+      if (isAllDayLike) {
+        const next = new Date(baseDate); next.setDate(baseDate.getDate() + 1);
+        return { allDay: true, startStr: fmtGcalDate(baseDate), endStr: fmtGcalDate(next) };
+      }
+      const parts = t.split(/\s*[-\u2013\u2014]\s*/);
+      const start = parseAmPm(parts[0]);
+      if (!start) {
+        const next = new Date(baseDate); next.setDate(baseDate.getDate() + 1);
+        return { allDay: true, startStr: fmtGcalDate(baseDate), endStr: fmtGcalDate(next) };
+      }
+      let end = parts[1] ? parseAmPm(parts[1]) : null;
+      if (!end && ev.endTime) end = parseAmPm(ev.endTime);
+      const startDt = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(), start[0], start[1], 0);
+      const endDt = end
+        ? new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(), end[0], end[1], 0)
+        : new Date(startDt.getTime() + 60 * 60 * 1000);
+      if (endDt <= startDt) endDt.setDate(endDt.getDate() + 1);
+      return { allDay: false, startStr: fmtGcalDateTime(startDt), endStr: fmtGcalDateTime(endDt), tz: 'America/Chicago' };
+    }
+
+    function buildGcalUrl(ev) {
+      const t = buildEventTimes(ev);
+      let url = 'https://www.google.com/calendar/render?action=TEMPLATE' +
+        '&text=' + encodeURIComponent(ev.title) +
+        '&dates=' + t.startStr + '/' + t.endStr +
+        '&details=' + encodeURIComponent(ev.desc || '') +
+        '&location=' + encodeURIComponent(ev.location || '');
+      if (!t.allDay && t.tz) url += '&ctz=' + encodeURIComponent(t.tz);
+      return url;
+    }
+
     window.openModal = function(idx) {
       const ev = EVENTS[idx]; if (!ev) return;
       const d = new Date(ev.date + 'T00:00:00');
       const typeConf = EVENT_TYPES[ev.type] || EVENT_TYPES.community;
       const dateStr = DAYS_SHORT[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-      const gcalDate = ev.date.replace(/-/g, '');
-      const gcalUrl = 'https://www.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(ev.title) + '&dates=' + gcalDate + '/' + gcalDate + '&details=' + encodeURIComponent(ev.desc || '') + '&location=' + encodeURIComponent(ev.location || '');
+      const gcalUrl = buildGcalUrl(ev);
       document.getElementById('modal').innerHTML =
         '<button class="modal-close" onclick="closeModal()">✕</button>' +
         '<h2>' + ev.title + '</h2>' +
