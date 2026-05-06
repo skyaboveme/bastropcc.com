@@ -54,14 +54,15 @@ const eventsSchema = generateEventsListSchema(
 >
   <div class="calendar-wrapper">
     <div class="controls" id="controls">
-      <div class="month-nav">
+      <div class="month-nav hidden" id="monthNav">
         <button id="prevMonth" aria-label="Previous month">‹</button>
         <span class="current-month" id="currentMonth"></span>
         <button id="nextMonth" aria-label="Next month">›</button>
       </div>
-      <div class="view-toggle hide-on-mobile">
-        <button id="btnCalendar" onclick="setView('calendar')">Calendar</button>
-        <button class="active" id="btnList" onclick="setView('list')">List</button>
+      <div class="upcoming-label show" id="upcomingLabel">Next 60 Days</div>
+      <div class="view-toggle">
+        <button class="active" id="btnUpcoming" onclick="setView('upcoming')">Upcoming</button>
+        <button id="btnCalendar" onclick="setView('calendar')">Month</button>
       </div>
     </div>
 
@@ -169,6 +170,12 @@ const eventsSchema = generateEventsListSchema(
       font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700; font-size: 1.25rem;
       min-width: 200px; text-align: center; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em;
     }
+    .calendar-wrapper .month-nav.hidden { display: none; }
+    .calendar-wrapper .upcoming-label {
+      display: none; font-family: 'Playfair Display', 'Oswald', serif; font-weight: 700; font-size: 1.25rem;
+      text-align: center; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em; padding: 0 0.5rem;
+    }
+    .calendar-wrapper .upcoming-label.show { display: inline-block; }
     .calendar-wrapper .view-toggle {
       display: flex; background: var(--white); border-radius: 20px; overflow: hidden; border: 1px solid var(--border);
     }
@@ -341,6 +348,8 @@ const eventsSchema = generateEventsListSchema(
       .calendar-wrapper .cal-header { font-size: 0.55rem; padding: 6px 2px; }
       .calendar-wrapper .controls { padding: 0.7rem 0.8rem; }
       .calendar-wrapper .hide-on-mobile { display: none !important; }
+      .calendar-wrapper .month-nav .current-month { min-width: 0; font-size: 1rem; }
+      .calendar-wrapper .upcoming-label { font-size: 1rem; }
       .calendar-wrapper .form-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
@@ -424,7 +433,8 @@ const eventsSchema = generateEventsListSchema(
     const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
     let currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-    let currentView = 'list';
+    let currentView = 'upcoming';
+    const UPCOMING_DAYS = 60;
     let activeTypeFilters = new Set(['political', 'community']);
 
     async function loadAPIEvents() {
@@ -442,7 +452,6 @@ const eventsSchema = generateEventsListSchema(
 
     function init() {
       buildTypeFilters();
-      if (window.innerWidth <= 700) currentView = 'list';
       loadAPIEvents().then(() => render());
       render(); // render seeds immediately
       document.getElementById('prevMonth').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); render(); });
@@ -479,17 +488,31 @@ const eventsSchema = generateEventsListSchema(
 
     window.setView = function(view) {
       currentView = view;
+      document.getElementById('btnUpcoming').classList.toggle('active', view === 'upcoming');
       document.getElementById('btnCalendar').classList.toggle('active', view === 'calendar');
-      document.getElementById('btnList').classList.toggle('active', view === 'list');
+      const monthNav = document.getElementById('monthNav');
+      const upcomingLabel = document.getElementById('upcomingLabel');
+      if (view === 'calendar') {
+        monthNav.classList.remove('hidden');
+        upcomingLabel.classList.remove('show');
+      } else {
+        monthNav.classList.add('hidden');
+        upcomingLabel.classList.add('show');
+      }
       render();
     };
 
     function render() {
-      const year = currentDate.getFullYear(), month = currentDate.getMonth();
-      document.getElementById('currentMonth').textContent = MONTHS[month] + ' ' + year;
       const calWrap = document.getElementById('calGridWrap'), listView = document.getElementById('listView');
-      if (currentView === 'calendar') { calWrap.classList.remove('hidden'); listView.classList.remove('active'); renderCalendar(year, month); }
-      else { calWrap.classList.add('hidden'); listView.classList.add('active'); renderList(year, month); }
+      if (currentView === 'calendar') {
+        const year = currentDate.getFullYear(), month = currentDate.getMonth();
+        document.getElementById('currentMonth').textContent = MONTHS[month] + ' ' + year;
+        calWrap.classList.remove('hidden'); listView.classList.remove('active');
+        renderCalendar(year, month);
+      } else {
+        calWrap.classList.add('hidden'); listView.classList.add('active');
+        renderUpcoming();
+      }
     }
 
     function getFilteredEvents() { return EVENTS.filter(e => activeTypeFilters.has(e.type)); }
@@ -520,24 +543,44 @@ const eventsSchema = generateEventsListSchema(
       grid.innerHTML = html;
     }
 
-    function renderList(year, month) {
+    function renderUpcoming() {
       const listView = document.getElementById('listView');
-      const filtered = getFilteredEvents().filter(e => { const d = new Date(e.date + 'T00:00:00'); return d.getFullYear() === year && d.getMonth() === month; }).sort((a, b) => a.date.localeCompare(b.date));
-      if (filtered.length === 0) { listView.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-dim);"><p style="font-size:1.1rem;margin-bottom:0.5rem;">No events this month</p><p style="font-size:0.85rem;">Try a different month or adjust your filters.</p></div>'; return; }
-      let html = '<div class="list-month-group"><div class="list-month-label">' + MONTHS[month] + ' ' + year + '</div>';
-      filtered.forEach((ev, i) => {
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const endDate = new Date(today); endDate.setDate(endDate.getDate() + UPCOMING_DAYS);
+      const filtered = getFilteredEvents().filter(e => {
+        const d = new Date(e.date + 'T00:00:00');
+        return Number.isFinite(d.valueOf()) && d >= today && d <= endDate;
+      }).sort((a, b) => a.date.localeCompare(b.date));
+      if (filtered.length === 0) {
+        listView.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-dim);"><p style="font-size:1.1rem;margin-bottom:0.5rem;">No events in the next ' + UPCOMING_DAYS + ' days</p><p style="font-size:0.85rem;">Try adjusting your filters or switch to Month view to browse further out.</p></div>';
+        return;
+      }
+      const groups = new Map();
+      filtered.forEach(ev => {
         const d = new Date(ev.date + 'T00:00:00');
-        const typeConf = EVENT_TYPES[ev.type] || EVENT_TYPES.community;
-        html += '<div class="list-event" onclick="openModal(' + EVENTS.indexOf(ev) + ')" style="animation-delay:' + (i * 0.04) + 's">' +
-          '<div class="list-date"><div class="weekday">' + DAYS_SHORT[d.getDay()] + '</div><div class="day">' + d.getDate() + '</div></div>' +
-          '<div class="list-info">' +
-          '<span class="org-badge" style="background:' + typeConf.color + ';color:#fff">' + (ev.org || ev.type) + '</span>' +
-          '<span class="type-badge ' + ev.type + '">' + (ev.type === 'political' ? '★ Political' : '⌂ Community') + '</span>' +
-          '<h3>' + ev.title + '</h3>' +
-          '<div class="time-loc"><strong>' + ev.time + '</strong>' + (ev.location ? ' · ' + ev.location.split(',')[0] : '') + '</div>' +
-          '</div></div>';
+        const key = d.getFullYear() + '-' + d.getMonth();
+        if (!groups.has(key)) groups.set(key, { year: d.getFullYear(), month: d.getMonth(), events: [] });
+        groups.get(key).events.push(ev);
       });
-      html += '</div>';
+      let html = '';
+      let i = 0;
+      groups.forEach(group => {
+        html += '<div class="list-month-group"><div class="list-month-label">' + MONTHS[group.month] + ' ' + group.year + '</div>';
+        group.events.forEach(ev => {
+          const d = new Date(ev.date + 'T00:00:00');
+          const typeConf = EVENT_TYPES[ev.type] || EVENT_TYPES.community;
+          html += '<div class="list-event" onclick="openModal(' + EVENTS.indexOf(ev) + ')" style="animation-delay:' + (i * 0.03) + 's">' +
+            '<div class="list-date"><div class="weekday">' + DAYS_SHORT[d.getDay()] + '</div><div class="day">' + d.getDate() + '</div></div>' +
+            '<div class="list-info">' +
+            '<span class="org-badge" style="background:' + typeConf.color + ';color:#fff">' + (ev.org || ev.type) + '</span>' +
+            '<span class="type-badge ' + ev.type + '">' + (ev.type === 'political' ? '★ Political' : '⌂ Community') + '</span>' +
+            '<h3>' + ev.title + '</h3>' +
+            '<div class="time-loc"><strong>' + ev.time + '</strong>' + (ev.location ? ' · ' + ev.location.split(',')[0] : '') + '</div>' +
+            '</div></div>';
+          i++;
+        });
+        html += '</div>';
+      });
       listView.innerHTML = html;
     }
 
@@ -563,7 +606,7 @@ const eventsSchema = generateEventsListSchema(
       document.getElementById('modalOverlay').classList.add('show');
     };
     window.closeModal = function() { document.getElementById('modalOverlay').classList.remove('show'); };
-    window.showDayEvents = function(dateStr) { const d = new Date(dateStr + 'T00:00:00'); currentDate = new Date(d.getFullYear(), d.getMonth(), 1); setView('list'); };
+    window.showDayEvents = function(dateStr) { const d = new Date(dateStr + 'T00:00:00'); currentDate = new Date(d.getFullYear(), d.getMonth(), 1); setView('upcoming'); };
   </script>
 
   <div class="not-prose max-w-3xl mx-auto mt-10">
