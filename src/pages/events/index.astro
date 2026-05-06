@@ -304,8 +304,8 @@ const eventsSchema = generateEventsListSchema(
     .calendar-wrapper .modal .detail-row .detail-text { color: var(--text); }
     .calendar-wrapper .modal .detail-row .detail-text a { color: var(--red); text-decoration: underline; text-underline-offset: 2px; }
     .calendar-wrapper .modal .detail-row .detail-text a:hover { color: var(--navy); }
-    .calendar-wrapper .modal-actions { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
-    .calendar-wrapper .modal-actions a { display: inline-block; padding: 9px 20px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
+    .calendar-wrapper .modal-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .calendar-wrapper .modal-actions a { display: inline-block; padding: 9px 18px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
     .calendar-wrapper .modal-actions .btn-primary { background: var(--red); color: var(--white); }
     .calendar-wrapper .modal-actions .btn-primary:hover { background: #991b1b; }
     .calendar-wrapper .modal-actions .btn-secondary { background: var(--cream); border: 1px solid var(--border); color: var(--navy); }
@@ -641,6 +641,88 @@ const eventsSchema = generateEventsListSchema(
       return url;
     }
 
+    function escIcs(text) {
+      return String(text || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+    }
+    function foldIcsLine(line) {
+      if (line.length <= 75) return line;
+      let out = line.slice(0, 75); let rest = line.slice(75);
+      while (rest.length > 0) { out += '\r\n ' + rest.slice(0, 74); rest = rest.slice(74); }
+      return out;
+    }
+    function nowUtcStamp() {
+      const d = new Date();
+      return d.getUTCFullYear() + pad2(d.getUTCMonth() + 1) + pad2(d.getUTCDate()) + 'T' +
+        pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + pad2(d.getUTCSeconds()) + 'Z';
+    }
+    function slugify(s) {
+      return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50);
+    }
+
+    const VTIMEZONE_CHICAGO_LINES = [
+      'BEGIN:VTIMEZONE',
+      'TZID:America/Chicago',
+      'BEGIN:DAYLIGHT',
+      'DTSTART:20070311T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+      'TZNAME:CDT',
+      'TZOFFSETFROM:-0600',
+      'TZOFFSETTO:-0500',
+      'END:DAYLIGHT',
+      'BEGIN:STANDARD',
+      'DTSTART:20071104T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+      'TZNAME:CST',
+      'TZOFFSETFROM:-0500',
+      'TZOFFSETTO:-0600',
+      'END:STANDARD',
+      'END:VTIMEZONE'
+    ];
+
+    function buildIcsContent(ev) {
+      const t = buildEventTimes(ev);
+      const uid = ev.date.replace(/-/g, '') + '-' + slugify(ev.title) + '@bastropcc.com';
+      const lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Bastrop County Conservatives//Events//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH'
+      ];
+      if (!t.allDay) VTIMEZONE_CHICAGO_LINES.forEach(function(l) { lines.push(l); });
+      lines.push('BEGIN:VEVENT');
+      lines.push('UID:' + uid);
+      lines.push('DTSTAMP:' + nowUtcStamp());
+      if (t.allDay) {
+        lines.push('DTSTART;VALUE=DATE:' + t.startStr);
+        lines.push('DTEND;VALUE=DATE:' + t.endStr);
+      } else {
+        lines.push('DTSTART;TZID=America/Chicago:' + t.startStr);
+        lines.push('DTEND;TZID=America/Chicago:' + t.endStr);
+      }
+      lines.push('SUMMARY:' + escIcs(ev.title));
+      if (ev.desc) lines.push('DESCRIPTION:' + escIcs(ev.desc));
+      if (ev.location) lines.push('LOCATION:' + escIcs(ev.location));
+      if (ev.url) lines.push('URL:' + ev.url);
+      lines.push('END:VEVENT');
+      lines.push('END:VCALENDAR');
+      return lines.map(foldIcsLine).join('\r\n');
+    }
+
+    window.downloadIcs = function(idx) {
+      const ev = EVENTS[idx]; if (!ev) return;
+      const ics = buildIcsContent(ev);
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (ev.date + '-' + slugify(ev.title)) + '.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+    };
+
     window.openModal = function(idx) {
       const ev = EVENTS[idx]; if (!ev) return;
       const d = new Date(ev.date + 'T00:00:00');
@@ -658,7 +740,9 @@ const eventsSchema = generateEventsListSchema(
         (ev.desc ? '<div class="detail-row"><span class="icon">📋</span><span class="detail-text">' + ev.desc + '</span></div>' : '') +
         '<div class="modal-actions">' +
         (ev.url ? '<a href="' + ev.url + '" target="_blank" class="btn-primary">Visit Website →</a>' : '') +
-        '<a href="' + gcalUrl + '" target="_blank" class="btn-secondary">+ Google Calendar</a></div>';
+        '<a href="' + gcalUrl + '" target="_blank" class="btn-secondary">+ Google</a>' +
+        '<a href="javascript:void(0)" onclick="downloadIcs(' + idx + ')" class="btn-secondary">+ Apple/Outlook (.ics)</a>' +
+        '</div>';
       document.getElementById('modalOverlay').classList.add('show');
     };
     window.closeModal = function() { document.getElementById('modalOverlay').classList.remove('show'); };
